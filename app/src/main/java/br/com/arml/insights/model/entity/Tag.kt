@@ -7,6 +7,6 @@ import androidx.room.PrimaryKey
 data class Tag(
     @PrimaryKey
     val name: String,
-    val color: String,
+    val color: String = "#d4d4d4",
     val description: String
 )

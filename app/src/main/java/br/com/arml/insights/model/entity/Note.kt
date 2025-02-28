@@ -3,7 +3,6 @@ package br.com.arml.insights.model.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
-import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(
@@ -15,8 +14,7 @@ import androidx.room.PrimaryKey
             childColumns = ["tag"],
             onDelete = ForeignKey.CASCADE
         )
-    ],
-    indices = [Index(value = ["tag"])]
+    ]
 )
 data class Note(
     @PrimaryKey(autoGenerate = true)
@@ -24,7 +22,7 @@ data class Note(
     val title: String,
     val body: String,
     val situation: String,
-    @ColumnInfo(name = "creation_date")
+    @ColumnInfo(name = "creation_date", index = true)
     val creationDate: Long,
     val tag: String
 )
