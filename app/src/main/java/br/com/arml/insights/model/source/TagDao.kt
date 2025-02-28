@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import br.com.arml.insights.model.entity.Tag
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TagDao {
@@ -21,9 +22,9 @@ interface TagDao {
     suspend fun update(tag: Tag)
 
     @Query("SELECT * FROM tags_table")
-    suspend fun getAll(): List<Tag>
+    suspend fun getAll(): Flow<List<Tag>>
 
-    @Query("SELECT EXISTS (SELECT 1 FROM tags_table WHERE name = :name)")
+    @Query("SELECT EXISTS (SELECT * FROM tags_table WHERE name = :name)")
     suspend fun isTagExists(name: String): Boolean
 
 }
