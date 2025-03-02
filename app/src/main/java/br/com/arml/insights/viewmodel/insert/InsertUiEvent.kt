@@ -13,4 +13,6 @@ sealed class InsertUiEvent {
         val situation: String,
         val tagName: String
     ) : InsertUiEvent()
+
+    data object OnGetTags : InsertUiEvent()
 }

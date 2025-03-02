@@ -22,7 +22,7 @@ interface TagDao {
     suspend fun update(tag: Tag)
 
     @Query("SELECT * FROM tags_table")
-    suspend fun getAll(): Flow<List<Tag>>
+    fun getAll(): Flow<List<Tag>>
 
     @Query("SELECT EXISTS (SELECT * FROM tags_table WHERE name = :name)")
     suspend fun isTagExists(name: String): Boolean

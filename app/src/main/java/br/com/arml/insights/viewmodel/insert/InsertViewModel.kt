@@ -6,6 +6,7 @@ import br.com.arml.insights.model.entity.Note
 import br.com.arml.insights.model.entity.Tag
 import br.com.arml.insights.model.repository.NoteRepository
 import br.com.arml.insights.model.repository.TagRepository
+import br.com.arml.insights.utils.data.Response
 import br.com.arml.insights.utils.data.update
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,11 +24,8 @@ class InsertViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(InsertUiState())
     val uiState = _uiState.asStateFlow()
 
-    private val _tags = MutableStateFlow(emptyList<Tag>())
-    val tags = _tags.asStateFlow()
-
     init {
-        getTagList()
+        getTags()
     }
 
     fun onEvent(event: InsertUiEvent){
@@ -38,13 +36,19 @@ class InsertViewModel @Inject constructor(
             is InsertUiEvent.OnInsertInsight -> {
                 event.apply { insertNote(title,body,situation,tagName) }
             }
+            is InsertUiEvent.OnGetTags -> { getTags() }
         }
     }
 
-    private fun getTagList(){
+    private fun getTags(){
         viewModelScope.launch {
-            tagRepository.getAll().collectLatest { tags ->
-                _tags.value = tags
+            tagRepository.getAll().collectLatest { response ->
+                response.update(_uiState){ state, res ->
+                    if (res is Response.Success)
+                        state.copy(tags = res.result)
+                    else
+                        state.copy(tags = emptyList())
+                }
             }
         }
     }
@@ -52,7 +56,7 @@ class InsertViewModel @Inject constructor(
     private fun insertTag(name: String, color: String, description: String){
         viewModelScope.launch {
             val tag = Tag(name = name, color = color, description = description)
-            tagRepository.create(tag).collect{ response ->
+            tagRepository.insert(tag).collect{ response ->
                 response.update(_uiState){ state, res ->
                     state.copy( insertTagState = res )
                 }
@@ -69,7 +73,7 @@ class InsertViewModel @Inject constructor(
                 creationDate = System.currentTimeMillis(),
                 tag = tagName,
             )
-            noteRepository.save(note).collect{ response ->
+            noteRepository.insert(note).collect{ response ->
                 response.update(_uiState){ state, res ->
                     state.copy( insertNoteState = res )
                 }

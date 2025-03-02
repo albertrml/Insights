@@ -1,7 +1,6 @@
 package br.com.arml.insights.domain
 
 import br.com.arml.insights.model.entity.Note
-import br.com.arml.insights.model.entity.Tag
 import br.com.arml.insights.model.repository.NoteRepository
 import br.com.arml.insights.model.repository.TagRepository
 import javax.inject.Inject
@@ -12,6 +11,6 @@ class InsertInsightUseCase @Inject constructor(
 ){
     suspend fun getTags() = tagRepository.getAll()
 
-    fun insertNote(note: Note) = noteRepository.save(note)
+    fun insertNote(note: Note) = noteRepository.insert(note)
 
 }
