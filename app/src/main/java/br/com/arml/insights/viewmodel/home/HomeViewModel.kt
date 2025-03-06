@@ -22,6 +22,7 @@ class HomeViewModel @Inject constructor(
 
     fun onEvent(event: HomeUiEvent) {
         when (event) {
+            is HomeUiEvent.OnDeleteNote -> { deleteNote(event.note) }
             is HomeUiEvent.OnFetchNotesByCreationDateInAscendingOrder -> {
                 fetchNotesByCreationDate()
             }
@@ -45,6 +46,16 @@ class HomeViewModel @Inject constructor(
             }
             is HomeUiEvent.OnFetchNotesByTitleInDescendingOrder -> {
                 fetchNotesByTitle(true)
+            }
+        }
+    }
+
+    private fun deleteNote(note: Note) {
+        viewModelScope.launch {
+            noteRepository.delete(note).collect { response ->
+                response.update(_uiState) { state, res ->
+                    state.copy(deleteNoteState = res)
+                }
             }
         }
     }
