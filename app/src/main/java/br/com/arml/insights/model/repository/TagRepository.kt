@@ -2,6 +2,7 @@ package br.com.arml.insights.model.repository
 
 import br.com.arml.insights.model.entity.Tag
 import br.com.arml.insights.model.source.TagDao
+import br.com.arml.insights.utils.exception.InsightException
 import br.com.arml.insights.utils.tools.performDatabaseOperation
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flatMapConcat
@@ -19,5 +20,9 @@ class TagRepository @Inject constructor(private val tagDao: TagDao){
     fun getAll() = tagDao.getAll().flatMapConcat { performDatabaseOperation { it } }
 
     suspend fun isTagExists(tag: String) = tagDao.isTagExists(tag)
+
+    fun getTagById(id: Int) = performDatabaseOperation {
+        tagDao.getById(id) ?: throw InsightException.TagNotFoundException()
+    }
 
 }
