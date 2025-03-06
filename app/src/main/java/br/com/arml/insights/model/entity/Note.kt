@@ -10,8 +10,8 @@ import androidx.room.PrimaryKey
     foreignKeys = [
         ForeignKey(
             entity = Tag::class,
-            parentColumns = ["name"],
-            childColumns = ["tag"],
+            parentColumns = ["id"],
+            childColumns = ["tag_id"],
             onDelete = ForeignKey.CASCADE
         )
     ]
@@ -24,5 +24,6 @@ data class Note(
     val situation: String,
     @ColumnInfo(name = "creation_date", index = true)
     val creationDate: Long,
-    val tag: String
+    @ColumnInfo(name = "tag_id", index = true)
+    val tagId: Int
 )

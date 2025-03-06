@@ -1,15 +1,9 @@
 package br.com.arml.insights.viewmodel.home
 
-import br.com.arml.insights.model.entity.Note
+import br.com.arml.insights.model.entity.Tag
 
 sealed class HomeUiEvent{
-    data class OnDeleteNote(val note: Note): HomeUiEvent()
-    data object OnFetchNotesByCreationDateInAscendingOrder: HomeUiEvent()
-    data object OnFetchNotesByCreationDateInDescendingOrder: HomeUiEvent()
-    data object OnFetchNotesBySituationsInAscendingOrder: HomeUiEvent()
-    data object OnFetchNotesBySituationsInDescendingOrder: HomeUiEvent()
-    data object OnFetchNotesByTagInAscendingOrder: HomeUiEvent()
-    data object OnFetchNotesByTagInDescendingOrder: HomeUiEvent()
-    data object OnFetchNotesByTitleInAscendingOrder: HomeUiEvent()
-    data object OnFetchNotesByTitleInDescendingOrder: HomeUiEvent()
+    data class OnDeleteTag(val tag: Tag): HomeUiEvent()
+    data object OnFetchTagsByColorInAscendingOrder: HomeUiEvent()
+    data object OnFetchTagsByNameInAscendingOrder: HomeUiEvent()
 }

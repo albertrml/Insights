@@ -18,7 +18,7 @@ class NoteRepository @Inject constructor(private val noteDao: NoteDao){
 
     fun getAll() = noteDao.getAll().flatMapConcat { performDatabaseOperation { it } }
 
-    fun getByTag(tagName: String) = noteDao.getByTag(tagName)
+    fun getByTag(tagId: Int) = noteDao.getByTag(tagId)
         .flatMapConcat { performDatabaseOperation { it } }
 
 }
