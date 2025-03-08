@@ -19,7 +19,7 @@ class TagRepository @Inject constructor(private val tagDao: TagDao){
     @OptIn(ExperimentalCoroutinesApi::class)
     fun getAll() = tagDao.getAll().flatMapConcat { performDatabaseOperation { it } }
 
-    suspend fun isTagExists(tag: String) = tagDao.isTagExists(tag)
+    suspend fun isTagNameExists(tag: String) = tagDao.isTagNameExists(tag)
 
     fun getTagById(id: Int) = performDatabaseOperation {
         tagDao.getById(id) ?: throw InsightException.TagNotFoundException()

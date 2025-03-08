@@ -33,7 +33,7 @@ class UpdateTagViewModel @Inject constructor(
 
     private fun updateTag(tagId: Int, newName: String, newDescription: String, newColor: String){
         viewModelScope.launch {
-            if (tagRepository.isTagExists(newName)){
+            if (tagRepository.isTagNameExists(newName)){
                 _uiState.update { state ->
                     state.copy( updateTagState = Response.Failure(TagAlreadyExistsException()) )
                 }

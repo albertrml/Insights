@@ -28,6 +28,6 @@ interface TagDao {
     suspend fun getById(id: Int): Tag?
 
     @Query("SELECT EXISTS (SELECT * FROM tags_table WHERE name = :name)")
-    suspend fun isTagExists(name: String): Boolean
+    suspend fun isTagNameExists(name: String): Boolean
 
 }

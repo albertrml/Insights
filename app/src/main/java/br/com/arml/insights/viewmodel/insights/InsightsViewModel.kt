@@ -26,7 +26,7 @@ class InsightsViewModel @Inject constructor(
 
     fun onEvent(event: InsightsUiEvent){
         when(event) {
-            is OnDeleteNote -> {}
+            is OnDeleteNote -> { deleteNote(event.note) }
             is OnFetchNotesByCreationDataInDescendingOrder -> {
                 fetchNotes(event.idTag) { it.creationDate }
             }

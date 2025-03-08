@@ -21,6 +21,10 @@ class HomeViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
+    init {
+        fetchTags(sortBy = { it.name })
+    }
+
     fun onEvent(event: HomeUiEvent) {
         when (event) {
             is HomeUiEvent.OnDeleteTag -> { deleteNote(event.tag) }

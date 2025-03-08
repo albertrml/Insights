@@ -33,7 +33,7 @@ class NewTagViewModel @Inject constructor(
     private fun insertTag(name: String, color: String, description: String){
         viewModelScope.launch {
             val tag = Tag(name = name, color = color, description = description)
-            if(tagRepository.isTagExists(name)) {
+            if(tagRepository.isTagNameExists(name)) {
                 _uiState.update { state ->
                     state.copy(insertTagState = Response.Failure(TagAlreadyExistsException()))
                 }
