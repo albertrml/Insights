@@ -6,4 +6,5 @@ sealed class InsightException(override val message: String): Exception() {
     class NameTagException: InsightException( "Tag name cannot be empty" )
     class TagAlreadyExistsException: InsightException( "Tag Name already exists" )
     class TagNotFoundException: InsightException( "Tag not found" )
+    class NoteNotFoundException: InsightException( "Note not found" )
 }

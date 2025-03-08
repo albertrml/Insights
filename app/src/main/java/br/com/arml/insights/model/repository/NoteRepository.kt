@@ -2,6 +2,7 @@ package br.com.arml.insights.model.repository
 
 import br.com.arml.insights.model.entity.Note
 import br.com.arml.insights.model.source.NoteDao
+import br.com.arml.insights.utils.exception.InsightException
 import br.com.arml.insights.utils.tools.performDatabaseOperation
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flatMapConcat
@@ -21,4 +22,7 @@ class NoteRepository @Inject constructor(private val noteDao: NoteDao){
     fun getByTag(tagId: Int) = noteDao.getByTag(tagId)
         .flatMapConcat { performDatabaseOperation { it } }
 
+    fun getById(id: Int) = performDatabaseOperation {
+        noteDao.getById(id) ?: throw InsightException.NoteNotFoundException()
+    }
 }

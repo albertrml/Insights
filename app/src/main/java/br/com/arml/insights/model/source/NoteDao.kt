@@ -27,4 +27,7 @@ interface NoteDao {
     @Query("SELECT * FROM notes_table WHERE tag_id = :tagId")
     fun getByTag(tagId: Int): Flow<List<Note>>
 
+    @Query("SELECT * FROM notes_table WHERE id = :noteId")
+    suspend fun getById(noteId: Int): Note?
+
 }
