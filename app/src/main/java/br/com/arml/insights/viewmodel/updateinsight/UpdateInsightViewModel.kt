@@ -32,7 +32,18 @@ class UpdateInsightViewModel @Inject constructor(
         when(event){
             is OnFetchInsight -> { fetchInsight(event.id) }
             is OnFetchTags -> { fetchTags() }
-            is OnUpdateInsight -> {}
+            is OnUpdateInsight -> {
+                event.apply {
+                    updateInsight(
+                        id = id,
+                        title = title,
+                        situation = situation,
+                        body = body,
+                        creationDate = creationDate,
+                        tagId = tagId
+                    )
+                }
+            }
         }
     }
     
