@@ -1,4 +1,4 @@
-package br.com.arml.insights.model
+package br.com.arml.insights.model.mock
 
 import br.com.arml.insights.model.entity.Note
 import br.com.arml.insights.model.entity.Tag

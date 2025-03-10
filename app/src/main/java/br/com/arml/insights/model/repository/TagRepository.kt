@@ -2,27 +2,54 @@ package br.com.arml.insights.model.repository
 
 import br.com.arml.insights.model.entity.Tag
 import br.com.arml.insights.model.source.TagDao
+import br.com.arml.insights.utils.data.Response
 import br.com.arml.insights.utils.exception.InsightException
 import br.com.arml.insights.utils.tools.performDatabaseOperation
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.flatMapConcat
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class TagRepository @Inject constructor(private val tagDao: TagDao){
 
-    fun insert(tag: Tag) = performDatabaseOperation { tagDao.insert(tag) }
+    fun insert(tag: Tag) = flow {
+        emit(Response.Loading)
+        emit(performDatabaseOperation { tagDao.insert(tag) })
+    }
 
-    fun delete(tag: Tag) = performDatabaseOperation { tagDao.delete(tag) }
+    fun delete(tag: Tag) = flow {
+        emit(Response.Loading)
+        emit(performDatabaseOperation { tagDao.delete(tag) })
+    }
 
-    fun update(tag: Tag) = performDatabaseOperation { tagDao.update(tag) }
+    fun update(tag: Tag) = flow {
+        emit(Response.Loading)
+        emit(performDatabaseOperation { tagDao.update(tag) })
+    }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    fun getAll() = tagDao.getAll().flatMapConcat { performDatabaseOperation { it } }
+    fun getAll() : Flow<Response<List<Tag>>> = flow {
+        emit(Response.Loading)
+        try {
+            emitAll(
+                tagDao.getAll().map {
+                    Response.Success(it)
+                }
+            )
+        }catch (e: Exception){
+            Response.Failure(e)
+        }
+    }
 
     suspend fun isTagNameExists(tag: String) = tagDao.isTagNameExists(tag)
 
-    fun getTagById(id: Int) = performDatabaseOperation {
-        tagDao.getById(id) ?: throw InsightException.TagNotFoundException()
+    fun getTagById(id: Int) = flow{
+        emit(Response.Loading)
+        emit(
+            performDatabaseOperation {
+                tagDao.getById(id) ?: throw InsightException.TagNotFoundException()
+            }
+        )
     }
 
 }

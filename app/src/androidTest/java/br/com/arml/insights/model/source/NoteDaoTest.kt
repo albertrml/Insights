@@ -1,13 +1,12 @@
-package br.com.arml.insights.model
+package br.com.arml.insights.model.source
 
 import android.content.Context
 import android.database.sqlite.SQLiteConstraintException
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
+import br.com.arml.insights.model.mock.addMockNotes
 import br.com.arml.insights.model.entity.Note
-import br.com.arml.insights.model.source.InsightsRoomDatabase
-import br.com.arml.insights.model.source.NoteDao
-import br.com.arml.insights.model.source.TagDao
+import br.com.arml.insights.model.mock.mockTags
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest

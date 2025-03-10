@@ -1,12 +1,11 @@
-package br.com.arml.insights.model
+package br.com.arml.insights.model.source
 
 import android.content.Context
 import android.database.sqlite.SQLiteConstraintException
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import br.com.arml.insights.model.entity.Tag
-import br.com.arml.insights.model.source.InsightsRoomDatabase
-import br.com.arml.insights.model.source.TagDao
+import br.com.arml.insights.model.mock.mockTags
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertNull
