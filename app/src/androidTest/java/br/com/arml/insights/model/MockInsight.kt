@@ -7,27 +7,27 @@ import java.util.Date
 val mockTags = arrayListOf(
     Tag(
         id = 0,
-        name = "Business",
-        color = "#000000",
-        description = "Business Ideas"
+        name = "App",
+        color = "#333333",
+        description = "Ideas for project app"
     ),
     Tag(
-        id = 1,
-        name = "Dinner",
-        color = "#111111",
-        description = "Ideas for dinner recipes"
-    ),
-    Tag(
-        id = 2,
+        id = 0,
         name = "Beer",
         color = "#222222",
         description = "Ideas for beer recipes"
     ),
     Tag(
-        id = 3,
-        name = "App",
-        color = "#333333",
-        description = "Ideas for project app"
+        id = 0,
+        name = "Business",
+        color = "#000000",
+        description = "Business Ideas"
+    ),
+    Tag(
+        id = 0,
+        name = "Dinner",
+        color = "#111111",
+        description = "Ideas for dinner recipes"
     )
 )
 
