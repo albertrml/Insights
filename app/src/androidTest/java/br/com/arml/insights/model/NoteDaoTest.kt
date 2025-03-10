@@ -8,7 +8,6 @@ import br.com.arml.insights.model.source.NoteDao
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
-import org.junit.Test
 
 class NoteDaoTest {
 
