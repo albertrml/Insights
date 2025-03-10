@@ -8,10 +8,13 @@ import br.com.arml.insights.model.entity.Tag
 import br.com.arml.insights.model.source.InsightsRoomDatabase
 import br.com.arml.insights.model.source.TagDao
 import junit.framework.TestCase.assertEquals
+import junit.framework.TestCase.assertFalse
+import junit.framework.TestCase.assertNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import org.junit.After
+import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertThrows
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -60,6 +63,22 @@ class TagDaoTest {
         }
     }
 
+    /*** Get Tag By Id ***/
+    @Test
+    fun whenGetTagByIdIsSuccessful() = runTest {
+        tags.forEach { tag -> tagDao.insert(tag) }
+        val expectedTag = tagDao.getAll().first().first()
+        val actualTag = tagDao.getById(expectedTag.id)
+        assertEquals(expectedTag, actualTag)
+    }
+
+    @Test
+    fun whenGetTagByIdButTagDoesNotExist() = runTest {
+        tags.forEach { tag -> tagDao.insert(tag) }
+        val actualTag = tagDao.getById(100)
+        assertNull(actualTag)
+    }
+
     /*** Delete Tags ***/
     @Test
     fun whenDeleteTagAndGetAllIsSuccessful() = runTest {
@@ -77,9 +96,32 @@ class TagDaoTest {
     }
 
     /*** Update Tags ***/
+    @Test
+    fun whenUpdateTagChangesAreSuccessful() = runTest {
+        tags.forEach { tag -> tagDao.insert(tag) }
+        val tagToUpdate = tagDao.getAll().first().first()
+        val expectedTag = tagToUpdate.copy(name = "New Name")
+        tagDao.update(expectedTag)
+        val actualTag = tagDao.getById(expectedTag.id)
 
-    /*** Get Tag ***/
+        assertEquals(expectedTag, actualTag)
+        assertNotEquals(tagToUpdate, actualTag)
+    }
 
     /*** Check If Tag Exists ***/
+    @Test
+    fun whenCheckIfTagExistsAndTagExists() = runTest {
+        tags.forEach { tag -> tagDao.insert(tag) }
+        val tagToCheck = tagDao.getAll().first().first()
+        val tagExists = tagDao.isTagNameExists(tagToCheck.name)
+        assertTrue(tagExists)
+    }
+
+    @Test
+    fun whenCheckIfTagExistsAndTagDoesNotExist() = runTest {
+        tags.forEach { tag -> tagDao.insert(tag) }
+        val tagExists = tagDao.isTagNameExists("New Tag")
+        assertFalse(tagExists)
+    }
 
 }
