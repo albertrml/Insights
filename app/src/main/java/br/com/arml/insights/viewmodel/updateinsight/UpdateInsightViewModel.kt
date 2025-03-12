@@ -17,8 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class UpdateInsightViewModel @Inject constructor(
-    private val noteRepository: NoteRepository,
-    private val tagRepository: TagRepository
+    private val tagRepository: TagRepository,
+    private val noteRepository: NoteRepository
 ) : ViewModel() {
     
     private val _uiState = MutableStateFlow(UpdateInsightUiState())
