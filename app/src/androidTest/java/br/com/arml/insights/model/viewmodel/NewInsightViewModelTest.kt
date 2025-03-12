@@ -20,7 +20,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.test.runTest
 import org.junit.After
-import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -57,7 +56,7 @@ class NewInsightViewModelTest {
     @After
     fun closeDb() = db.close()
 
-    suspend fun populateDb() {
+    private suspend fun populateDb() {
         tags.forEach { tag -> tagDao.insert(tag) }
 
         val allTags = tagDao.getAll().first()
@@ -135,7 +134,6 @@ class NewInsightViewModelTest {
     @Test
     fun whenInsertNoteIsUnsuccessful() = runTest {
         tags.forEach { tag -> tagDao.insert(tag) }
-        val tag = tagDao.getById(1)!!
         viewModel.onEvent(
             NewInsightUiEvent.OnInsertInsight(
                 title = "Test",
