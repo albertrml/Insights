@@ -1,7 +1,6 @@
 package br.com.arml.insights.model.viewmodel
 
 import android.content.Context
-import android.util.Log
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import br.com.arml.insights.model.mock.mockTags
