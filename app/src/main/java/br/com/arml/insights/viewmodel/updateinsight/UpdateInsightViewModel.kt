@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import br.com.arml.insights.model.entity.Note
 import br.com.arml.insights.model.repository.NoteRepository
 import br.com.arml.insights.model.repository.TagRepository
+import br.com.arml.insights.utils.data.mapTo
 import br.com.arml.insights.utils.data.update
 import br.com.arml.insights.viewmodel.updateinsight.UpdateInsightUiEvent.OnFetchInsight
 import br.com.arml.insights.viewmodel.updateinsight.UpdateInsightUiEvent.OnFetchTags
@@ -60,9 +61,9 @@ class UpdateInsightViewModel @Inject constructor(
     private fun fetchTags(){
         viewModelScope.launch {
             tagRepository.getAll().collect { response ->
-                response.update(_uiState) { state, res ->
-                    state.copy(fetchTagsState = res)
-                }
+                response
+                    .mapTo { tags -> tags.sortedBy { it.name } }
+                    .update(_uiState) { state, res -> state.copy(fetchTagsState = res) }
             }
         }
     }
