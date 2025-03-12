@@ -1,6 +1,5 @@
 package br.com.arml.insights.model.viewmodel
 
-import android.database.sqlite.SQLiteConstraintException
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import br.com.arml.insights.model.mock.mockTags
@@ -8,7 +7,6 @@ import br.com.arml.insights.model.repository.TagRepository
 import br.com.arml.insights.model.source.InsightsRoomDatabase
 import br.com.arml.insights.model.source.TagDao
 import br.com.arml.insights.utils.data.Response
-import br.com.arml.insights.utils.exception.InsightException
 import br.com.arml.insights.utils.exception.InsightException.TagAlreadyExistsException
 import br.com.arml.insights.utils.tools.until
 import br.com.arml.insights.viewmodel.newtag.NewTagUiEvent
