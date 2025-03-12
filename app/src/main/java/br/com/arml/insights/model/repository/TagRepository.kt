@@ -20,7 +20,15 @@ class TagRepository @Inject constructor(private val tagDao: TagDao){
 
     fun delete(tag: Tag) = flow {
         emit(Response.Loading)
-        emit(performDatabaseOperation { tagDao.delete(tag) })
+        emit(
+            performDatabaseOperation {
+                val tagFromDb = tagDao.getById(tag.id)
+                tagFromDb?.let {
+                    if(it != tag) throw InsightException.TagNotFoundException()
+                } ?: throw InsightException.TagNotFoundException()
+                tagDao.delete(tag)
+            }
+        )
     }
 
     fun update(tag: Tag) = flow {

@@ -212,4 +212,26 @@ class TagRepositoryTest {
 
     }
 
+    @Test
+    fun whenDeleteTagIsNotTheSameButItHasValidIdShouldThrowETagNotFoundException() = runTest {
+        populateWithTags()
+        val wrongTagWithValidId = tagDao.getById(1)?.copy(id = 2)
+        tagRepository.delete(wrongTagWithValidId!!)
+            .until { it is Response.Failure }
+            .collect{ response ->
+                when(response){
+                    is Response.Success -> assertFalse(
+                        "Answer should be a failure response",
+                        true
+                    )
+                    is Response.Loading -> {}
+                    is Response.Failure -> {
+                        assertTrue(
+                            response.exception.message,
+                            response.exception is TagNotFoundException
+                        )
+                    }
+                }
+            }
+    }
 }

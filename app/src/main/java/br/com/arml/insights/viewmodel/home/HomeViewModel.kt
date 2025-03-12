@@ -52,11 +52,10 @@ class HomeViewModel @Inject constructor(
     ) {
         viewModelScope.launch {
             repository.getAll().collect { response ->
-                response.mapTo { tags ->
-                    tags.sortedBy(sortBy)
-                }.update(_uiState) { state, res ->
-                    state.copy(fetchTagsState = res)
-                }
+                response.mapTo { tags -> tags.sortedBy(sortBy) }
+                    .update(_uiState) { state, res ->
+                        state.copy(fetchTagsState = res)
+                    }
             }
         }
     }
