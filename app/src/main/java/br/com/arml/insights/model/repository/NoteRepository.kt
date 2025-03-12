@@ -19,7 +19,15 @@ class NoteRepository @Inject constructor(private val noteDao: NoteDao){
 
     fun delete(note: Note) = flow{
         emit(Response.Loading)
-        emit(performDatabaseOperation { noteDao.delete(note) })
+        emit(
+            performDatabaseOperation {
+                val noteFromDb = noteDao.getById(note.id)
+                noteFromDb ?: throw InsightException.NoteNotFoundException()
+                if (noteFromDb != note) throw InsightException.NoteNotFoundException()
+
+                noteDao.delete(note)
+            }
+        )
     }
 
     fun update(note: Note) = flow{

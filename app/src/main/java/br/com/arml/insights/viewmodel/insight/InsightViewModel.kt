@@ -1,4 +1,4 @@
-package br.com.arml.insights.viewmodel.insights
+package br.com.arml.insights.viewmodel.insight
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -6,10 +6,10 @@ import br.com.arml.insights.model.entity.Note
 import br.com.arml.insights.model.repository.NoteRepository
 import br.com.arml.insights.utils.data.mapTo
 import br.com.arml.insights.utils.data.update
-import br.com.arml.insights.viewmodel.insights.InsightsUiEvent.OnDeleteNote
-import br.com.arml.insights.viewmodel.insights.InsightsUiEvent.OnFetchNotesByCreationDataInDescendingOrder
-import br.com.arml.insights.viewmodel.insights.InsightsUiEvent.OnFetchNotesByTitleInAscendingOrder
-import br.com.arml.insights.viewmodel.insights.InsightsUiEvent.OnFetchNotesBySituationInAscendingOrder
+import br.com.arml.insights.viewmodel.insight.InsightUiEvent.OnDeleteNote
+import br.com.arml.insights.viewmodel.insight.InsightUiEvent.OnFetchNotesByCreationDataInDescendingOrder
+import br.com.arml.insights.viewmodel.insight.InsightUiEvent.OnFetchNotesByTitleInAscendingOrder
+import br.com.arml.insights.viewmodel.insight.InsightUiEvent.OnFetchNotesBySituationInAscendingOrder
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,17 +18,17 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class InsightsViewModel @Inject constructor(
+class InsightViewModel @Inject constructor(
     private val noteRepository: NoteRepository
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow(InsightsUiState())
-    val uiState: StateFlow<InsightsUiState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(InsightUiState())
+    val uiState: StateFlow<InsightUiState> = _uiState.asStateFlow()
 
-    fun onEvent(event: InsightsUiEvent){
+    fun onEvent(event: InsightUiEvent){
         when(event) {
             is OnDeleteNote -> { deleteNote(event.note) }
             is OnFetchNotesByCreationDataInDescendingOrder -> {
-                fetchNotes(event.idTag) { it.creationDate }
+                fetchNotes(event.idTag,true) { it.creationDate }
             }
             is OnFetchNotesByTitleInAscendingOrder -> {
                 fetchNotes(event.idTag) { it.title }
@@ -51,12 +51,16 @@ class InsightsViewModel @Inject constructor(
 
     private inline fun <T : Comparable<T>> fetchNotes(
         idTag: Int,
+        isReverse: Boolean = false,
         crossinline sortBy: (Note) -> T
     ) {
         viewModelScope.launch {
             noteRepository.getByTag(idTag).collect { response ->
                 response.mapTo { notes ->
-                    notes.sortedBy(sortBy)
+                    if (isReverse)
+                        notes.sortedByDescending(sortBy)
+                    else
+                        notes.sortedBy(sortBy)
                 }.update(_uiState) { state, res ->
                     state.copy(fetchNotesState = res)
                 }
