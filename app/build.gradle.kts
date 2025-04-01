@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.android.hilt)
+    alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.ksp)
     alias(libs.plugins.kotlin.kapt)
@@ -45,9 +46,15 @@ android {
 dependencies {
 
     implementation(libs.android.hilt)
-    implementation(libs.androidx.activity)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.constraintlayout)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.compose.activity)
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.navigation)
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.ui.graphics)
+    implementation(libs.androidx.compose.ui.text.google.fonts)
+    implementation(libs.androidx.compose.ui.tooling)
+    implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
@@ -55,16 +62,19 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.coroutines.core)
-    implementation(libs.material)
 
     ksp(libs.androidx.room.compiler)
     ksp(libs.android.hilt.compiler)
 
-    testImplementation(libs.junit)
-
+    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+    androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.junit.ktx)
-    androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.kotlinx.coroutines.test)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
 
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
+    debugImplementation(libs.androidx.compose.ui.tooling)
+
+    testImplementation(libs.junit)
 }

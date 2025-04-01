@@ -1,27 +1,35 @@
 [versions]
-activity = "1.10.1"
 agp = "8.8.2"
-android-hilt = "2.51.1"
-appcompat = "1.7.0"
-constraintlayout = "2.2.1"
+android-hilt = "2.55"
+composeActivity = "1.10.1"
+composeBom = "2025.03.01"
+composeNavigation = "2.8.9"
 coreKtx = "1.15.0"
 espressoCore = "3.6.1"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 kotlin = "2.0.20"
 kotlinKsp = "2.0.20-1.0.25"
-kotlinxCoroutines = "1.9.0"
+kotlinxCoroutines = "1.10.1"
 lifecycleRuntimeKtx = "2.8.7"
-material = "1.12.0"
 roomKtx = "2.6.1"
+uiTextGoogleFonts = "1.7.8"
 
 
 [libraries]
 android-hilt = { module = "com.google.dagger:hilt-android", version.ref = "android-hilt" }
 android-hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "android-hilt" }
-androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
-androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+androidx-compose-activity = { group = "androidx.activity", name = "activity-compose", version.ref = "composeActivity" }
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3"}
+androidx-compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "composeNavigation" }
+androidx-compose-ui = { group = "androidx.compose.ui", name = "ui" }
+androidx-compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+androidx-compose-ui-text-google-fonts = { module = "androidx.compose.ui:ui-text-google-fonts", version.ref = "uiTextGoogleFonts" }
+androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -35,11 +43,11 @@ junit = { group = "junit", name = "junit", version.ref = "junit" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-hilt = { id = "com.google.dagger.hilt.android", version.ref = "android-hilt"  }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 kotlin-ksp = { id = "com.google.devtools.ksp", version.ref = "kotlinKsp" }
