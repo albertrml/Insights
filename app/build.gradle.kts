@@ -45,6 +45,7 @@ android {
 
 dependencies {
 
+
     implementation(libs.android.hilt)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.activity)
@@ -60,6 +61,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.room.runtime)
+    implementation(libs.compose.colorpicker)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.coroutines.core)
 

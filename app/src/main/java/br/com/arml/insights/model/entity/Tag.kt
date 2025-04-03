@@ -11,4 +11,3 @@ data class Tag(
     val color: Long,
     val description: String
 )
-

@@ -51,7 +51,7 @@ fun TagScreen(
     var selectTag by rememberSaveable { mutableStateOf<Tag?>(null) }
 
 
-    val targetPeekHeight = if(selectTag != null) configuration.screenHeightDp.dp * 0.4f else 0.dp
+    val targetPeekHeight = if(selectTag != null) configuration.screenHeightDp.dp * 0.7f else 0.dp
     val animatedPeekHeight by animateFloatAsState(
         targetValue = targetPeekHeight.value,
         animationSpec = tween(durationMillis = 500),
