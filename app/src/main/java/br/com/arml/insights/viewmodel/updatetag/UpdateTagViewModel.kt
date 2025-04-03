@@ -31,7 +31,7 @@ class UpdateTagViewModel @Inject constructor(
         }
     }
 
-    private fun updateTag(tagId: Int, newName: String, newDescription: String, newColor: String){
+    private fun updateTag(tagId: Int, newName: String, newDescription: String, newColor: Long){
         viewModelScope.launch {
             if (tagRepository.isTagNameExists(newName)){
                 _uiState.update { state ->

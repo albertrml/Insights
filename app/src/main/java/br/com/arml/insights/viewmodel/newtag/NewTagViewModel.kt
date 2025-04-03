@@ -30,7 +30,7 @@ class NewTagViewModel @Inject constructor(
         }
     }
 
-    private fun insertTag(name: String, color: String, description: String){
+    private fun insertTag(name: String, color: Long, description: String){
         viewModelScope.launch {
             val tag = Tag(name = name, color = color, description = description)
             if(tagRepository.isTagNameExists(name)) {

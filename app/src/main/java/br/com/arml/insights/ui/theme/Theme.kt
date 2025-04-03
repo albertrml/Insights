@@ -36,32 +36,6 @@ private val DarkColors = darkColorScheme(
     onError = Color.Black
 )
 
-/*private val LightColors = lightColorScheme(
-    primary = GreenBase,
-    onPrimary = Color.White,
-    secondary = RedBase,
-    onSecondary = Color.White,
-    background = Gray100,
-    onBackground = Gray600,
-    surface = Gray100,
-    onSurface = Gray600,
-    error = RedBase,
-    onError = Color.White
-)
-
-private val DarkColors = darkColorScheme(
-    primary = GreenLight,
-    onPrimary = Color.Black,
-    secondary = RedLight,
-    onSecondary = Color.Black,
-    background = Gray600,
-    onBackground = Gray100,
-    surface = Gray600,
-    onSurface = Gray200,
-    error = RedBase,
-    onError = Color.Black
-)*/
-
 @Composable
 fun InsightsTheme(
     darkTheme:Boolean = false,

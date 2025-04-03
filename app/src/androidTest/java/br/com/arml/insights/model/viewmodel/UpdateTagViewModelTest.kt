@@ -56,7 +56,7 @@ class UpdateTagViewModelTest {
         val tag = tagDao.getById(1)!!.copy(
             name = "New Name",
             description = "New Description",
-            color = "#FFFFFF"
+            color = 0xFFFFFF00
         )
 
         viewModel.onEvent(

@@ -5,6 +5,6 @@ sealed class UpdateTagUiEvent {
         val tagId: Int,
         val newName: String,
         val newDescription: String,
-        val newColor: String
+        val newColor: Long
     ): UpdateTagUiEvent()
 }
