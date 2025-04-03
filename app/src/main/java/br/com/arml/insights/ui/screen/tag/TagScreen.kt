@@ -6,17 +6,14 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -38,10 +35,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.com.arml.insights.model.entity.Tag
 import br.com.arml.insights.model.mock.mockTags
+import br.com.arml.insights.ui.component.HeaderScreen
 import br.com.arml.insights.ui.component.InsightButton
 import br.com.arml.insights.ui.component.TagCard
 import br.com.arml.insights.ui.theme.Gray300
-import br.com.arml.insights.ui.theme.Gray500
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -59,7 +56,6 @@ fun TagScreen(
         targetValue = targetPeekHeight.value,
         animationSpec = tween(durationMillis = 500),
     )
-
 
     BottomSheetScaffold(
         scaffoldState = bottomSheetState,
@@ -88,7 +84,7 @@ fun TagScreen(
                     end = 16.dp,
                     bottom = 8.dp
                 ),
-                onClick = {/* TODO */ }
+                onAddItem = {/* TODO */ }
             )
             BodyScreen(
                 modifier = Modifier.padding(
@@ -100,37 +96,6 @@ fun TagScreen(
                 onSelectedTag = { tag -> selectTag = tag },
             )
         }
-    }
-}
-
-@Composable
-fun HeaderScreen(
-    modifier: Modifier = Modifier,
-    title: String = "Tags",
-    onClick: () -> Unit
-){
-    Column(
-        modifier = modifier,
-    ) {
-        Row {
-            Text(
-                modifier = Modifier.weight(1f),
-                text = title,
-                style = MaterialTheme.typography.headlineLarge
-            )
-            IconButton(
-                onClick = onClick
-            ) {
-                Icon(
-                    modifier = Modifier.size(42.dp),
-                    imageVector = Icons.Default.AddCircle,
-                    contentDescription = "Add New Tag",
-                    tint = MaterialTheme.colorScheme.primary
-                )
-            }
-        }
-        Spacer(Modifier.height(8.dp))
-        HorizontalDivider(Modifier, 2.dp, Gray500)
     }
 }
 
