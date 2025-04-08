@@ -35,11 +35,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.com.arml.insights.R
-import br.com.arml.insights.model.entity.Tag
+import br.com.arml.insights.model.entity.TagUi
 import br.com.arml.insights.model.mock.mockTags
 import br.com.arml.insights.ui.component.HeaderScreen
-import br.com.arml.insights.ui.component.InsightButton
 import br.com.arml.insights.ui.component.tag.TagCard
+import br.com.arml.insights.ui.component.tag.TagForms
 import br.com.arml.insights.ui.theme.Gray300
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -50,11 +50,11 @@ fun TagScreen(
 
     val bottomSheetState = rememberBottomSheetScaffoldState()
     val configuration = LocalConfiguration.current
-    var selectTag by rememberSaveable { mutableStateOf<Tag?>(null) }
+    var selectTag by rememberSaveable { mutableStateOf<TagUi?>(null) }
 
-
-    val targetPeekHeight = if(selectTag != null) configuration.screenHeightDp.dp * 0.7f else 0.dp
-    val animatedPeekHeight by animateFloatAsState(
+    val targetPeekHeight = if(selectTag != null) configuration.screenHeightDp.dp * 0.95f else 0.dp
+    val animatedPeekHeight
+    by animateFloatAsState(
         targetValue = targetPeekHeight.value,
         animationSpec = tween(durationMillis = 500),
     )
@@ -67,8 +67,10 @@ fun TagScreen(
             selectTag?.let { tag ->
                 FooterScreen(
                     modifier = modifier.padding(horizontal = 8.dp),
-                    selectedTag = tag,
-                    onClickClose = { selectTag = null }
+                    selectedTagUi = tag,
+                    onChangeTagUi = { tagUi -> selectTag = tagUi },
+                    onClickClose = { selectTag = null },
+                    onClickSave = { }
                 )
             }
         },
@@ -86,7 +88,9 @@ fun TagScreen(
                     end = 16.dp,
                     bottom = 8.dp
                 ),
-                onAddItem = {/* TODO */ }
+                onAddItem = {
+
+                }
             )
             BodyScreen(
                 modifier = Modifier.padding(
@@ -104,14 +108,14 @@ fun TagScreen(
 @Composable
 fun BodyScreen(
     modifier: Modifier = Modifier,
-    onSelectedTag: (Tag) -> Unit = {},
+    onSelectedTag: (TagUi) -> Unit = {},
 ){
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         TagList(
-            tagList = mockTags,
+            tagList = mockTags.map { TagUi.fromTag(it) },
             onSelectedTag = onSelectedTag
         )
     }
@@ -120,20 +124,20 @@ fun BodyScreen(
 @Composable
 fun TagList(
     modifier: Modifier = Modifier,
-    tagList: List<Tag>,
-    onSelectedTag: (Tag) -> Unit,
+    tagList: List<TagUi>,
+    onSelectedTag: (TagUi) -> Unit,
 ){
     LazyColumn(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ){
-        items(tagList) { tag ->
+        items(tagList) { tagUi ->
             TagCard(
                 modifier = modifier.padding(horizontal = 8.dp),
-                tag = tag,
-                onEditTag = { onSelectedTag(tag) },
-                onDeleteTag = { onSelectedTag(tag) },
-                onNavigationTo = { onSelectedTag(tag) }
+                tagUi = tagUi,
+                onEditTag = { onSelectedTag(tagUi) },
+                onDeleteTag = {  },
+                onNavigationTo = {  }
             )
         }
     }
@@ -143,8 +147,10 @@ fun TagList(
 @Composable
 fun FooterScreen(
     modifier: Modifier = Modifier,
-    selectedTag: Tag,
-    onClickClose: () -> Unit = {}
+    selectedTagUi: TagUi,
+    onChangeTagUi: (TagUi) -> Unit = {},
+    onClickClose: () -> Unit = {},
+    onClickSave: (TagUi) -> Unit = {}
 ){
 
     Column (
@@ -158,7 +164,7 @@ fun FooterScreen(
         {
             Text(
                 modifier = Modifier.weight(1f),
-                text = selectedTag.name,
+                text = selectedTagUi.name,
                 style = MaterialTheme.typography.headlineLarge
             )
             IconButton(
@@ -169,7 +175,7 @@ fun FooterScreen(
                     imageVector = Icons.Default.Close,
                     contentDescription = stringResource(
                         id = R.string.tag_screen_close_menu,
-                        selectedTag.name
+                        selectedTagUi.name
                     ),
                     tint = Color.Black
                 )
@@ -182,40 +188,16 @@ fun FooterScreen(
             color = Gray300
         )
 
-        TagAction(
-            action = stringResource(id = R.string.tag_screen_see_insights_menu, selectedTag.name),
-            modifier = modifier.fillMaxWidth(),
-            tag = selectedTag
+        TagForms(
+            modifier = modifier,
+            tagUi = selectedTagUi,
+            onEditName = { onChangeTagUi(it) },
+            onEditDescription = { onChangeTagUi(it) },
+            onEditColor = { onChangeTagUi(it) },
+            onClickSave = { onClickSave(it) }
         )
 
-        TagAction(
-            action = stringResource(id = R.string.tag_screen_edit_menu),
-            modifier = modifier.fillMaxWidth(),
-            tag = selectedTag
-        )
-
-        TagAction(
-            action = stringResource(id = R.string.tag_screen_remove_menu),
-            modifier = modifier.fillMaxWidth(),
-            tag = selectedTag
-        )
     }
-}
-
-@Composable
-fun TagAction(
-    tag: Tag,
-    action: String,
-    modifier: Modifier = Modifier,
-    onClick: (Int) -> Unit = {}
-){
-
-    InsightButton(
-        modifier = modifier,
-        text = action,
-        iconRes = null,
-        onClick = { onClick(tag.id) }
-    )
 }
 
 

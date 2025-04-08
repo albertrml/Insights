@@ -3,19 +3,24 @@
     <string name="button_description">%1$s button</string>
     <string name="colorpicker_alpha_label">Alpha</string>
     <string name="colorpicker_brightness_label">Brightness</string>
-    <string name="colorpicker_selected_color_label">Alpha</string>
+    <string name="colorpicker_selected_color_label">Selected color</string>
     <string name="colorpicker_title_label">Color Picker</string>
     <string name="gradient_end_color_label">End Background color</string>
     <string name="gradient_lamp_label">Lamp\'s light</string>
     <string name="gradient_start_color_label">Start Background color</string>
     <string name="header_screen_button">Add New %1$s</string>
     <string name="insight_logo_description">Insight Logo</string>
+    <string name="tag_card_edit_button">Edit %1$s</string>
+    <string name="tag_card_read_more_button">Read more</string>
+    <string name="tag_card_read_less_button">Read less</string>
+    <string name="tag_card_see_insights_button">See insights</string>
+    <string name="tag_card_delete_button">Delete %1$s tag</string>
     <string name="tag_forms_description_field_label">Description</string>
     <string name="tag_forms_name_field_label">Name</string>
     <string name="tag_forms_save_button">Save</string>
     <string name="tag_screen_close_menu">Close %1$s menu</string>
     <string name="tag_screen_edit_menu">Edit tag</string>
     <string name="tag_screen_remove_menu">Remove tag</string>
-    <string name="tag_screen_see_insights_menu">Close %1$s menu</string>
+    <string name="tag_screen_see_insights_menu">See insights</string>
     <string name="tag_screen_title">Tags</string>
 </resources>

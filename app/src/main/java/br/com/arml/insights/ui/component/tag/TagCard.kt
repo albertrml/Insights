@@ -27,11 +27,12 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import br.com.arml.insights.model.entity.Tag
+import br.com.arml.insights.R
+import br.com.arml.insights.model.entity.TagUi
 import br.com.arml.insights.model.mock.mockTags
 import br.com.arml.insights.ui.component.AnimatedHorizontalDivider
 import br.com.arml.insights.ui.component.InsightButton
@@ -40,10 +41,10 @@ import br.com.arml.insights.ui.theme.Gray200
 @Composable
 fun TagCard(
     modifier: Modifier = Modifier,
-    tag: Tag,
-    onEditTag: (Tag) -> Unit = {},
-    onDeleteTag: (Tag) -> Unit = {},
-    onNavigationTo: (Tag) -> Unit = {}
+    tagUi: TagUi,
+    onEditTag: (TagUi) -> Unit = {},
+    onDeleteTag: (TagUi) -> Unit = {},
+    onNavigationTo: (TagUi) -> Unit = {}
 ){
     OutlinedCard(
         elevation = CardDefaults.cardElevation(8.dp)
@@ -51,18 +52,18 @@ fun TagCard(
         Column(
             modifier = modifier.padding(vertical = 8.dp, horizontal = 8.dp),
         ){
-            TagCardHeader(modifier = modifier, tag = tag, onEditTag = onEditTag)
+            TagCardHeader(modifier = modifier, tagUi = tagUi, onEditTag = onEditTag)
 
             HorizontalDivider(modifier = modifier.padding(vertical = 8.dp), color = Gray200)
-            TagCardContent(modifier = modifier, bodyContent = tag.description)
+            TagCardContent(modifier = modifier, bodyContent = tagUi.description)
 
             Spacer(modifier = Modifier.padding(vertical = 8.dp))
-            AnimatedHorizontalDivider(Modifier.padding(horizontal = 8.dp), 4.dp, Color(tag.color))
+            AnimatedHorizontalDivider(Modifier.padding(horizontal = 8.dp), 4.dp, tagUi.color)
 
             Spacer(modifier = Modifier.padding(vertical = 8.dp))
             TagCardFoot(
                 modifier = modifier,
-                tag = tag,
+                tagUi = tagUi,
                 onDeleteTag = onDeleteTag,
                 onNavigationTo = onNavigationTo
             )
@@ -73,8 +74,8 @@ fun TagCard(
 @Composable
 fun TagCardHeader(
     modifier: Modifier = Modifier,
-    tag: Tag,
-    onEditTag: (Tag) -> Unit = {},
+    tagUi: TagUi,
+    onEditTag: (TagUi) -> Unit = {},
 ){
     Row(
         modifier = modifier,
@@ -82,16 +83,16 @@ fun TagCardHeader(
     ) {
         Text(
             modifier = Modifier.weight(1f),
-            text = tag.name,
+            text = tagUi.name,
             style = MaterialTheme.typography.titleLarge
         )
         IconButton(
-            onClick = { onEditTag(tag) }
+            onClick = { onEditTag(tagUi) }
         ) {
             Icon(
                 modifier = Modifier.size(42.dp),
                 imageVector = Icons.Default.Edit,
-                contentDescription = "Edit ${tag.name}",
+                contentDescription = stringResource(R.string.tag_card_edit_button, tagUi.name),
                 tint = MaterialTheme.colorScheme.primary
             )
         }
@@ -128,14 +129,14 @@ fun TagCardContent(
 
         if (!isExpanded && bodyContent.length > 50) {
             Text(
-                text = "Read more",
+                text = stringResource(R.string.tag_card_read_more_button),
                 style = MaterialTheme.typography.labelMedium,
                 modifier = Modifier.clickable { isExpanded = !isExpanded }
             )
         }
         if (isExpanded) {
             Text(
-                text = "Read less",
+                text = stringResource(R.string.tag_card_read_less_button),
                 style = MaterialTheme.typography.labelMedium,
                 modifier = Modifier.clickable { isExpanded = !isExpanded }
             )
@@ -146,9 +147,9 @@ fun TagCardContent(
 @Composable
 fun TagCardFoot(
     modifier: Modifier = Modifier,
-    tag: Tag,
-    onDeleteTag: (Tag) -> Unit = {},
-    onNavigationTo: (Tag) -> Unit
+    tagUi: TagUi,
+    onDeleteTag: (TagUi) -> Unit = {},
+    onNavigationTo: (TagUi) -> Unit = {}
 ){
     Row(
         modifier = modifier,
@@ -156,21 +157,21 @@ fun TagCardFoot(
     ) {
         IconButton(
             modifier = Modifier,
-            onClick = { onDeleteTag(tag) }
+            onClick = { onDeleteTag(tagUi) }
         ) {
             Icon(
                 modifier = Modifier.size(42.dp),
                 imageVector = Icons.Default.Delete,
-                contentDescription = "Delete ${tag.name}",
+                contentDescription = stringResource(R.string.tag_card_delete_button,tagUi.name),
                 tint = MaterialTheme.colorScheme.error
             )
         }
         Spacer(Modifier.weight(1f))
         InsightButton(
             modifier = Modifier,
-            text = "See Insights",
+            text = stringResource(R.string.tag_screen_see_insights_menu),
             iconRes = null,
-            onClick = { onNavigationTo(tag) }
+            onClick = { onNavigationTo(tagUi) }
         )
     }
 }
@@ -181,6 +182,6 @@ fun InsightCardPreview() {
     val description = "a".repeat(100)
     TagCard(
         modifier = Modifier.padding(horizontal = 8.dp),
-        tag = mockTags[0].copy( description = description)
+        tagUi = TagUi.fromTag(mockTags[0].copy( description = description))
     )
 }
