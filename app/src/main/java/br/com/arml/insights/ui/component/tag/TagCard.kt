@@ -1,4 +1,4 @@
-package br.com.arml.insights.ui.component
+package br.com.arml.insights.ui.component.tag
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
@@ -33,6 +33,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.com.arml.insights.model.entity.Tag
 import br.com.arml.insights.model.mock.mockTags
+import br.com.arml.insights.ui.component.AnimatedHorizontalDivider
+import br.com.arml.insights.ui.component.InsightButton
 import br.com.arml.insights.ui.theme.Gray200
 
 @Composable
@@ -164,7 +166,7 @@ fun TagCardFoot(
             )
         }
         Spacer(Modifier.weight(1f))
-        InsightButton (
+        InsightButton(
             modifier = Modifier,
             text = "See Insights",
             iconRes = null,

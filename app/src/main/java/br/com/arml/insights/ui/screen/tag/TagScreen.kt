@@ -31,13 +31,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import br.com.arml.insights.R
 import br.com.arml.insights.model.entity.Tag
 import br.com.arml.insights.model.mock.mockTags
 import br.com.arml.insights.ui.component.HeaderScreen
 import br.com.arml.insights.ui.component.InsightButton
-import br.com.arml.insights.ui.component.TagCard
+import br.com.arml.insights.ui.component.tag.TagCard
 import br.com.arml.insights.ui.theme.Gray300
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -77,7 +79,7 @@ fun TagScreen(
                 .fillMaxSize()
         ) {
             HeaderScreen(
-                title = "Tags",
+                title = stringResource(R.string.tag_screen_title),
                 modifier = Modifier.padding(
                     top = 24.dp,
                     start = 16.dp,
@@ -165,7 +167,10 @@ fun FooterScreen(
                 Icon(
                     modifier = Modifier.size(42.dp),
                     imageVector = Icons.Default.Close,
-                    contentDescription = "Close ${selectedTag.name} menu",
+                    contentDescription = stringResource(
+                        id = R.string.tag_screen_close_menu,
+                        selectedTag.name
+                    ),
                     tint = Color.Black
                 )
             }
@@ -177,9 +182,23 @@ fun FooterScreen(
             color = Gray300
         )
 
-        TagAction(action = "See Insights", modifier = modifier.fillMaxWidth(), tag = selectedTag)
-        TagAction(action = "Edit tag", modifier = modifier.fillMaxWidth(), tag = selectedTag)
-        TagAction(action = "Remove tag", modifier = modifier.fillMaxWidth(), tag = selectedTag)
+        TagAction(
+            action = stringResource(id = R.string.tag_screen_see_insights_menu, selectedTag.name),
+            modifier = modifier.fillMaxWidth(),
+            tag = selectedTag
+        )
+
+        TagAction(
+            action = stringResource(id = R.string.tag_screen_edit_menu),
+            modifier = modifier.fillMaxWidth(),
+            tag = selectedTag
+        )
+
+        TagAction(
+            action = stringResource(id = R.string.tag_screen_remove_menu),
+            modifier = modifier.fillMaxWidth(),
+            tag = selectedTag
+        )
     }
 }
 

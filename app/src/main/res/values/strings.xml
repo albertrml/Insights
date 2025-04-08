@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">Insights</string>
+    <string name="button_description">Tags</string>
+    <string name="colorpicker_alpha_label">Alpha</string>
+    <string name="colorpicker_brightness_label">Brightness</string>
+    <string name="colorpicker_selected_color_label">Alpha</string>
+    <string name="colorpicker_title_label">Color Picker</string>
+    <string name="tag_forms_save_button">Save</string>
+    <string name="tag_forms_description_field_label">Description</string>
+    <string name="tag_forms_name_field_label">Name</string>
+    <string name="tag_screen_close_menu">Close %1$s menu</string>
+    <string name="tag_screen_edit_menu">Edit tag</string>
+    <string name="tag_screen_remove_menu">Remove tag</string>
+    <string name="tag_screen_see_insights_menu">Close %1$s menu</string>
+    <string name="tag_screen_title">Tags</string>
 </resources>
