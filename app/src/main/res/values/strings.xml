@@ -10,6 +10,7 @@
     <string name="gradient_start_color_label">Start Background color</string>
     <string name="header_screen_button">Add New %1$s</string>
     <string name="insight_logo_description">Insight Logo</string>
+    <string name="outlined_text_field_label">%1$s</string>
     <string name="tag_card_edit_button">Edit %1$s</string>
     <string name="tag_card_read_more_button">Read more</string>
     <string name="tag_card_read_less_button">Read less</string>

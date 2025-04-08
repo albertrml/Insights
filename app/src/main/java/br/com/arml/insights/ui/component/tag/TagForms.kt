@@ -6,8 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,6 +20,7 @@ import br.com.arml.insights.model.entity.TagUi
 import br.com.arml.insights.model.entity.TagUiSaver
 import br.com.arml.insights.ui.component.InsightColorPicker
 import br.com.arml.insights.ui.component.InsightButton
+import br.com.arml.insights.ui.component.InsightOutlinedTextField
 
 
 @OptIn(ExperimentalStdlibApi::class)
@@ -40,18 +39,22 @@ fun TagForms(
     Column(
         modifier=modifier
     ) {
-        OutlinedTextField(
+
+        InsightOutlinedTextField(
             modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp),
-            value = tagUi.name,
-            onValueChange = { onEditName(tagUi.copy(name = it)) },
-            label = { Text(stringResource(id = R.string.tag_forms_name_field_label)) }
+            nameField = stringResource(id = R.string.tag_forms_name_field_label),
+            maxLength = 20,
+            text = tagUi.name,
+            onChangeText = { onEditName(tagUi.copy(name = it)) }
         )
 
-        OutlinedTextField(
+        InsightOutlinedTextField(
             modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp),
-            value = tagUi.description,
-            onValueChange = { onEditDescription(tagUi.copy(description = it)) },
-            label = { Text(stringResource(id = R.string.tag_forms_description_field_label)) }
+            nameField = stringResource(id = R.string.tag_forms_description_field_label),
+            maxLength = 150,
+            maxLines = 3,
+            text = tagUi.description,
+            onChangeText = { onEditDescription(tagUi.copy(description = it)) }
         )
 
         InsightColorPicker(

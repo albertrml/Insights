@@ -52,7 +52,7 @@ fun TagScreen(
     val configuration = LocalConfiguration.current
     var selectTag by rememberSaveable { mutableStateOf<TagUi?>(null) }
 
-    val targetPeekHeight = if(selectTag != null) configuration.screenHeightDp.dp * 0.95f else 0.dp
+    val targetPeekHeight = if(selectTag != null) configuration.screenHeightDp.dp * 1f else 0.dp
     val animatedPeekHeight
     by animateFloatAsState(
         targetValue = targetPeekHeight.value,
