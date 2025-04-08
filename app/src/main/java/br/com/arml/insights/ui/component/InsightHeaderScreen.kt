@@ -14,7 +14,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import br.com.arml.insights.R
 import br.com.arml.insights.ui.theme.Gray500
 
 @Composable
@@ -38,7 +40,7 @@ fun HeaderScreen(
                 Icon(
                     modifier = Modifier.size(42.dp),
                     imageVector = Icons.Default.AddCircle,
-                    contentDescription = "Add New $title",
+                    contentDescription = stringResource(R.string.header_screen_button,title),
                     tint = MaterialTheme.colorScheme.primary
                 )
             }

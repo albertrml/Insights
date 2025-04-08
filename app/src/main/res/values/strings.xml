@@ -1,13 +1,18 @@
 <resources>
     <string name="app_name">Insights</string>
-    <string name="button_description">Tags</string>
+    <string name="button_description">%1$s button</string>
     <string name="colorpicker_alpha_label">Alpha</string>
     <string name="colorpicker_brightness_label">Brightness</string>
     <string name="colorpicker_selected_color_label">Alpha</string>
     <string name="colorpicker_title_label">Color Picker</string>
-    <string name="tag_forms_save_button">Save</string>
+    <string name="gradient_end_color_label">End Background color</string>
+    <string name="gradient_lamp_label">Lamp\'s light</string>
+    <string name="gradient_start_color_label">Start Background color</string>
+    <string name="header_screen_button">Add New %1$s</string>
+    <string name="insight_logo_description">Insight Logo</string>
     <string name="tag_forms_description_field_label">Description</string>
     <string name="tag_forms_name_field_label">Name</string>
+    <string name="tag_forms_save_button">Save</string>
     <string name="tag_screen_close_menu">Close %1$s menu</string>
     <string name="tag_screen_edit_menu">Edit tag</string>
     <string name="tag_screen_remove_menu">Remove tag</string>
