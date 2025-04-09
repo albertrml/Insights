@@ -13,6 +13,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -28,9 +29,9 @@ import br.com.arml.insights.ui.component.InsightOutlinedTextField
 fun TagForms(
     modifier: Modifier = Modifier,
     tagUi: TagUi,
-    onEditName: (TagUi) -> Unit = {},
-    onEditDescription: (TagUi) -> Unit = {},
-    onEditColor: (TagUi) -> Unit = {},
+    onEditName: (String) -> Unit = {},
+    onEditDescription: (String) -> Unit = {},
+    onEditColor: (Color) -> Unit = {},
     onClickSave: (tagUi: TagUi) -> Unit = { }
 ){
 
@@ -45,7 +46,7 @@ fun TagForms(
             nameField = stringResource(id = R.string.tag_forms_name_field_label),
             maxLength = 20,
             text = tagUi.name,
-            onChangeText = { onEditName(tagUi.copy(name = it)) }
+            onChangeText = { name -> onEditName(name) }
         )
 
         InsightOutlinedTextField(
@@ -54,7 +55,7 @@ fun TagForms(
             maxLength = 150,
             maxLines = 3,
             text = tagUi.description,
-            onChangeText = { onEditDescription(tagUi.copy(description = it)) }
+            onChangeText = { description -> onEditDescription(description) }
         )
 
         InsightColorPicker(
@@ -67,9 +68,7 @@ fun TagForms(
                     shape = MaterialTheme.shapes.small
                 ),
             color = tagUi.color,
-            onChangeColor = { color ->
-                onEditColor(tagUi.copy(color = color))
-            }
+            onChangeColor = { color -> onEditColor(color)}
         )
 
         InsightButton(
@@ -93,8 +92,8 @@ fun TagFormPreview(){
     TagForms(
         modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
         tagUi = tagUi,
-        onEditName = { tagUi = it },
-        onEditDescription = { tagUi = it },
-        onEditColor = { tagUi = it },
+        onEditName = { tagUi = tagUi.copy(name = it) },
+        onEditDescription = { tagUi = tagUi.copy(description = it) },
+        onEditColor = { tagUi = tagUi.copy(color = it) },
     )
 }

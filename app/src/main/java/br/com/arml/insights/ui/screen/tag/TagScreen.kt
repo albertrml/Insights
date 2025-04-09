@@ -34,6 +34,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.com.arml.insights.R
 import br.com.arml.insights.model.entity.TagUi
+import br.com.arml.insights.model.entity.TagUiSaver
 import br.com.arml.insights.model.mock.mockTags
 import br.com.arml.insights.ui.component.HeaderScreen
 import br.com.arml.insights.ui.component.InsightAlertDialog
@@ -70,7 +71,7 @@ fun TagScreen(
                 FooterScreen(
                     modifier = modifier.padding(horizontal = 8.dp),
                     selectedTagUi = tag,
-                    onChangeTagUi = { tagUi -> selectTag = tagUi },
+                    onUpdateTagUi = { updateTagUi -> selectTag = updateTagUi },
                     onClickClose = {
                         showBottomSheet = !showBottomSheet
                         selectTag = null
@@ -107,7 +108,8 @@ fun TagScreen(
                     bottom = 8.dp
                 ),
                 onAddItem = {
-
+                    showBottomSheet = !showBottomSheet
+                    selectTag = TagUi.fromTag(null)
                 }
             )
             BodyScreen(
@@ -178,10 +180,12 @@ fun BodyScreen(
 fun FooterScreen(
     modifier: Modifier = Modifier,
     selectedTagUi: TagUi,
-    onChangeTagUi: (TagUi) -> Unit = {},
+    onUpdateTagUi: (TagUi) -> Unit = {},
     onClickClose: () -> Unit = {},
     onClickSave: (TagUi) -> Unit = {}
 ){
+
+    var tagUi by rememberSaveable(stateSaver = TagUiSaver)  { mutableStateOf(selectedTagUi) }
 
     Column (
         modifier = modifier.fillMaxWidth(),
@@ -194,7 +198,7 @@ fun FooterScreen(
         {
             Text(
                 modifier = Modifier.weight(1f),
-                text = selectedTagUi.name,
+                text = tagUi.name,
                 style = MaterialTheme.typography.headlineLarge
             )
             IconButton(
@@ -205,7 +209,7 @@ fun FooterScreen(
                     imageVector = Icons.Default.Close,
                     contentDescription = stringResource(
                         id = R.string.tag_screen_close_menu,
-                        selectedTagUi.name
+                        tagUi.name
                     ),
                     tint = Color.Black
                 )
@@ -220,10 +224,19 @@ fun FooterScreen(
 
         TagForms(
             modifier = modifier,
-            tagUi = selectedTagUi,
-            onEditName = { onChangeTagUi(it) },
-            onEditDescription = { onChangeTagUi(it) },
-            onEditColor = { onChangeTagUi(it) },
+            tagUi = tagUi,
+            onEditName = { name ->
+                tagUi = tagUi.copy(name = name)
+                onUpdateTagUi(tagUi)
+            },
+            onEditDescription = { description ->
+                tagUi = tagUi.copy(description = description)
+                onUpdateTagUi(tagUi)
+            },
+            onEditColor = { color ->
+                tagUi = tagUi.copy(color = color)
+                onUpdateTagUi(tagUi)
+            },
             onClickSave = { onClickSave(it) }
         )
 
