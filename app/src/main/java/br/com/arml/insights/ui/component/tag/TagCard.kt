@@ -4,12 +4,15 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
@@ -42,8 +45,8 @@ import br.com.arml.insights.ui.theme.Gray200
 fun TagCard(
     modifier: Modifier = Modifier,
     tagUi: TagUi,
-    onEditTag: (TagUi) -> Unit = {},
-    onDeleteTag: (TagUi) -> Unit = {},
+    onEditTagUi: (TagUi) -> Unit = {},
+    onDeleteTagUi: (TagUi) -> Unit = {},
     onNavigationTo: (TagUi) -> Unit = {}
 ){
     OutlinedCard(
@@ -52,7 +55,7 @@ fun TagCard(
         Column(
             modifier = modifier.padding(vertical = 8.dp, horizontal = 8.dp),
         ){
-            TagCardHeader(modifier = modifier, tagUi = tagUi, onEditTag = onEditTag)
+            TagCardHeader(modifier = modifier, tagUi = tagUi, onEditTag = onEditTagUi)
 
             HorizontalDivider(modifier = modifier.padding(vertical = 8.dp), color = Gray200)
             TagCardContent(modifier = modifier, bodyContent = tagUi.description)
@@ -64,7 +67,7 @@ fun TagCard(
             TagCardFoot(
                 modifier = modifier,
                 tagUi = tagUi,
-                onDeleteTag = onDeleteTag,
+                onDeleteTag = onDeleteTagUi,
                 onNavigationTo = onNavigationTo
             )
         }
@@ -173,6 +176,29 @@ fun TagCardFoot(
             iconRes = null,
             onClick = { onNavigationTo(tagUi) }
         )
+    }
+}
+
+@Composable
+fun TagList(
+    modifier: Modifier = Modifier,
+    tagList: List<TagUi>,
+    onEditTagUi: (TagUi) -> Unit,
+    onDeleteTagUi: (TagUi) -> Unit = {}
+){
+    LazyColumn(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ){
+        items(tagList) { tagUi ->
+            TagCard(
+                modifier = modifier.padding(horizontal = 8.dp),
+                tagUi = tagUi,
+                onEditTagUi = { onEditTagUi(tagUi) },
+                onDeleteTagUi = { onDeleteTagUi(tagUi) },
+                onNavigationTo = {  }
+            )
+        }
     }
 }
 

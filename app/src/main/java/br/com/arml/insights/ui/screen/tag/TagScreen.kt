@@ -10,8 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -38,8 +36,9 @@ import br.com.arml.insights.R
 import br.com.arml.insights.model.entity.TagUi
 import br.com.arml.insights.model.mock.mockTags
 import br.com.arml.insights.ui.component.HeaderScreen
-import br.com.arml.insights.ui.component.tag.TagCard
+import br.com.arml.insights.ui.component.InsightAlertDialog
 import br.com.arml.insights.ui.component.tag.TagForms
+import br.com.arml.insights.ui.component.tag.TagList
 import br.com.arml.insights.ui.theme.Gray300
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -51,8 +50,10 @@ fun TagScreen(
     val bottomSheetState = rememberBottomSheetScaffoldState()
     val configuration = LocalConfiguration.current
     var selectTag by rememberSaveable { mutableStateOf<TagUi?>(null) }
+    var showBottomSheet by rememberSaveable { mutableStateOf(false) }
+    var showAlertDialog by rememberSaveable { mutableStateOf(false) }
 
-    val targetPeekHeight = if(selectTag != null) configuration.screenHeightDp.dp * 1f else 0.dp
+    val targetPeekHeight = if(showBottomSheet) configuration.screenHeightDp.dp * 1f else 0.dp
     val animatedPeekHeight
     by animateFloatAsState(
         targetValue = targetPeekHeight.value,
@@ -60,6 +61,7 @@ fun TagScreen(
     )
 
     BottomSheetScaffold(
+        modifier = modifier,
         scaffoldState = bottomSheetState,
         sheetPeekHeight = animatedPeekHeight.dp,
         sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
@@ -69,7 +71,10 @@ fun TagScreen(
                     modifier = modifier.padding(horizontal = 8.dp),
                     selectedTagUi = tag,
                     onChangeTagUi = { tagUi -> selectTag = tagUi },
-                    onClickClose = { selectTag = null },
+                    onClickClose = {
+                        showBottomSheet = !showBottomSheet
+                        selectTag = null
+                    },
                     onClickSave = { }
                 )
             }
@@ -79,7 +84,25 @@ fun TagScreen(
             modifier = modifier
                 .background(MaterialTheme.colorScheme.background)
                 .fillMaxSize()
+                .padding(bottom = 16.dp)
         ) {
+            AlertDeleteTagUi(
+                modifier = Modifier.padding(
+                    top = 24.dp,
+                    start = 16.dp,
+                    end = 16.dp,
+                    bottom = 8.dp
+                ),
+                tagName = selectTag?.name ?: "",
+                showDialog = showAlertDialog,
+                onChangeShowDialog = { showAlertDialog = it },
+                onDismissRequest = {
+                    selectTag = null
+                },
+                onConfirmation = {
+                    selectTag = null
+                }
+            )
             HeaderScreen(
                 title = stringResource(R.string.tag_screen_title),
                 modifier = Modifier.padding(
@@ -99,16 +122,49 @@ fun TagScreen(
                     end = 16.dp,
                     bottom = 16.dp
                 ),
-                onSelectedTag = { tag -> selectTag = tag },
+                onEditTagUi = { tag ->
+                    showBottomSheet = !showBottomSheet
+                    selectTag = tag
+                },
+                onDeleteTag = { tag ->
+                    showAlertDialog = !showAlertDialog
+                    selectTag = tag
+                }
             )
         }
     }
 }
 
 @Composable
+fun AlertDeleteTagUi(
+    modifier: Modifier = Modifier,
+    tagName: String,
+    showDialog: Boolean,
+    onChangeShowDialog: (Boolean) -> Unit,
+    onDismissRequest: () -> Unit,
+    onConfirmation: () -> Unit
+){
+    if (showDialog) {
+        InsightAlertDialog(
+            modifier = modifier,
+            dialogTitle = tagName,
+            dialogText = stringResource(R.string.tag_scree_alert_dialog_message),
+            onDismissRequest = {
+                onChangeShowDialog(!showDialog)
+                onDismissRequest },
+            onConfirmation = {
+                onChangeShowDialog(!showDialog)
+                onConfirmation
+            }
+        )
+    }
+}
+
+@Composable
 fun BodyScreen(
     modifier: Modifier = Modifier,
-    onSelectedTag: (TagUi) -> Unit = {},
+    onEditTagUi: (TagUi) -> Unit,
+    onDeleteTag: (TagUi) -> Unit
 ){
     Column(
         modifier = modifier,
@@ -116,30 +172,9 @@ fun BodyScreen(
     ) {
         TagList(
             tagList = mockTags.map { TagUi.fromTag(it) },
-            onSelectedTag = onSelectedTag
+            onEditTagUi = onEditTagUi,
+            onDeleteTagUi = onDeleteTag
         )
-    }
-}
-
-@Composable
-fun TagList(
-    modifier: Modifier = Modifier,
-    tagList: List<TagUi>,
-    onSelectedTag: (TagUi) -> Unit,
-){
-    LazyColumn(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ){
-        items(tagList) { tagUi ->
-            TagCard(
-                modifier = modifier.padding(horizontal = 8.dp),
-                tagUi = tagUi,
-                onEditTag = { onSelectedTag(tagUi) },
-                onDeleteTag = {  },
-                onNavigationTo = {  }
-            )
-        }
     }
 }
 
