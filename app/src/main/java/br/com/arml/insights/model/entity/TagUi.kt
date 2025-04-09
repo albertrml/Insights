@@ -11,13 +11,13 @@ data class TagUi(
     val color: Color,
     val description: String,
 ){
-    /*@OptIn(ExperimentalStdlibApi::class)
+    @OptIn(ExperimentalStdlibApi::class)
     fun toTag() = Tag(
         id = id,
         name = name,
         color = color.toArgb().toLong(),
         description = description
-    )*/
+    )
 
     companion object{
         fun fromTag(tag: Tag?) = tag?.let {

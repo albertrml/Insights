@@ -8,27 +8,33 @@ val mockTags = arrayListOf(
     Tag(
         id = 0,
         name = "Dinner",
-        color = 0xFF1976D2,
+        color = -15108398L, //0xFF1976D2,
         description = "Ideas for dinner recipes"
     ),
     Tag(
         id = 0,
         name = "App",
-        color = 0xFFF94144,
+        color = -442044L, //0xFFF94144,
         description = "Ideas for project app"
     ),
     Tag(
         id = 0,
         name = "Beer",
-        color = 0xFF0E8601,
+        color = -15825407L, //0xFF0E8601,
         description = "Ideas for beer recipes"
     ),
     Tag(
         id = 0,
         name = "Business",
-        color = 0xFFFF8F00,
+        color = -28928L, //0xFFFF8F00,
         description = "Business Ideas"
-    )
+    ),
+    Tag(
+        id = 0,
+        name = "Dinheiro",
+        color = -442044L, //0xFFF94144,
+        description = "Ideas for Money"
+    ),
 )
 
 fun MutableList<Note>.addMockNotes(tag: Tag, quantity: Int) {
