@@ -45,10 +45,11 @@ android {
 
 dependencies {
 
+    implementation(platform(libs.androidx.compose.bom))
 
     implementation(libs.android.hilt)
-    implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.activity)
+    implementation(libs.androidx.compose.hilt)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.navigation)
     implementation(libs.androidx.compose.ui)

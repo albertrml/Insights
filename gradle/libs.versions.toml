@@ -3,10 +3,11 @@ agp = "8.8.2"
 androidHilt = "2.55"
 colorpicker = "1.1.2"
 composeActivity = "1.10.1"
-composeBom = "2025.03.01"
+composeBom = "2025.04.00"
+composeHilt = "1.2.0"
 composeNavigation = "2.8.9"
 composeUiTextGoogleFonts = "1.7.8"
-coreKtx = "1.15.0"
+coreKtx = "1.16.0"
 espressoCore = "3.6.1"
 junit = "4.13.2"
 junitVersion = "1.2.1"
@@ -14,7 +15,7 @@ kotlin = "2.0.20"
 kotlinKsp = "2.0.20-1.0.25"
 kotlinxCoroutines = "1.10.1"
 lifecycleRuntimeKtx = "2.8.7"
-roomKtx = "2.6.1"
+roomKtx = "2.7.0"
 
 
 [libraries]
@@ -22,6 +23,7 @@ android-hilt = { module = "com.google.dagger:hilt-android", version.ref = "andro
 android-hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "androidHilt" }
 androidx-compose-activity = { group = "androidx.activity", name = "activity-compose", version.ref = "composeActivity" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+androidx-compose-hilt = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "composeHilt" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3"}
 androidx-compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "composeNavigation" }
 androidx-compose-ui = { group = "androidx.compose.ui", name = "ui" }
