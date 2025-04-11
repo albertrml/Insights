@@ -10,8 +10,8 @@ import br.com.arml.insights.model.mock.mockTags
 import br.com.arml.insights.model.repository.TagRepository
 import br.com.arml.insights.model.source.InsightsRoomDatabase
 import br.com.arml.insights.model.source.TagDao
-import br.com.arml.insights.ui.screen.tag.TagUiEvent
-import br.com.arml.insights.ui.screen.tag.TagUiViewModel
+import br.com.arml.insights.ui.screen.tag.TagEvent
+import br.com.arml.insights.ui.screen.tag.TagViewModel
 import br.com.arml.insights.utils.data.Response
 import br.com.arml.insights.utils.exception.InsightException.TagAlreadyExistsException
 import br.com.arml.insights.utils.exception.InsightException.TagNotFoundException
@@ -29,7 +29,7 @@ import org.junit.Test
 
 class TagUiViewModelTest {
 
-    private lateinit var viewModel: TagUiViewModel
+    private lateinit var viewModel: TagViewModel
     private lateinit var useCase: TagUiUseCase
     private lateinit var repository: TagRepository
     private lateinit var dao: TagDao
@@ -48,7 +48,7 @@ class TagUiViewModelTest {
         dao = db.tagDao()
         repository = TagRepository(dao)
         useCase = TagUiUseCase(repository)
-        viewModel = TagUiViewModel(useCase)
+        viewModel = TagViewModel(useCase)
     }
 
     @Before
@@ -73,7 +73,7 @@ class TagUiViewModelTest {
         populateDb()
         val tagFromDb = dao.getById(index)!!
         val tagUiFromDb = TagUi.fromTag(tagFromDb)
-        viewModel.onEvent(TagUiEvent.OnDeleteTagUi(tagUiFromDb))
+        viewModel.onEvent(TagEvent.OnDeleteTag(tagUiFromDb))
         viewModel.uiState
             .map { it.deleteState }
             .until { it is Response.Success }
@@ -96,7 +96,7 @@ class TagUiViewModelTest {
         populateDb()
         val tagFromDb = dao.getById(1)!!.copy( id = 2)
         val tagUiFromDb = TagUi.fromTag(tagFromDb)
-        viewModel.onEvent(TagUiEvent.OnDeleteTagUi(tagUiFromDb))
+        viewModel.onEvent(TagEvent.OnDeleteTag(tagUiFromDb))
         viewModel.uiState
             .map { it.deleteState }
             .until { it is Response.Failure }
@@ -121,7 +121,7 @@ class TagUiViewModelTest {
     @Test
     fun whenFetchTagsByNameInAscendingOrderIsSuccessful() = runTest {
         populateDb()
-        viewModel.onEvent(TagUiEvent.OnRetrieveTagUi)
+        viewModel.onEvent(TagEvent.OnRetrieveTag)
         viewModel.uiState
             .map { it.retrieveState }
             .until { it is Response.Success }
@@ -150,7 +150,7 @@ class TagUiViewModelTest {
     @Test
     fun whenInsertTagIsSuccessful() = runTest {
         val expectedTagUi = tagsUi.first()
-        viewModel.onEvent(TagUiEvent.OnInsertTagUi(expectedTagUi))
+        viewModel.onEvent(TagEvent.OnInsertTag(expectedTagUi))
 
         viewModel.uiState
             .map { it.insertState }
@@ -176,7 +176,7 @@ class TagUiViewModelTest {
     fun whenInsertDuplicatedTagIdIsFailure() = runTest {
         dao.insert(tags.first())
         val duplicatedTagUi = TagUi.fromTag(dao.getById(1)).copy(name = "")
-        viewModel.onEvent(TagUiEvent.OnInsertTagUi(duplicatedTagUi))
+        viewModel.onEvent(TagEvent.OnInsertTag(duplicatedTagUi))
         viewModel.uiState
             .map { it.insertState }
             .until { it is Response.Failure }
@@ -203,7 +203,7 @@ class TagUiViewModelTest {
     fun whenInsertDuplicatedTagNameIsFailure() = runTest {
         dao.insert(tags.first())
         val duplicatedTagUi = TagUi.fromTag(dao.getById(1)).copy(description = "", id = 0)
-        viewModel.onEvent(TagUiEvent.OnInsertTagUi(duplicatedTagUi))
+        viewModel.onEvent(TagEvent.OnInsertTag(duplicatedTagUi))
         viewModel.uiState
             .map { it.insertState }
             .until { it is Response.Failure }
@@ -237,7 +237,7 @@ class TagUiViewModelTest {
         )
         val expectedTagUi = TagUi.fromTag(tagFromDb)
 
-        viewModel.onEvent(TagUiEvent.OnEditTagUi(expectedTagUi))
+        viewModel.onEvent(TagEvent.OnEditTag(expectedTagUi))
 
         viewModel.uiState
             .map { it.editState }

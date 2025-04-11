@@ -1,4 +1,4 @@
-package br.com.arml.insights.ui.component
+package br.com.arml.insights.ui.component.general
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

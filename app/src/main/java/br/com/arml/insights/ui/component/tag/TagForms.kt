@@ -19,9 +19,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.com.arml.insights.model.entity.TagUi
 import br.com.arml.insights.model.entity.TagUiSaver
-import br.com.arml.insights.ui.component.InsightColorPicker
-import br.com.arml.insights.ui.component.InsightButton
-import br.com.arml.insights.ui.component.InsightOutlinedTextField
+import br.com.arml.insights.ui.component.general.InsightColorPicker
+import br.com.arml.insights.ui.component.general.InsightButton
+import br.com.arml.insights.ui.component.general.InsightOutlinedTextField
 
 
 @OptIn(ExperimentalStdlibApi::class)
@@ -34,8 +34,6 @@ fun TagForms(
     onEditColor: (Color) -> Unit = {},
     onClickSave: (tagUi: TagUi) -> Unit = { }
 ){
-
-
 
     Column(
         modifier=modifier

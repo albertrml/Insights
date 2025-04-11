@@ -16,33 +16,33 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class TagUiViewModel @Inject constructor(private val tagUiUseCase: TagUiUseCase) : ViewModel() {
-    private val _uiState = MutableStateFlow(TagUiState())
+class TagViewModel @Inject constructor(private val tagUiUseCase: TagUiUseCase) : ViewModel() {
+    private val _uiState = MutableStateFlow(TagState())
     val uiState = _uiState.asStateFlow()
 
     init {
         retrieveTagUi(sortBy = { it.name })
     }
 
-    fun onEvent(event: TagUiEvent) {
+    fun onEvent(event: TagEvent) {
         when (event) {
-            is TagUiEvent.OnDeleteTagUi -> {
+            is TagEvent.OnDeleteTag -> {
                 deleteTagUi(event.tagUi)
             }
 
-            is TagUiEvent.OnEditTagUi -> {
+            is TagEvent.OnEditTag -> {
                 editTagUi(event.tagUi)
             }
 
-            is TagUiEvent.OnInsertTagUi -> {
+            is TagEvent.OnInsertTag -> {
                 insertTagUi(event.newTagUi)
             }
 
-            is TagUiEvent.OnRetrieveTagUi -> {
+            is TagEvent.OnRetrieveTag -> {
                 retrieveTagUi(sortBy = { it.name })
             }
 
-            is TagUiEvent.OnSearchTagsUi -> {
+            is TagEvent.OnSearchTags -> {
                 searchTagUi(event.query)
             }
         }

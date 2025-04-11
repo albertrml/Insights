@@ -1,4 +1,4 @@
-package br.com.arml.insights.ui.component
+package br.com.arml.insights.ui.component.general
 
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.FastOutSlowInEasing

@@ -37,8 +37,8 @@ import androidx.compose.ui.unit.dp
 import br.com.arml.insights.R
 import br.com.arml.insights.model.entity.TagUi
 import br.com.arml.insights.model.mock.mockTags
-import br.com.arml.insights.ui.component.AnimatedHorizontalDivider
-import br.com.arml.insights.ui.component.InsightButton
+import br.com.arml.insights.ui.component.general.AnimatedHorizontalDivider
+import br.com.arml.insights.ui.component.general.InsightButton
 import br.com.arml.insights.ui.theme.Gray200
 
 @Composable
