@@ -1,4 +1,4 @@
-package br.com.arml.insights.ui.component.general
+package br.com.arml.insights.ui.component.common
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Arrangement

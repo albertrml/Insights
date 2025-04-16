@@ -4,6 +4,7 @@ import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import br.com.arml.insights.utils.exception.TagException
 
 data class TagUi(
     val id: Int,
@@ -33,6 +34,16 @@ data class TagUi(
             color = Color.Black,
             description = "",
         )
+
+        fun isValid(tagUi: TagUi?): Pair<Boolean, TagException?> {
+            if (tagUi == null)
+                return false to TagException.TagIsNullException()
+
+            if ( tagUi.name.length !in 3..20 )
+                return false to TagException.TagNameSizeException()
+
+            return true to null
+        }
     }
 }
 

@@ -1,54 +1,122 @@
 package br.com.arml.insights.ui.screen.tag
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.arml.insights.domain.TagUiUseCase
 import br.com.arml.insights.model.entity.TagUi
+import br.com.arml.insights.ui.screen.common.BaseViewModel
 import br.com.arml.insights.utils.data.Response
-import br.com.arml.insights.utils.data.mapTo
 import br.com.arml.insights.utils.data.update
 import br.com.arml.insights.utils.exception.InsightException.TagAlreadyExistsException
+import br.com.arml.insights.utils.exception.TagException.TagIsNullException
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class TagViewModel @Inject constructor(private val tagUiUseCase: TagUiUseCase) : ViewModel() {
-    private val _uiState = MutableStateFlow(TagState())
-    val uiState = _uiState.asStateFlow()
-
-    init {
-        retrieveTagUi(sortBy = { it.name })
-    }
-
+class TagViewModel @Inject constructor(
+    private val tagUiUseCase: TagUiUseCase,
+    reducer: TagReducer,
+) : BaseViewModel<TagState, TagEvent, TagEffect>(
+    initialState = TagState(),
+    reducer = reducer,
+) {
     fun onEvent(event: TagEvent) {
         when (event) {
-            is TagEvent.OnDeleteTag -> {
-                deleteTagUi(event.tagUi)
+            is TagEvent.OnInsertOrUpdate -> {
+                when(event.operation){
+                    is TagOperation.OnInsert -> insertTagUi()
+                    is TagOperation.OnUpdate -> updateTagUi()
+                    else -> {}
+                }
+            }
+            else -> sendEventForEffect(event)
+        }
+    }
+
+    private fun insertTagUi() {
+        viewModelScope.launch {
+            val newTagUi = state.value.selectedTagUi
+
+            if (newTagUi == null){
+                sendEffect(TagEffect.ShowSnackBar(TagIsNullException().message))
+                _state.update { state ->
+                    state.copy(operationState = Response.Failure(TagIsNullException()))
+                }
+                return@launch
             }
 
-            is TagEvent.OnEditTag -> {
-                editTagUi(event.tagUi)
+            val (isTagUiValid, invalidException) = TagUi.isValid(newTagUi)
+            if (!isTagUiValid){
+                sendEffect(TagEffect.ShowSnackBar(invalidException?.message!!))
+                _state.update { state ->
+                    state.copy(operationState = Response.Failure(invalidException))
+                }
+                return@launch
             }
 
-            is TagEvent.OnInsertTag -> {
-                insertTagUi(event.newTagUi)
+            if (tagUiUseCase.isTagNameExists(newTagUi.name)) {
+                sendEffect(TagEffect.ShowSnackBar(TagAlreadyExistsException().message))
+                _state.update { state ->
+                    state.copy(operationState = Response.Failure(TagAlreadyExistsException()))
+                }
+                return@launch
             }
 
-            is TagEvent.OnRetrieveTag -> {
-                retrieveTagUi(sortBy = { it.name })
-            }
 
-            is TagEvent.OnSearchTags -> {
-                searchTagUi(event.query)
+            tagUiUseCase.insertTagUi(newTagUi).collect { response ->
+                response.update(_state) { state, res ->
+                    when(res){
+                        is Response.Loading -> { state.copy(operationState = res) }
+                        is Response.Success -> {
+                            sendEffect(TagEffect.OnHideBottomSheet)
+                            state.copy(
+                                selectedTagUi = null,
+                                selectedOperation = TagOperation.None,
+                                operationState = res
+                            )
+                        }
+                        is Response.Failure -> {
+                            val failureMsg = res.exception.message?:"Something went wrong"
+                            sendEffect(TagEffect.ShowSnackBar(failureMsg))
+                            state.copy(operationState = res)
+                        }
+                    }
+                }
             }
         }
     }
 
-    private fun deleteTagUi(tagUi: TagUi) {
+    private fun updateTagUi(){
+        viewModelScope.launch {
+            val updatedTagUi = state.value.selectedTagUi
+
+            if (updatedTagUi == null){
+                _state.update { state ->
+                    state.copy(operationState = Response.Failure(TagIsNullException()))
+                }
+                return@launch
+            }
+
+            tagUiUseCase.updateTagUi(updatedTagUi).collect { response ->
+                response.update(_state) { state, res ->
+                    when(res){
+                        is Response.Loading -> {}
+                        is Response.Success -> {
+                            sendEffect(TagEffect.OnHideBottomSheet)
+                        }
+                        is Response.Failure -> {
+                            val failureMsg = res.exception.message?:"Something went wrong"
+                            sendEffect(TagEffect.ShowSnackBar(failureMsg))
+                        }
+                    }
+                    state.copy(operationState = res)
+                }
+            }
+        }
+    }
+
+    /*private fun deleteTagUi(tagUi: TagUi) {
         viewModelScope.launch {
             tagUiUseCase.deleteTagUi(tagUi).collect { response ->
                 response.update(_uiState) { state, res ->
@@ -66,25 +134,9 @@ class TagViewModel @Inject constructor(private val tagUiUseCase: TagUiUseCase) :
                 }
             }
         }
-    }
+    }*/
 
-    private fun insertTagUi(tagUi: TagUi) {
-        viewModelScope.launch {
-            if (tagUiUseCase.isTagNameExists(tagUi.name)) {
-                _uiState.update { state ->
-                    state.copy(insertState = Response.Failure(TagAlreadyExistsException()))
-                }
-            } else {
-                tagUiUseCase.insertTagUi(tagUi).collect { response ->
-                    response.update(_uiState) { state, res ->
-                        state.copy(insertState = res)
-                    }
-                }
-            }
-        }
-    }
-
-    private inline fun <T : Comparable<T>> retrieveTagUi(
+    /*private inline fun <T : Comparable<T>> retrieveTagUi(
         crossinline sortBy: (TagUi) -> T
     ) {
         viewModelScope.launch {
@@ -107,5 +159,5 @@ class TagViewModel @Inject constructor(private val tagUiUseCase: TagUiUseCase) :
                 }
             }
         }
-    }
+    }*/
 }

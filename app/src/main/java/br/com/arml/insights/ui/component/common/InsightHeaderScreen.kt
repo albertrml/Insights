@@ -1,4 +1,4 @@
-package br.com.arml.insights.ui.component.general
+package br.com.arml.insights.ui.component.common
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row

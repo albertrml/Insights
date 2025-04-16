@@ -11,3 +11,9 @@ object SplashScreenDestination : InsightDestination {
     override val iconResId = R.drawable.ic_insights_foreground
     override val route = "splash_screen"
 }
+
+object TagScreenDestination : InsightDestination {
+    override val iconResId = R.drawable.ic_insights_foreground
+    override val route = "tag_screen"
+}
+

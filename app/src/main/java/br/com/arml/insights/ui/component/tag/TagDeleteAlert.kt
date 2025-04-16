@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import br.com.arml.insights.R
-import br.com.arml.insights.ui.component.general.InsightAlertDialog
+import br.com.arml.insights.ui.component.common.InsightAlertDialog
 
 @Composable
 fun TagDeleteAlert(

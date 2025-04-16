@@ -5,6 +5,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomSheetScaffold
@@ -12,6 +13,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -19,49 +22,80 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import br.com.arml.insights.R
 import br.com.arml.insights.model.entity.TagUi
-import br.com.arml.insights.ui.component.general.HeaderScreen
-import br.com.arml.insights.ui.component.tag.TagBodyContent
+import br.com.arml.insights.ui.component.common.HeaderScreen
+import br.com.arml.insights.ui.component.common.InsightErrorSnackBar
 import br.com.arml.insights.ui.component.tag.TagSheetContent
 import br.com.arml.insights.ui.component.tag.TagDeleteAlert
+import kotlinx.coroutines.flow.collectLatest
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TagScreen(
     modifier: Modifier = Modifier,
+    onNavigateTo: () -> Unit = {}
 ){
+    val viewModel = hiltViewModel<TagViewModel>()
+    val tagState by viewModel.state.collectAsState()
+    var isVisibleContentSheet by rememberSaveable { mutableStateOf(false) }
 
     val bottomSheetState = rememberBottomSheetScaffoldState()
-    var selectTag by rememberSaveable { mutableStateOf<TagUi?>(null) }
-    var showBottomSheet by rememberSaveable { mutableStateOf(false) }
-    var showAlertDialog by rememberSaveable { mutableStateOf(false) }
-
     val configuration = LocalConfiguration.current
-    val targetPeekHeight = if(showBottomSheet) configuration.screenHeightDp.dp * 1f else 0.dp
+    val targetPeekHeight = if(isVisibleContentSheet) configuration.screenHeightDp.dp * 1f else 0.dp
     val animatedPeekHeight by animateFloatAsState(
         targetValue = targetPeekHeight.value,
         animationSpec = tween(durationMillis = 500),
     )
 
+    LaunchedEffect(key1 = Unit) {
+        viewModel.effect.collectLatest { effect ->
+            when(effect){
+                is TagEffect.OnShowContentSheet -> {
+                    isVisibleContentSheet = true
+                }
+                is TagEffect.OnHideBottomSheet -> {
+                    isVisibleContentSheet = false
+                }
+                is TagEffect.ShowSnackBar -> {
+                    bottomSheetState.snackbarHostState.showSnackbar(effect.message)
+                }
+                else -> {}
+            }
+        }
+    }
+
     BottomSheetScaffold(
-        modifier = modifier,
+        modifier = modifier.padding(top = 16.dp),
         scaffoldState = bottomSheetState,
         sheetPeekHeight = animatedPeekHeight.dp,
         sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+        snackbarHost = {
+            InsightErrorSnackBar(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .padding(top = 32.dp),
+                hostState = bottomSheetState.snackbarHostState
+            )
+        },
         sheetContent = {
-            selectTag?.let { tag ->
+            tagState.selectedTagUi?.let { selectedTagUi ->
                 TagSheetContent(
                     modifier = modifier.padding(horizontal = 8.dp),
-                    selectedTagUi = tag,
-                    onUpdateTagUi = { updateTagUi -> selectTag = updateTagUi },
+                    selectedTagUi = selectedTagUi,
+                    onEditName = { viewModel.onEvent(TagEvent.OnEditName(it)) },
+                    onEditDescription = { viewModel.onEvent(TagEvent.OnEditDescription(it)) },
+                    onEditColor = { viewModel.onEvent(TagEvent.OnEditColor(it)) },
                     onClickClose = {
-                        showBottomSheet = !showBottomSheet
-                        selectTag = null
+                        viewModel.onEvent(TagEvent.OnClickToCloseSheet)
                     },
-                    onClickSave = { }
+                    onClickSave = {
+                        viewModel.onEvent(TagEvent.OnInsertOrUpdate(tagState.selectedOperation))
+                    }
                 )
             }
         },
@@ -72,54 +106,35 @@ fun TagScreen(
                 .fillMaxSize()
                 .padding(bottom = 16.dp)
         ) {
-            TagDeleteAlert(
-                modifier = Modifier,
-                tagName = selectTag?.name ?: "",
-                showDialog = showAlertDialog,
-                onDismissRequest = {
-                    selectTag = null
-                    showAlertDialog = !showAlertDialog
-                },
-                onConfirmation = {
-                    selectTag = null
-                    showAlertDialog = !showAlertDialog
-                }
-            )
+
             HeaderScreen(
                 title = stringResource(R.string.tag_screen_title),
-                modifier = Modifier.padding(
-                    top = 24.dp,
-                    start = 16.dp,
-                    end = 16.dp,
-                    bottom = 8.dp
-                ),
+                modifier = Modifier
+                    .padding(top = 24.dp, bottom = 8.dp)
+                    .padding(horizontal = 16.dp),
                 onAddItem = {
-                    selectTag = TagUi.fromTag(null)
-                    showBottomSheet = !showBottomSheet
-                }
-            )
-            TagBodyContent(
-                modifier = Modifier.padding(
-                    top = 16.dp,
-                    start = 16.dp,
-                    end = 16.dp,
-                    bottom = 16.dp
-                ),
-                onEditTagUi = { tag ->
-                    selectTag = tag
-                    showBottomSheet = !showBottomSheet
-                },
-                onDeleteTag = { tag ->
-                    selectTag = tag
-                    showAlertDialog = !showAlertDialog
+                    viewModel.onEvent(TagEvent.OnClickToOpenSheet(null,TagOperation.OnInsert))
                 }
             )
         }
     }
 }
 
-@Preview
+
+
 @Composable
-fun TagScreenPreview(){
-    TagScreen()
+fun TagDelete(
+    modifier: Modifier = Modifier,
+    tag : TagUi,
+    isVisibility: Boolean,
+    onDismissRequest: () -> Unit = {},
+    onConfirmationRequest: () -> Unit = {},
+){
+    TagDeleteAlert(
+        modifier = modifier,
+        tagName = tag.name,
+        showDialog = isVisibility,
+        onDismissRequest = onDismissRequest,
+        onConfirmation = onConfirmationRequest
+    )
 }

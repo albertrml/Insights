@@ -1,8 +1,5 @@
 package br.com.arml.insights.utils.data
 
-import android.os.Handler
-import android.os.Looper
-import android.view.ViewGroup
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 
@@ -20,6 +17,7 @@ inline fun <T, S> Response<T>.mapTo(transform: (T) -> S): Response<S> {
     }
 }
 
+
 inline fun <T, S> Response<T>.update(
     uiState: MutableStateFlow<S>,
     updateState: (S, Response<T>) -> S
@@ -29,6 +27,36 @@ inline fun <T, S> Response<T>.update(
     }
 }
 
+/*@Composable
+fun <T> Response<T>.ShowResults(
+    successContent: @Composable (T) -> Unit = {},
+    loadingContent: @Composable () -> Unit = {},
+    failureContent: @Composable (Exception) -> Unit = {},
+    actionOnSuccess: (T) -> Unit = {},
+    actionOnFailure: (Exception) -> Unit = {},
+    delay: Long = 500
+) {
+    LaunchedEffect(Unit) {
+        delay(delay)
+    }
+    when (this) {
+        is Response.Success -> {
+            successContent(this.result)
+            actionOnSuccess(this.result)
+        }
+
+        is Response.Loading -> {
+            loadingContent()
+        }
+
+        is Response.Failure -> {
+            actionOnFailure(this.exception)
+            failureContent(this.exception)
+        }
+    }
+}*/
+
+/*
 fun <T> Response<T>.showResults(
     successViewGroup: ViewGroup,
     loadingViewGroup: ViewGroup,
@@ -68,4 +96,4 @@ fun <T> Response<T>.showResults(
             )
         }
     }
-}
+}*/

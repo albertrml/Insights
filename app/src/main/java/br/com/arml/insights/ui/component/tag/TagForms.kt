@@ -19,9 +19,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.com.arml.insights.model.entity.TagUi
 import br.com.arml.insights.model.entity.TagUiSaver
-import br.com.arml.insights.ui.component.general.InsightColorPicker
-import br.com.arml.insights.ui.component.general.InsightButton
-import br.com.arml.insights.ui.component.general.InsightOutlinedTextField
+import br.com.arml.insights.ui.component.common.InsightColorPicker
+import br.com.arml.insights.ui.component.common.InsightButton
+import br.com.arml.insights.ui.component.common.InsightOutlinedTextField
 
 
 @OptIn(ExperimentalStdlibApi::class)
