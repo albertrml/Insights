@@ -30,4 +30,5 @@
         You will lost all insights related to this tag.
         Are you sure you want to delete it?
     </string>
+    <string name="note_screen_title">Notes</string>
 </resources>

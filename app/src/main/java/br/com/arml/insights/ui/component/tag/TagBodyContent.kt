@@ -26,6 +26,7 @@ fun TagBodyContent(
     tags: Response<List<TagUi>>,
     onEditTagUi: (TagUi) -> Unit,
     onDeleteTag: (TagUi) -> Unit,
+    onNavigationTo: (TagUi) -> Unit
 ){
     tags.ShowResults(
         successContent = {
@@ -34,6 +35,7 @@ fun TagBodyContent(
                 tagList = it,
                 onEditTagUi = onEditTagUi,
                 onDeleteTagUi = onDeleteTag,
+                onNavigationTo = onNavigationTo
             )
         },
         loadingContent = {
@@ -50,6 +52,7 @@ fun RetrievedTags(
     tagList: List<TagUi>,
     onEditTagUi: (TagUi) -> Unit,
     onDeleteTagUi: (TagUi) -> Unit,
+    onNavigationTo: (TagUi) -> Unit = {}
 ){
 
     Column(
@@ -61,7 +64,8 @@ fun RetrievedTags(
             modifier = Modifier.padding(bottom = 4.dp),
             tagList = tagList,
             onEditTagUi = onEditTagUi,
-            onDeleteTagUi = onDeleteTagUi
+            onDeleteTagUi = onDeleteTagUi,
+            onNavigationTo = onNavigationTo
         )
     }
 }

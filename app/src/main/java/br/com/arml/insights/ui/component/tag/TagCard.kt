@@ -184,7 +184,8 @@ fun TagList(
     modifier: Modifier = Modifier,
     tagList: List<TagUi>,
     onEditTagUi: (TagUi) -> Unit,
-    onDeleteTagUi: (TagUi) -> Unit = {}
+    onDeleteTagUi: (TagUi) -> Unit = {},
+    onNavigationTo: (TagUi) -> Unit = {}
 ){
     LazyColumn(
         modifier = modifier,
@@ -196,7 +197,7 @@ fun TagList(
                 tagUi = tagUi,
                 onEditTagUi = { onEditTagUi(tagUi) },
                 onDeleteTagUi = { onDeleteTagUi(tagUi) },
-                onNavigationTo = {  }
+                onNavigationTo = onNavigationTo
             )
         }
     }

@@ -197,20 +197,4 @@ class TagViewModel @Inject constructor(
             }
         }
     }
-
-    /*
-
-    private fun editTagUi(tagUi: TagUi) {
-        viewModelScope.launch {
-            tagUiUseCase.updateTagUi(tagUi).collect { response ->
-                response.update(_uiState) { state, res ->
-                    state.copy(editState = res)
-                }
-            }
-        }
-    }*/
-
-    /*
-
-    */
 }

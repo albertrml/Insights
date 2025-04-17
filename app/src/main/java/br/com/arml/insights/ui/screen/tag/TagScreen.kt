@@ -3,6 +3,7 @@ package br.com.arml.insights.ui.screen.tag
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -39,7 +40,7 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun TagScreen(
     modifier: Modifier = Modifier,
-    onNavigateTo: () -> Unit = {}
+    onNavigateTo: (Int,String) -> Unit
 ){
     val viewModel = hiltViewModel<TagViewModel>()
     val tagState by viewModel.state.collectAsState()
@@ -114,22 +115,23 @@ fun TagScreen(
         Column(
             modifier = modifier
                 .background(MaterialTheme.colorScheme.background)
-                .fillMaxSize()
-                .padding(bottom = 16.dp)
+                .padding(horizontal = 16.dp)
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
 
             HeaderScreen(
                 title = stringResource(R.string.tag_screen_title),
+                iconResId = R.drawable.ic_tag,
                 modifier = Modifier
-                    .padding(top = 24.dp, bottom = 8.dp)
-                    .padding(horizontal = 16.dp),
+                    .padding(top = 24.dp),
                 onAddItem = {
                     viewModel.onEvent(TagEvent.OnClickToOpenSheet(null,TagOperation.OnInsert))
                 }
             )
 
             TagFilterAndSort(
-                modifier = modifier.padding(horizontal = 16.dp),
+                modifier = modifier,
                 sortedBy = { ascending ->
                     if (ascending)
                         viewModel.onEvent(TagEvent.OnSortTagsByNameAscending)
@@ -148,7 +150,7 @@ fun TagScreen(
             )
 
             TagBodyContent(
-                modifier = modifier.padding(horizontal = 16.dp),
+                modifier = modifier,
                 tags = tagState.tags,
                 onDeleteTag = {
                     viewModel.onEvent(
@@ -159,11 +161,14 @@ fun TagScreen(
                     viewModel.onEvent(
                         TagEvent.OnClickToOpenSheet(selectedTagUi,TagOperation.OnUpdate)
                     )
+                },
+                onNavigationTo = { selectedTagUi ->
+                    onNavigateTo(selectedTagUi.id,selectedTagUi.name)
                 }
             )
 
             TagDelete(
-                modifier = modifier.padding(horizontal = 16.dp),
+                modifier = modifier,
                 tag = tagState.selectedTagUi?:TagUi.fromTag(null),
                 isVisibility = isAlertDialogVisible,
                 onDismissRequest = {
