@@ -33,6 +33,7 @@ import br.com.arml.insights.ui.component.note.NoteDeleteAlert
 import br.com.arml.insights.ui.component.note.NoteSheetContent
 import br.com.arml.insights.ui.component.tag.TagFilterAndSort
 import br.com.arml.insights.ui.screen.note.NoteEvent.OnClickToOpenDeleteDialog
+import br.com.arml.insights.utils.data.SearchNoteCategory
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -143,6 +144,7 @@ fun NoteScreen(
                 searchQuery = searchQuery,
                 onSearchTextChange = {
                     searchQuery = it
+                    viewModel.onEvent(NoteEvent.OnSearch(it, SearchNoteCategory.ByTitle))
                 },
                 onRefreshTags = {
                     searchQuery = ""

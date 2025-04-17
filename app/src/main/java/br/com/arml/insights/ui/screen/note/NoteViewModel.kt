@@ -7,6 +7,7 @@ import br.com.arml.insights.domain.NoteUiUseCase
 import br.com.arml.insights.model.entity.NoteUi
 import br.com.arml.insights.ui.screen.common.BaseViewModel
 import br.com.arml.insights.utils.data.Response
+import br.com.arml.insights.utils.data.SearchNoteCategory
 import br.com.arml.insights.utils.data.SortedNote
 import br.com.arml.insights.utils.data.update
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -35,7 +36,7 @@ class NoteViewModel @Inject constructor(
 
     fun onEvent(event: NoteEvent) {
         when (event) {
-            is NoteEvent.OnFetchAllNotes -> { fetchAllNotes(tagId, SortedNote.ByTitleAscending) }
+            is NoteEvent.OnDeleteNote -> { deleteNote() }
             is NoteEvent.OnInsertOrUpdate -> {
                 when(event.operation){
                     is NoteOperation.OnInsert -> insertNote()
@@ -43,7 +44,8 @@ class NoteViewModel @Inject constructor(
                     is NoteOperation.None -> {}
                 }
             }
-            is NoteEvent.OnDeleteNote -> { deleteNote() }
+            is NoteEvent.OnFetchAllNotes -> { fetchAllNotes(tagId, SortedNote.ByTitleAscending) }
+            is NoteEvent.OnSearch -> { searchNoteByTitle(event.query, event.searchNoteCategory) }
             else -> sendEventForEffect(event)
         }
     }
@@ -112,6 +114,16 @@ class NoteViewModel @Inject constructor(
                             state.copy(operationState = res)
                         }
                     }
+                }
+            }
+        }
+    }
+
+    private fun searchNoteByTitle(query: String, searchNoteCategory: SearchNoteCategory) {
+        viewModelScope.launch {
+            noteUiUseCase.searchNotes(query, searchNoteCategory).collect {
+                it.update(_state) { state, res ->
+                    state.copy(notes = res)
                 }
             }
         }

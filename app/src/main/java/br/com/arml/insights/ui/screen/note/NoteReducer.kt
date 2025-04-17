@@ -14,6 +14,7 @@ class NoteReducer @Inject constructor() : Reducer<NoteState, NoteEvent, NoteEffe
             is NoteEvent.OnInsertOrUpdate -> previousState to null
             is NoteEvent.OnFetchAllNotes -> previousState to null
             is NoteEvent.OnDeleteNote -> previousState to null
+            is NoteEvent.OnSearch -> previousState to null
 
             is NoteEvent.OnEditTitle -> {
                 val updatedState = previousState.selectedNote.copy(title = event.title)
