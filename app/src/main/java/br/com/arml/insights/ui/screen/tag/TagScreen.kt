@@ -28,8 +28,10 @@ import br.com.arml.insights.R
 import br.com.arml.insights.model.entity.TagUi
 import br.com.arml.insights.ui.component.common.HeaderScreen
 import br.com.arml.insights.ui.component.common.InsightErrorSnackBar
+import br.com.arml.insights.ui.component.tag.TagBodyContent
 import br.com.arml.insights.ui.component.tag.TagSheetContent
 import br.com.arml.insights.ui.component.tag.TagDeleteAlert
+import br.com.arml.insights.ui.component.tag.TagFilterAndSort
 import kotlinx.coroutines.flow.collectLatest
 
 
@@ -42,6 +44,7 @@ fun TagScreen(
     val viewModel = hiltViewModel<TagViewModel>()
     val tagState by viewModel.state.collectAsState()
     var isVisibleContentSheet by rememberSaveable { mutableStateOf(false) }
+    var searchQuery by rememberSaveable { mutableStateOf("")}
 
     val bottomSheetState = rememberBottomSheetScaffoldState()
     val configuration = LocalConfiguration.current
@@ -116,11 +119,40 @@ fun TagScreen(
                     viewModel.onEvent(TagEvent.OnClickToOpenSheet(null,TagOperation.OnInsert))
                 }
             )
+
+            TagFilterAndSort(
+                modifier = modifier.padding(horizontal = 16.dp),
+                sortedBy = { ascending ->
+                    if (ascending)
+                        viewModel.onEvent(TagEvent.OnSortTagsByNameAscending)
+                    else
+                        viewModel.onEvent(TagEvent.OnSortTagsByNameDescending)
+                },
+                searchQuery = searchQuery,
+                onSearchTextChange = {
+                    searchQuery = it
+                    viewModel.onEvent(TagEvent.OnSearch(it))
+                },
+                onRefreshTags = {
+                    searchQuery = ""
+                    viewModel.onEvent(TagEvent.OnFetchAllItems)
+                }
+            )
+
+            TagBodyContent(
+                modifier = modifier.padding(horizontal = 16.dp),
+                tags = tagState.tags,
+                onDeleteTag = {},
+                onEditTagUi = { selectedTagUi ->
+                    viewModel.onEvent(
+                        TagEvent.OnClickToOpenSheet(selectedTagUi,TagOperation.OnUpdate)
+                    )
+                }
+            )
+
         }
     }
 }
-
-
 
 @Composable
 fun TagDelete(

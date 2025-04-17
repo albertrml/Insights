@@ -9,6 +9,8 @@ import br.com.arml.insights.ui.screen.common.Reducer
 sealed class TagEvent : Reducer.ViewEvent {
     /* Actions to handle backend events */
     data class OnInsertOrUpdate(val operation: TagOperation): TagEvent()
+    data class OnSearch(val query: String) : TagEvent()
+    data object OnFetchAllItems : TagEvent()
 
 
     /* Actions to handle frontend events */
@@ -17,6 +19,8 @@ sealed class TagEvent : Reducer.ViewEvent {
     data class OnEditColor(val color: Color) : TagEvent()
     data object OnClickToCloseSheet : TagEvent()
     data class OnClickToOpenSheet(val selectedTagUi: TagUi?, val tagOperation: TagOperation) : TagEvent()
+    data object OnSortTagsByNameAscending: TagEvent()
+    data object OnSortTagsByNameDescending: TagEvent()
 }
 
 sealed class TagOperation{

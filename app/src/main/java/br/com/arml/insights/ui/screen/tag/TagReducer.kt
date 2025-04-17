@@ -13,7 +13,8 @@ class TagReducer @Inject constructor() : Reducer<TagState, TagEvent, TagEffect> 
         return when(event){
             /* Actions to handle backend events */
             is TagEvent.OnInsertOrUpdate -> previousState to null
-
+            is TagEvent.OnSearch -> previousState to null
+            is TagEvent.OnFetchAllItems -> previousState to null
 
             /* Actions to handle frontend events */
             is TagEvent.OnEditName -> {
@@ -49,6 +50,31 @@ class TagReducer @Inject constructor() : Reducer<TagState, TagEvent, TagEffect> 
                 ) to TagEffect.OnHideBottomSheet
             }
 
+            is TagEvent.OnSortTagsByNameAscending -> {
+                val newState =  if (previousState.tags is Response.Success){
+                    previousState.copy(
+                        tags = Response.Success(
+                            previousState.tags.result.sortedBy { it.name }
+                        )
+                    )
+                } else {
+                    previousState
+                }
+                newState to null
+            }
+
+            is TagEvent.OnSortTagsByNameDescending -> {
+                val newState =  if (previousState.tags is Response.Success){
+                    previousState.copy(
+                        tags = Response.Success(
+                            previousState.tags.result.sortedByDescending { it.name }
+                        )
+                    )
+                } else {
+                    previousState
+                }
+                newState to null
+            }
         }
     }
 }

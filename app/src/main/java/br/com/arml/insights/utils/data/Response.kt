@@ -1,5 +1,8 @@
 package br.com.arml.insights.utils.data
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 
@@ -27,7 +30,7 @@ inline fun <T, S> Response<T>.update(
     }
 }
 
-/*@Composable
+@Composable
 fun <T> Response<T>.ShowResults(
     successContent: @Composable (T) -> Unit = {},
     loadingContent: @Composable () -> Unit = {},
@@ -54,7 +57,7 @@ fun <T> Response<T>.ShowResults(
             failureContent(this.exception)
         }
     }
-}*/
+}
 
 /*
 fun <T> Response<T>.showResults(

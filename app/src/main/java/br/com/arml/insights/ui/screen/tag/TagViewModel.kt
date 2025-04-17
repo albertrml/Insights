@@ -5,6 +5,7 @@ import br.com.arml.insights.domain.TagUiUseCase
 import br.com.arml.insights.model.entity.TagUi
 import br.com.arml.insights.ui.screen.common.BaseViewModel
 import br.com.arml.insights.utils.data.Response
+import br.com.arml.insights.utils.data.SortedTag
 import br.com.arml.insights.utils.data.update
 import br.com.arml.insights.utils.exception.InsightException.TagAlreadyExistsException
 import br.com.arml.insights.utils.exception.TagException.TagIsNullException
@@ -21,6 +22,10 @@ class TagViewModel @Inject constructor(
     initialState = TagState(),
     reducer = reducer,
 ) {
+    init {
+        retrieveTagUi(SortedTag.ByNameAscending)
+    }
+
     fun onEvent(event: TagEvent) {
         when (event) {
             is TagEvent.OnInsertOrUpdate -> {
@@ -30,6 +35,10 @@ class TagViewModel @Inject constructor(
                     else -> {}
                 }
             }
+            is TagEvent.OnSearch -> {
+                searchTagUi(event.query)
+            }
+            is TagEvent.OnFetchAllItems -> { retrieveTagUi(SortedTag.ByNameAscending) }
             else -> sendEventForEffect(event)
         }
     }
@@ -92,8 +101,26 @@ class TagViewModel @Inject constructor(
             val updatedTagUi = state.value.selectedTagUi
 
             if (updatedTagUi == null){
+                sendEffect(TagEffect.ShowSnackBar(TagIsNullException().message))
                 _state.update { state ->
                     state.copy(operationState = Response.Failure(TagIsNullException()))
+                }
+                return@launch
+            }
+
+            val (isTagUiValid, invalidException) = TagUi.isValid(updatedTagUi)
+            if (!isTagUiValid){
+                sendEffect(TagEffect.ShowSnackBar(invalidException?.message!!))
+                _state.update { state ->
+                    state.copy(operationState = Response.Failure(invalidException))
+                }
+                return@launch
+            }
+
+            if (tagUiUseCase.isTagNameExists(updatedTagUi.name)) {
+                sendEffect(TagEffect.ShowSnackBar(TagAlreadyExistsException().message))
+                _state.update { state ->
+                    state.copy(operationState = Response.Failure(TagAlreadyExistsException()))
                 }
                 return@launch
             }
@@ -111,6 +138,26 @@ class TagViewModel @Inject constructor(
                         }
                     }
                     state.copy(operationState = res)
+                }
+            }
+        }
+    }
+
+    private fun retrieveTagUi(sortBy: SortedTag) {
+        viewModelScope.launch {
+            tagUiUseCase.fetchTagUi(sortBy).collect { response ->
+                response.update(_state) { state, res ->
+                    state.copy(tags = res)
+                }
+            }
+        }
+    }
+
+    private fun searchTagUi(query: String) {
+        viewModelScope.launch {
+            tagUiUseCase.searchTagByName(query).collect { response ->
+                response.update(_state) { state, res ->
+                    state.copy(tags = res)
                 }
             }
         }
@@ -136,28 +183,7 @@ class TagViewModel @Inject constructor(
         }
     }*/
 
-    /*private inline fun <T : Comparable<T>> retrieveTagUi(
-        crossinline sortBy: (TagUi) -> T
-    ) {
-        viewModelScope.launch {
-            tagUiUseCase.fetchTagUi().collect { response ->
-                response.mapTo { tagUi -> tagUi.sortedBy(sortBy) }
-                    .update(_uiState) { state, res ->
-                        state.copy(retrieveState = res)
-                    }
-            }
-        }
-    }
+    /*
 
-    private fun searchTagUi(query: String) {
-        viewModelScope.launch {
-            tagUiUseCase.searchTagByName(query).collect { response ->
-                response.update(_uiState) { state, res ->
-                    state.copy(
-                        searchState = if (res is Response.Success) res.result else emptyList()
-                    )
-                }
-            }
-        }
-    }*/
+    */
 }
