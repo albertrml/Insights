@@ -22,7 +22,7 @@ import br.com.arml.insights.ui.theme.Gray200
 import br.com.arml.insights.ui.theme.Gray300
 
 @Composable
-fun LoadingTagCard(
+fun TagCardLoading(
     modifier: Modifier = Modifier,
 ){
     OutlinedCard(
@@ -105,7 +105,7 @@ fun LoadingTagCardFoot(
 }
 
 @Composable
-fun LoadingTagCardList(
+fun TagCardLoadingList(
     modifier: Modifier = Modifier
 ){
     val list = listOf(1,2,3,4,5,6,7,8,9,10)
@@ -114,7 +114,7 @@ fun LoadingTagCardList(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         items(list){ _ ->
-            LoadingTagCard(modifier = Modifier.padding(8.dp))
+            TagCardLoading(modifier = Modifier.padding(8.dp))
         }
     }
 }
@@ -122,6 +122,6 @@ fun LoadingTagCardList(
 @Preview
 @Composable
 fun LoadingTagCardsPreview() {
-    LoadingTagCardList(modifier = Modifier.padding(8.dp))
+    TagCardLoadingList(modifier = Modifier.padding(8.dp))
 }
 

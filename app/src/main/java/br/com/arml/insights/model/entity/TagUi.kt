@@ -35,15 +35,16 @@ data class TagUi(
             description = "",
         )
 
-        fun isValid(tagUi: TagUi?): Pair<Boolean, TagException?> {
-            if (tagUi == null)
-                return false to TagException.TagIsNullException()
+        fun isValid(tagUi: TagUi?): Pair<Boolean, TagException?> = when {
+            tagUi == null ->
+                false to TagException.TagIsNullException()
 
-            if ( tagUi.name.length !in 3..20 )
-                return false to TagException.TagNameSizeException()
+            tagUi.name.length !in 3..20 ->
+                false to TagException.TagNameSizeException()
 
-            return true to null
+            else -> true to null
         }
+
     }
 }
 

@@ -42,7 +42,7 @@ fun TagForms(
         InsightOutlinedTextField(
             modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp),
             nameField = stringResource(id = R.string.tag_forms_name_field_label),
-            maxLength = 20,
+            maxSize = 20,
             text = tagUi.name,
             onChangeText = { name -> onEditName(name) }
         )
@@ -50,7 +50,7 @@ fun TagForms(
         InsightOutlinedTextField(
             modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp),
             nameField = stringResource(id = R.string.tag_forms_description_field_label),
-            maxLength = 150,
+            maxSize = 150,
             maxLines = 3,
             text = tagUi.description,
             onChangeText = { description -> onEditDescription(description) }

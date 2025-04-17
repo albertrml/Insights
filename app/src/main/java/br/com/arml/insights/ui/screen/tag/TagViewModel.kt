@@ -145,6 +145,12 @@ class TagViewModel @Inject constructor(
     private fun retrieveTagUi(sortBy: SortedTag) {
         viewModelScope.launch {
             tagUiUseCase.fetchTagUi(sortBy).collect { response ->
+                if(response is Response.Failure)
+                    sendEffect(
+                        TagEffect.ShowSnackBar(
+                            response.exception.message?:"Something went wrong"
+                        )
+                    )
                 response.update(_state) { state, res ->
                     state.copy(tags = res)
                 }

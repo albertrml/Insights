@@ -15,7 +15,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -25,6 +24,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.arml.insights.R
 import br.com.arml.insights.model.entity.TagUi
 import br.com.arml.insights.ui.component.common.HeaderScreen
@@ -43,7 +43,7 @@ fun TagScreen(
     onNavigateTo: (Int,String) -> Unit
 ){
     val viewModel = hiltViewModel<TagViewModel>()
-    val tagState by viewModel.state.collectAsState()
+    val tagState by viewModel.state.collectAsStateWithLifecycle()
     var isVisibleContentSheet by rememberSaveable { mutableStateOf(false) }
     var isAlertDialogVisible by rememberSaveable { mutableStateOf(false) }
     var searchQuery by rememberSaveable { mutableStateOf("")}

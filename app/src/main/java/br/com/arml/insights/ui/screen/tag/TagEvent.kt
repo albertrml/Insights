@@ -19,7 +19,10 @@ sealed class TagEvent : Reducer.ViewEvent {
     data class OnEditDescription(val description: String) : TagEvent()
     data class OnEditColor(val color: Color) : TagEvent()
     data object OnClickToCloseSheet : TagEvent()
-    data class OnClickToOpenSheet(val selectedTagUi: TagUi?, val tagOperation: TagOperation) : TagEvent()
+    data class OnClickToOpenSheet(
+        val selectedTagUi: TagUi?,
+        val tagOperation: TagOperation
+    ) : TagEvent()
     data object OnSortTagsByNameAscending: TagEvent()
     data object OnSortTagsByNameDescending: TagEvent()
     data class OnClickToShowDeleteDialog(val selectedTag: TagUi) : TagEvent()

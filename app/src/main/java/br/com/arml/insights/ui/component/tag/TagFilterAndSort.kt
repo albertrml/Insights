@@ -46,7 +46,7 @@ fun TagFilterAndSort(
             onChangeText = {
                 onSearchTextChange(it)
             },
-            maxLength = 20,
+            maxSize = 20,
         )
 
         IconButton(

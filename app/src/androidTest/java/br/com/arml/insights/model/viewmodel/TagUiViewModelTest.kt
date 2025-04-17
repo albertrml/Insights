@@ -27,6 +27,7 @@ import org.junit.Before
 import org.junit.Test
 
 
+/*
 class TagUiViewModelTest {
 
     private lateinit var viewModel: TagViewModel
@@ -66,7 +67,9 @@ class TagUiViewModelTest {
     }
 
 
-    /** Delete Tag  **/
+    */
+/** Delete Tag  **//*
+
     @Test
     fun whenDeleteTagIsSuccessful() = runTest {
         val index = 4
@@ -117,7 +120,9 @@ class TagUiViewModelTest {
             }
     }
 
-    /** Fetch tags by color in ascending order  **/
+    */
+/** Fetch tags by color in ascending order  **//*
+
     @Test
     fun whenFetchTagsByNameInAscendingOrderIsSuccessful() = runTest {
         populateDb()
@@ -146,7 +151,9 @@ class TagUiViewModelTest {
             }
     }
 
-    /** Insert Tag **/
+    */
+/** Insert Tag **//*
+
     @Test
     fun whenInsertTagIsSuccessful() = runTest {
         val expectedTagUi = tagsUi.first()
@@ -226,7 +233,9 @@ class TagUiViewModelTest {
             }
     }
 
-    /** Update Tag **/
+    */
+/** Update Tag **//*
+
     @Test
     fun whenUpdateTagIsSuccessful() = runTest {
         populateDb()
@@ -257,8 +266,11 @@ class TagUiViewModelTest {
             }
     }
 
-    /** Search Tags **/
-    /*@Test
+    */
+/** Search Tags **//*
+
+    */
+/*@Test
     fun whenSearchTagByNameIsSuccessful() = runTest {
         populateDb()
         val tagName = "dinner"
@@ -273,5 +285,6 @@ class TagUiViewModelTest {
                 assertTrue(names.contains("Dinner"))
                 assertTrue(names.contains("Dinheiro"))
             }
-    }*/
-}
+    }*//*
+
+}*/

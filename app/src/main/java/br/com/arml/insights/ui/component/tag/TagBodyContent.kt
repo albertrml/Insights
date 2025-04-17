@@ -2,16 +2,12 @@ package br.com.arml.insights.ui.component.tag
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -38,9 +34,7 @@ fun TagBodyContent(
                 onNavigationTo = onNavigationTo
             )
         },
-        loadingContent = {
-            TagListLoading(modifier = modifier)
-        },
+        loadingContent = { TagCardLoadingList(modifier = modifier) },
         failureContent = { }
     )
 }
@@ -70,43 +64,13 @@ fun RetrievedTags(
     }
 }
 
-@Composable
-fun TagListLoading(
-    modifier: Modifier = Modifier
-){
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-
-        Column(
-            modifier = modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            CircularProgressIndicator(
-                modifier = Modifier.padding(bottom = 8.dp),
-                color = MaterialTheme.colorScheme.primary
-            )
-        }
-
-    }
-}
-
 @Preview (showBackground = true)
 @Composable
 fun TagBodyContentPreview(){
     val tags by remember { mutableStateOf(mockTags.map { TagUi.fromTag(it) }) }
-
     RetrievedTags(
         tagList = tags,
         onEditTagUi = {},
         onDeleteTagUi = {},
     )
-}
-
-@Preview
-@Composable
-fun TagListLoadingPreview(){
-    TagListLoading()
 }
