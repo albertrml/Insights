@@ -134,7 +134,12 @@ fun NoteScreen(
 
             TagFilterAndSort(
                 modifier = modifier,
-                sortedBy = { ascending -> },
+                sortedBy = { ascending ->
+                    if (ascending)
+                        viewModel.onEvent(NoteEvent.OnSortTitleByAscending)
+                    else
+                        viewModel.onEvent(NoteEvent.OnSortTitleByDescending)
+                },
                 searchQuery = searchQuery,
                 onSearchTextChange = {
                     searchQuery = it

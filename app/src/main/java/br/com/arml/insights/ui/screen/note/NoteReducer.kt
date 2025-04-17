@@ -27,6 +27,27 @@ class NoteReducer @Inject constructor() : Reducer<NoteState, NoteEvent, NoteEffe
                 val updatedState = previousState.selectedNote.copy(body = event.body)
                 previousState.copy(selectedNote = updatedState) to null
             }
+            is NoteEvent.OnSortTitleByAscending -> {
+                val newState =  if (previousState.notes is Response.Success){
+                    previousState.copy(
+                        notes = Response.Success(
+                            previousState.notes.result.sortedBy{ it.title }
+                        )
+                    )
+                } else { previousState }
+                newState to null
+            }
+            is NoteEvent.OnSortTitleByDescending -> {
+                val newState =  if (previousState.notes is Response.Success){
+                    previousState.copy(
+                        notes = Response.Success(
+                            previousState.notes.result.sortedByDescending{ it.title }
+                        )
+                    )
+                } else { previousState }
+                newState to null
+            }
+
 
             is NoteEvent.OnClickToOpenSheet -> {
                 previousState.copy(

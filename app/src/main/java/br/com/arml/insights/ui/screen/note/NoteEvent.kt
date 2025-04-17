@@ -21,7 +21,8 @@ sealed class NoteEvent: Reducer.ViewEvent{
     data class OnEditTitle(val title: String): NoteEvent()
     data class OnEditSituation(val situation: String): NoteEvent()
     data class OnEditBody(val body: String): NoteEvent()
-
+    data object OnSortTitleByAscending: NoteEvent()
+    data object OnSortTitleByDescending: NoteEvent()
 }
 
 sealed class NoteOperation{
