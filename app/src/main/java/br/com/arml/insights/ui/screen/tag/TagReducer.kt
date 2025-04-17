@@ -15,6 +15,7 @@ class TagReducer @Inject constructor() : Reducer<TagState, TagEvent, TagEffect> 
             is TagEvent.OnInsertOrUpdate -> previousState to null
             is TagEvent.OnSearch -> previousState to null
             is TagEvent.OnFetchAllItems -> previousState to null
+            is TagEvent.OnDelete -> previousState to null
 
             /* Actions to handle frontend events */
             is TagEvent.OnEditName -> {
@@ -48,6 +49,18 @@ class TagReducer @Inject constructor() : Reducer<TagState, TagEvent, TagEffect> 
                     selectedTagUi = null,
                     selectedOperation = TagOperation.None
                 ) to TagEffect.OnHideBottomSheet
+            }
+
+            is TagEvent.OnClickToShowDeleteDialog -> {
+                previousState.copy(
+                    selectedTagUi = event.selectedTag.copy()
+                ) to TagEffect.OnShowDeleteDialog
+            }
+
+            is TagEvent.OnClickToCloseDeleteDialog -> {
+                previousState.copy(
+                    selectedTagUi = null
+                ) to TagEffect.OnHideDeleteDialog
             }
 
             is TagEvent.OnSortTagsByNameAscending -> {

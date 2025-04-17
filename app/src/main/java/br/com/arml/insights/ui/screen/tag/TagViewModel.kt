@@ -35,10 +35,9 @@ class TagViewModel @Inject constructor(
                     else -> {}
                 }
             }
-            is TagEvent.OnSearch -> {
-                searchTagUi(event.query)
-            }
+            is TagEvent.OnSearch -> { searchTagUi(event.query) }
             is TagEvent.OnFetchAllItems -> { retrieveTagUi(SortedTag.ByNameAscending) }
+            is TagEvent.OnDelete -> { deleteTagUi() }
             else -> sendEventForEffect(event)
         }
     }
@@ -163,15 +162,43 @@ class TagViewModel @Inject constructor(
         }
     }
 
-    /*private fun deleteTagUi(tagUi: TagUi) {
+    private fun deleteTagUi() {
         viewModelScope.launch {
-            tagUiUseCase.deleteTagUi(tagUi).collect { response ->
-                response.update(_uiState) { state, res ->
-                    state.copy(deleteState = res)
+            val tagUiForDelete = state.value.selectedTagUi
+
+            if (tagUiForDelete == null){
+                sendEffect(TagEffect.ShowSnackBar(TagIsNullException().message))
+                _state.update { state ->
+                    state.copy(operationState = Response.Failure(TagIsNullException()))
+                }
+                return@launch
+            }
+
+            tagUiUseCase.deleteTagUi(tagUiForDelete).collect { response ->
+                response.update(_state) { state, res ->
+                    when(res){
+                        is Response.Loading -> {
+                            state.copy(operationState = res)
+                        }
+                        is Response.Success -> {
+                            sendEffect(TagEffect.OnHideDeleteDialog)
+                            state.copy(
+                                selectedTagUi = null,
+                                operationState = res
+                            )
+                        }
+                        is Response.Failure -> {
+                            val failureMsg = res.exception.message?:"Something went wrong"
+                            sendEffect(TagEffect.ShowSnackBar(failureMsg))
+                            state.copy(operationState = res)
+                        }
+                    }
                 }
             }
         }
     }
+
+    /*
 
     private fun editTagUi(tagUi: TagUi) {
         viewModelScope.launch {

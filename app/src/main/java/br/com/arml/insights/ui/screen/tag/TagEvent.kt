@@ -11,6 +11,7 @@ sealed class TagEvent : Reducer.ViewEvent {
     data class OnInsertOrUpdate(val operation: TagOperation): TagEvent()
     data class OnSearch(val query: String) : TagEvent()
     data object OnFetchAllItems : TagEvent()
+    data object OnDelete : TagEvent()
 
 
     /* Actions to handle frontend events */
@@ -21,6 +22,8 @@ sealed class TagEvent : Reducer.ViewEvent {
     data class OnClickToOpenSheet(val selectedTagUi: TagUi?, val tagOperation: TagOperation) : TagEvent()
     data object OnSortTagsByNameAscending: TagEvent()
     data object OnSortTagsByNameDescending: TagEvent()
+    data class OnClickToShowDeleteDialog(val selectedTag: TagUi) : TagEvent()
+    data object OnClickToCloseDeleteDialog : TagEvent()
 }
 
 sealed class TagOperation{

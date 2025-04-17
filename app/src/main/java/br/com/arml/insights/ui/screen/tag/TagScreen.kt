@@ -44,6 +44,7 @@ fun TagScreen(
     val viewModel = hiltViewModel<TagViewModel>()
     val tagState by viewModel.state.collectAsState()
     var isVisibleContentSheet by rememberSaveable { mutableStateOf(false) }
+    var isAlertDialogVisible by rememberSaveable { mutableStateOf(false) }
     var searchQuery by rememberSaveable { mutableStateOf("")}
 
     val bottomSheetState = rememberBottomSheetScaffoldState()
@@ -63,6 +64,13 @@ fun TagScreen(
                 is TagEffect.OnHideBottomSheet -> {
                     isVisibleContentSheet = false
                 }
+                is TagEffect.OnShowDeleteDialog -> {
+                    isAlertDialogVisible = true
+                }
+                is TagEffect.OnHideDeleteDialog -> {
+                    isAlertDialogVisible = false
+                }
+
                 is TagEffect.ShowSnackBar -> {
                     bottomSheetState.snackbarHostState.showSnackbar(effect.message)
                 }
@@ -142,7 +150,11 @@ fun TagScreen(
             TagBodyContent(
                 modifier = modifier.padding(horizontal = 16.dp),
                 tags = tagState.tags,
-                onDeleteTag = {},
+                onDeleteTag = {
+                    viewModel.onEvent(
+                        TagEvent.OnClickToShowDeleteDialog(selectedTag = it)
+                    )
+                },
                 onEditTagUi = { selectedTagUi ->
                     viewModel.onEvent(
                         TagEvent.OnClickToOpenSheet(selectedTagUi,TagOperation.OnUpdate)
@@ -150,6 +162,17 @@ fun TagScreen(
                 }
             )
 
+            TagDelete(
+                modifier = modifier.padding(horizontal = 16.dp),
+                tag = tagState.selectedTagUi?:TagUi.fromTag(null),
+                isVisibility = isAlertDialogVisible,
+                onDismissRequest = {
+                    viewModel.onEvent(TagEvent.OnClickToCloseDeleteDialog)
+                },
+                onConfirmationRequest = {
+                    viewModel.onEvent(TagEvent.OnDelete)
+                }
+            )
         }
     }
 }

@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import br.com.arml.insights.model.entity.Note
 import br.com.arml.insights.model.entity.Tag
 
-@Database(entities = [ Note::class, Tag::class ], version = 1, exportSchema = false)
+@Database(entities = [ Note::class, Tag::class ], version = 2, exportSchema = false)
 abstract class InsightsRoomDatabase: RoomDatabase() {
     abstract fun noteDao(): NoteDao
     abstract fun tagDao(): TagDao
