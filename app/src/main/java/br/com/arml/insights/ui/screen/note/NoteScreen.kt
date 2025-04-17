@@ -29,8 +29,10 @@ import br.com.arml.insights.model.entity.NoteUi
 import br.com.arml.insights.ui.component.common.HeaderScreen
 import br.com.arml.insights.ui.component.common.InsightErrorSnackBar
 import br.com.arml.insights.ui.component.note.NoteBodyContent
+import br.com.arml.insights.ui.component.note.NoteDeleteAlert
 import br.com.arml.insights.ui.component.note.NoteSheetContent
 import br.com.arml.insights.ui.component.tag.TagFilterAndSort
+import br.com.arml.insights.ui.screen.note.NoteEvent.OnClickToOpenDeleteDialog
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -63,6 +65,12 @@ fun NoteScreen(
                 }
                 is NoteEffect.OnHideContentSheet -> {
                     isVisibleContentSheet = false
+                }
+                is NoteEffect.OnShowDeleteDialog -> {
+                    isAlertDialogVisible = true
+                }
+                is NoteEffect.OnHideDeleteDialog -> {
+                    isAlertDialogVisible = false
                 }
                 is NoteEffect.ShowSnackBar -> {
                     bottomSheetState.snackbarHostState.showSnackbar(effect.message)
@@ -148,8 +156,20 @@ fun NoteScreen(
                         )
                     )
                 },
-                onDeleteNote = {
-                    /*viewModel.onEvent(NoteEvent.OnDeleteNote(it))*/
+                onDeleteNote = { noteUi ->
+                    viewModel.onEvent(OnClickToOpenDeleteDialog(noteUi))
+                }
+            )
+
+            NoteDeleteAlert(
+                modifier = modifier,
+                note = noteState.selectedNote,
+                showDialog = isAlertDialogVisible,
+                onDismissRequest = {
+                    viewModel.onEvent(NoteEvent.OnClickToCloseDeleteDialog)
+                },
+                onConfirmation = {
+                    viewModel.onEvent(NoteEvent.OnDeleteNote)
                 }
             )
 

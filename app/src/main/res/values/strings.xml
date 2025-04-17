@@ -12,6 +12,10 @@
     <string name="insight_logo_description">Insight Logo</string>
     <string name="note_screen_close_menu">Close %1$s menu</string>
     <string name="note_screen_title_label">Title</string>
+    <string name="note_screen_alert_dialog_message">
+        The selected %1$s insight created at %2$s will be deleted.
+        Are you sure you want to delete it?
+    </string>
     <string name="outlined_text_field_label">%1$s</string>
     <string name="text_field_label">%1$s</string>
     <string name="tag_card_edit_button">Edit %1$s</string>
@@ -29,7 +33,7 @@
     <string name="tag_screen_title">Tags</string>
     <string name="alert_dialog_confirm_button">Confirm</string>
     <string name="alert_dialog_dismiss_button">Dismiss</string>
-    <string name="tag_scree_alert_dialog_message">
+    <string name="tag_screen_alert_dialog_message">
         You will lost all insights related to this tag.
         Are you sure you want to delete it?
     </string>

@@ -13,6 +13,7 @@ class NoteReducer @Inject constructor() : Reducer<NoteState, NoteEvent, NoteEffe
         return when(event){
             is NoteEvent.OnInsertOrUpdate -> previousState to null
             is NoteEvent.OnFetchAllNotes -> previousState to null
+            is NoteEvent.OnDeleteNote -> previousState to null
 
             is NoteEvent.OnEditTitle -> {
                 val updatedState = previousState.selectedNote.copy(title = event.title)
@@ -39,6 +40,16 @@ class NoteReducer @Inject constructor() : Reducer<NoteState, NoteEvent, NoteEffe
                     selectedNote = NoteUi.fromNote(null),
                     noteOperation = NoteOperation.None
                 ) to NoteEffect.OnHideContentSheet
+            }
+            is NoteEvent.OnClickToOpenDeleteDialog -> {
+                previousState.copy(
+                    selectedNote = event.selectedNote
+                ) to NoteEffect.OnShowDeleteDialog
+            }
+            is NoteEvent.OnClickToCloseDeleteDialog -> {
+                previousState.copy(
+                    selectedNote = NoteUi.fromNote(null)
+                ) to NoteEffect.OnHideDeleteDialog
             }
 
         }

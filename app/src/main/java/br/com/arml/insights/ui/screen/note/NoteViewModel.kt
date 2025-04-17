@@ -43,7 +43,37 @@ class NoteViewModel @Inject constructor(
                     is NoteOperation.None -> {}
                 }
             }
+            is NoteEvent.OnDeleteNote -> { deleteNote() }
             else -> sendEventForEffect(event)
+        }
+    }
+
+    private fun deleteNote(){
+        viewModelScope.launch {
+            val noteForDelete = state.value.selectedNote
+
+            noteUiUseCase.deleteNote(noteForDelete).collect { response ->
+                response.update(_state) { state, res ->
+                    when(res){
+                        is Response.Loading -> {
+                            state.copy(operationState = res)
+                        }
+                        is Response.Success -> {
+                            sendEffect(NoteEffect.OnHideDeleteDialog)
+                            state.copy(
+                                selectedNote = resetNoteUi(),
+                                operationState = res
+                            )
+                        }
+                        is Response.Failure -> {
+                            val failureMsg = res.exception.message?:"Something went wrong"
+                            sendEffect(NoteEffect.ShowSnackBar(failureMsg))
+                            state.copy(operationState = res)
+                        }
+                    }
+                }
+            }
+
         }
     }
 
@@ -70,7 +100,7 @@ class NoteViewModel @Inject constructor(
                         is Response.Success -> {
                             sendEffect(NoteEffect.OnHideContentSheet)
                             state.copy(
-                                selectedNote = NoteUi.fromNote(null),
+                                selectedNote = resetNoteUi(),
                                 noteOperation = NoteOperation.None,
                                 operationState = res
                             )
@@ -108,7 +138,7 @@ class NoteViewModel @Inject constructor(
                         is Response.Success -> {
                             sendEffect(NoteEffect.OnHideContentSheet)
                             state.copy(
-                                selectedNote = NoteUi.fromNote(null),
+                                selectedNote = resetNoteUi(),
                                 noteOperation = NoteOperation.None,
                                 operationState = res
                             )
@@ -144,4 +174,6 @@ class NoteViewModel @Inject constructor(
             }
         }
     }
+
+    private fun resetNoteUi() = NoteUi.fromNote(null).copy(tagId = tagId)
 }
