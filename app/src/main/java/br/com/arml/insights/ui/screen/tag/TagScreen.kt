@@ -1,5 +1,6 @@
 package br.com.arml.insights.ui.screen.tag
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -32,10 +33,11 @@ import br.com.arml.insights.ui.component.common.InsightErrorSnackBar
 import br.com.arml.insights.ui.component.tag.TagBodyContent
 import br.com.arml.insights.ui.component.tag.TagSheetContent
 import br.com.arml.insights.ui.component.tag.TagDeleteAlert
-import br.com.arml.insights.ui.component.tag.TagFilterAndSort
+import br.com.arml.insights.ui.component.common.TagFilterAndSort
 import kotlinx.coroutines.flow.collectLatest
 
 
+@SuppressLint("ConfigurationScreenWidthHeight")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TagScreen(

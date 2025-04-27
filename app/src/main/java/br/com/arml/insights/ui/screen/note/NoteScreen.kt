@@ -1,5 +1,6 @@
 package br.com.arml.insights.ui.screen.note
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -31,10 +32,11 @@ import br.com.arml.insights.ui.component.common.InsightErrorSnackBar
 import br.com.arml.insights.ui.component.note.NoteBodyContent
 import br.com.arml.insights.ui.component.note.NoteDeleteAlert
 import br.com.arml.insights.ui.component.note.NoteSheetContent
-import br.com.arml.insights.ui.component.tag.TagFilterAndSort
+import br.com.arml.insights.ui.component.common.TagFilterAndSort
 import br.com.arml.insights.ui.screen.note.NoteEvent.OnClickToOpenDeleteDialog
 import br.com.arml.insights.utils.data.SearchNoteCategory
 
+@SuppressLint("ConfigurationScreenWidthHeight")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NoteScreen(
@@ -52,7 +54,7 @@ fun NoteScreen(
 
     val bottomSheetState = rememberBottomSheetScaffoldState()
     val configuration = LocalConfiguration.current
-    val targetPeekHeight = if(isVisibleContentSheet) configuration.screenHeightDp.dp * 1f else 0.dp
+    val targetPeekHeight = if(isVisibleContentSheet) configuration.screenHeightDp.dp * 0.8f else 0.dp
     val animatedPeekHeight by animateFloatAsState(
         targetValue = targetPeekHeight.value,
         animationSpec = tween(durationMillis = 500),

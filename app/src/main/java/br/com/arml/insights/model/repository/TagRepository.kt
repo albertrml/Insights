@@ -51,13 +51,5 @@ class TagRepository @Inject constructor(private val tagDao: TagDao){
 
     suspend fun isTagNameExists(tag: String) = tagDao.isTagNameExists(tag)
 
-    fun getTagById(id: Int) = flow{
-        emit(Response.Loading)
-        emit(
-            performDatabaseOperation {
-                tagDao.getById(id) ?: throw InsightException.TagNotFoundException()
-            }
-        )
-    }
-
+    suspend fun getTagById(index: Int) = tagDao.getById(index)
 }

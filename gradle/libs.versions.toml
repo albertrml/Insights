@@ -3,10 +3,10 @@ agp = "8.8.2"
 androidHilt = "2.55"
 colorpicker = "1.1.2"
 composeActivity = "1.10.1"
-composeBom = "2025.04.00"
+composeBom = "2025.04.01"
 composeHilt = "1.2.0"
 composeNavigation = "2.8.9"
-composeUiTextGoogleFonts = "1.7.8"
+composeUiTextGoogleFonts = "1.8.0"
 coreKtx = "1.16.0"
 espressoCore = "3.6.1"
 junit = "4.13.2"
@@ -15,7 +15,8 @@ kotlin = "2.0.20"
 kotlinKsp = "2.0.20-1.0.25"
 kotlinxCoroutines = "1.10.1"
 lifecycleRuntimeKtx = "2.8.7"
-roomKtx = "2.7.0"
+mockk = "1.14.0"
+roomKtx = "2.7.1"
 
 
 [libraries]
@@ -48,6 +49,7 @@ junit = { group = "junit", name = "junit", version.ref = "junit" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

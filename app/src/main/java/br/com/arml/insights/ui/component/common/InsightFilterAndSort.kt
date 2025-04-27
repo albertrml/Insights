@@ -1,4 +1,4 @@
-package br.com.arml.insights.ui.component.tag
+package br.com.arml.insights.ui.component.common
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -17,7 +17,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import br.com.arml.insights.R
-import br.com.arml.insights.ui.component.common.InsightOutlinedTextField
 
 @Composable
 fun TagFilterAndSort(
@@ -65,7 +64,10 @@ fun TagFilterAndSort(
 
         IconButton(
             modifier = Modifier,
-            onClick = onRefreshTags,
+            onClick = {
+                isAscending = true
+                onRefreshTags()
+            },
         ) {
             Icon(
                 modifier = Modifier.padding(horizontal = 6.dp),

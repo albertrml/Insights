@@ -63,7 +63,7 @@ class TagViewModel @Inject constructor(
                 return@launch
             }
 
-            if (tagUiUseCase.isTagNameExists(newTagUi.name)) {
+            if (tagUiUseCase.isTagNameExists(newTagUi.id, newTagUi.name)) {
                 sendEffect(TagEffect.ShowSnackBar(TagAlreadyExistsException().message))
                 _state.update { state ->
                     state.copy(operationState = Response.Failure(TagAlreadyExistsException()))
@@ -116,7 +116,7 @@ class TagViewModel @Inject constructor(
                 return@launch
             }
 
-            if (tagUiUseCase.isTagNameExists(updatedTagUi.name)) {
+            if (tagUiUseCase.isTagNameExists(updatedTagUi.id, updatedTagUi.name)) {
                 sendEffect(TagEffect.ShowSnackBar(TagAlreadyExistsException().message))
                 _state.update { state ->
                     state.copy(operationState = Response.Failure(TagAlreadyExistsException()))

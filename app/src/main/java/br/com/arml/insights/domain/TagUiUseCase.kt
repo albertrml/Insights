@@ -21,7 +21,12 @@ class TagUiUseCase @Inject constructor(private val tagRepository: TagRepository)
 
     fun insertTagUi(tagUi: TagUi) = tagRepository.insert(tagUi.toTag())
 
-    suspend fun isTagNameExists(tagName: String) = tagRepository.isTagNameExists(tagName)
+    suspend fun isTagNameExists(index: Int, tagName: String): Boolean  {
+        tagRepository.getTagById(index)?.let {
+            if(it.name == tagName) return false
+        }
+        return tagRepository.isTagNameExists(tagName)
+    }
 
     fun updateTagUi(tagUi: TagUi) = tagRepository.update(tagUi.toTag())
 
