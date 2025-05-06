@@ -36,7 +36,7 @@ fun TagForms(
 ){
 
     Column(
-        modifier=modifier
+        modifier=modifier.padding(bottom = 16.dp)
     ) {
 
         InsightOutlinedTextField(
@@ -57,6 +57,7 @@ fun TagForms(
         )
 
         InsightColorPicker(
+            title = stringResource(id = R.string.tag_screen_title),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 12.dp)

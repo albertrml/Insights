@@ -54,7 +54,8 @@ fun InsightTextField(
         )
         Text(
             modifier = Modifier
-                .align(Alignment.End),
+                .align(Alignment.End)
+                .padding(6.dp),
             text = "$currentTextSize/$maxSize",
             style = MaterialTheme.typography.bodyMedium
         )

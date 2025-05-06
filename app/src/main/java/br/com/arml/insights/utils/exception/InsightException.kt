@@ -14,7 +14,7 @@ sealed class TagException(override val message: String): Exception() {
 sealed class NoteException(override val message: String): Exception() {
     class NoteIsNullException: NoteException( "Note can't be null" )
     class NoteTagIdException: NoteException( "Note tag id can't be negative" )
-    class NoteTitleSizeException: NoteException( "Note title must be between 3 and 20 characters" )
+    class NoteTitleSizeException: NoteException( "Note title must be between 3 and 30 characters" )
     class NoteBodySizeException: NoteException( "Note body must be between 0 and 1000 characters" )
-    class NoteSituationSizeException: NoteException( "Note situation must be between 3 and 20 characters" )
+    class NoteSituationSizeException: NoteException( "Note situation must be between 3 and 30 characters" )
 }

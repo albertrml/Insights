@@ -37,6 +37,7 @@ import com.github.skydoves.colorpicker.compose.rememberColorPickerController
 @Composable
 fun InsightColorPicker(
     modifier: Modifier = Modifier,
+    title: String,
     color: Color,
     onChangeColor: (Color) -> Unit
 ){
@@ -50,25 +51,47 @@ fun InsightColorPicker(
     {
         Text(
             modifier = Modifier.padding(12.dp).align(alignment = Alignment.CenterHorizontally),
-            text = stringResource(id = R.string.colorpicker_title_label),
-            style = MaterialTheme.typography.bodyLarge
+            text = stringResource(id = R.string.colorpicker_title_label,title),
+            style = MaterialTheme.typography.headlineSmall
         )
-        HsvColorPicker(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(250.dp)
-                .padding(12.dp),
-            controller = controller,
-            onColorChanged = { colorEnvelope: ColorEnvelope ->
-                onChangeColor(colorEnvelope.color)
-            },
-            initialColor = color,
-        )
+
+        Row {
+
+            HsvColorPicker(
+                modifier = Modifier
+                    .weight(1f)
+                    .height(200.dp)
+                    .padding(12.dp),
+                controller = controller,
+                onColorChanged = { colorEnvelope: ColorEnvelope ->
+                    onChangeColor(colorEnvelope.color)
+                },
+                initialColor = color,
+            )
+
+            Column(
+                modifier = Modifier.height(200.dp).padding(12.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    modifier = Modifier.padding(vertical = 16.dp),
+                    text = stringResource(id = R.string.colorpicker_selected_color_label),
+                    style = MaterialTheme.typography.bodyLarge
+                )
+                Box(
+                    modifier = Modifier
+                        .background(color = color)
+                        .size(40.dp)
+                )
+            }
+
+        }
 
         Text(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 50.dp)
+                .padding(horizontal = 30.dp)
                 .align(alignment = Alignment.CenterHorizontally),
             text = stringResource(id = R.string.colorpicker_alpha_label),
             style = MaterialTheme.typography.bodyLarge
@@ -77,8 +100,8 @@ fun InsightColorPicker(
         AlphaSlider(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 50.dp, vertical = 6.dp)
-                .height(35.dp),
+                .padding(horizontal = 30.dp, vertical = 6.dp)
+                .height(30.dp),
             borderRadius = 6.dp,
             borderSize = 5.dp,
             wheelRadius = 18.dp,
@@ -90,7 +113,7 @@ fun InsightColorPicker(
         Text(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 50.dp)
+                .padding(horizontal = 30.dp)
                 .align(alignment = Alignment.CenterHorizontally),
             text = stringResource(id = R.string.colorpicker_brightness_label),
             style = MaterialTheme.typography.bodyLarge
@@ -99,8 +122,8 @@ fun InsightColorPicker(
         BrightnessSlider(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 50.dp, vertical = 6.dp)
-                .height(35.dp),
+                .padding(horizontal = 30.dp, vertical = 6.dp)
+                .height(30.dp),
             borderRadius = 6.dp,
             borderSize = 5.dp,
             wheelRadius = 18.dp,
@@ -109,24 +132,7 @@ fun InsightColorPicker(
             controller = controller,
         )
 
-        Row (
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(12.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Spacer(Modifier.weight(1f))
-            Text(
-                modifier = Modifier.padding(horizontal = 12.dp),
-                text = stringResource(id = R.string.colorpicker_selected_color_label),
-                style = MaterialTheme.typography.bodyLarge
-            )
-            Box(
-                modifier = Modifier
-                    .background(color = color)
-                    .size(40.dp)
-            )
-        }
+        Spacer(modifier = Modifier.padding(12.dp))
     }
 }
 
@@ -140,6 +146,7 @@ fun ColorPickerPreview(){
 
     var tagUi by rememberSaveable(stateSaver = colorSaver) { mutableStateOf(TagUi.fromTag(null).color) }
     InsightColorPicker(
+        title = "Tag",
         modifier = Modifier
             .border(
                 width = 1.dp,

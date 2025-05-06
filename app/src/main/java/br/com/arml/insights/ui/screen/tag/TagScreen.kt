@@ -1,8 +1,5 @@
 package br.com.arml.insights.ui.screen.tag
 
-import android.annotation.SuppressLint
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,15 +10,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -36,56 +28,39 @@ import br.com.arml.insights.ui.component.tag.TagDeleteAlert
 import br.com.arml.insights.ui.component.common.TagFilterAndSort
 import kotlinx.coroutines.flow.collectLatest
 
-
-@SuppressLint("ConfigurationScreenWidthHeight")
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TagScreen(
     modifier: Modifier = Modifier,
-    onNavigateTo: (Int,String) -> Unit
+    onNavigateTo: (Int, String) -> Unit,
 ){
     val viewModel = hiltViewModel<TagViewModel>()
-    val tagState by viewModel.state.collectAsStateWithLifecycle()
-    var isVisibleContentSheet by rememberSaveable { mutableStateOf(false) }
-    var isAlertDialogVisible by rememberSaveable { mutableStateOf(false) }
-    var searchQuery by rememberSaveable { mutableStateOf("")}
-
-    val bottomSheetState = rememberBottomSheetScaffoldState()
-    val configuration = LocalConfiguration.current
-    val targetPeekHeight = if(isVisibleContentSheet) configuration.screenHeightDp.dp * 1f else 0.dp
-    val animatedPeekHeight by animateFloatAsState(
-        targetValue = targetPeekHeight.value,
-        animationSpec = tween(durationMillis = 500),
+    TagScreenPortrait(
+        viewModel = viewModel,
+        modifier = modifier,
+        onNavigateTo = onNavigateTo
     )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TagScreenPortrait(
+    viewModel: TagViewModel,
+    modifier: Modifier = Modifier,
+    onNavigateTo: (Int, String) -> Unit,
+){
+    val tagState by viewModel.state.collectAsStateWithLifecycle()
+    val tagScreenState = rememberTagScreenState()
 
     LaunchedEffect(key1 = Unit) {
         viewModel.effect.collectLatest { effect ->
-            when(effect){
-                is TagEffect.OnShowContentSheet -> {
-                    isVisibleContentSheet = true
-                }
-                is TagEffect.OnHideBottomSheet -> {
-                    isVisibleContentSheet = false
-                }
-                is TagEffect.OnShowDeleteDialog -> {
-                    isAlertDialogVisible = true
-                }
-                is TagEffect.OnHideDeleteDialog -> {
-                    isAlertDialogVisible = false
-                }
-
-                is TagEffect.ShowSnackBar -> {
-                    bottomSheetState.snackbarHostState.showSnackbar(effect.message)
-                }
-                else -> {}
-            }
+            effect?.let { tagScreenState.onEffect(it) }
         }
     }
 
     BottomSheetScaffold(
-        modifier = modifier.padding(top = 16.dp),
-        scaffoldState = bottomSheetState,
-        sheetPeekHeight = animatedPeekHeight.dp,
+        modifier = modifier.padding(vertical = 16.dp),
+        scaffoldState = tagScreenState.bottomSheetState,
+        sheetPeekHeight = tagScreenState.getSheetPeekHeight(),
         sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
         snackbarHost = {
             InsightErrorSnackBar(
@@ -93,7 +68,7 @@ fun TagScreen(
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
                     .padding(top = 32.dp),
-                hostState = bottomSheetState.snackbarHostState
+                hostState = tagScreenState.bottomSheetState.snackbarHostState
             )
         },
         sheetContent = {
@@ -140,13 +115,13 @@ fun TagScreen(
                     else
                         viewModel.onEvent(TagEvent.OnSortTagsByNameDescending)
                 },
-                searchQuery = searchQuery,
+                searchQuery = tagScreenState.searchQuery,
                 onSearchTextChange = {
-                    searchQuery = it
+                    tagScreenState.searchQuery = it
                     viewModel.onEvent(TagEvent.OnSearch(it))
                 },
                 onRefreshTags = {
-                    searchQuery = ""
+                    tagScreenState.searchQuery = ""
                     viewModel.onEvent(TagEvent.OnFetchAllItems)
                 }
             )
@@ -169,34 +144,17 @@ fun TagScreen(
                 }
             )
 
-            TagDelete(
+            TagDeleteAlert(
                 modifier = modifier,
-                tag = tagState.selectedTagUi?:TagUi.fromTag(null),
-                isVisibility = isAlertDialogVisible,
+                tagName = (tagState.selectedTagUi?:TagUi.fromTag(null)).name,
+                showDialog = tagScreenState.isAlertDialogVisible,
                 onDismissRequest = {
                     viewModel.onEvent(TagEvent.OnClickToCloseDeleteDialog)
                 },
-                onConfirmationRequest = {
+                onConfirmation = {
                     viewModel.onEvent(TagEvent.OnDelete)
                 }
             )
         }
     }
-}
-
-@Composable
-fun TagDelete(
-    modifier: Modifier = Modifier,
-    tag : TagUi,
-    isVisibility: Boolean,
-    onDismissRequest: () -> Unit = {},
-    onConfirmationRequest: () -> Unit = {},
-){
-    TagDeleteAlert(
-        modifier = modifier,
-        tagName = tag.name,
-        showDialog = isVisibility,
-        onDismissRequest = onDismissRequest,
-        onConfirmation = onConfirmationRequest
-    )
 }

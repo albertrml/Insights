@@ -72,7 +72,7 @@ fun NoteSheetContent(
                     nameField = "Title",
                     text = selectedNote.title,
                     onChangeText = onEditTitle,
-                    maxSize = 20,
+                    maxSize = 30,
                 )
 
                 InsightTextField(
@@ -81,7 +81,7 @@ fun NoteSheetContent(
                     text = selectedNote.situation,
                     onChangeText = onEditSituation,
                     textStyle = MaterialTheme.typography.headlineSmall,
-                    maxSize = 20,
+                    maxSize = 30,
                     maxLines = 2,
                 )
             },
@@ -95,11 +95,12 @@ fun NoteSheetContent(
         )
 
         InsightButton(
-            modifier = Modifier.align(Alignment.CenterHorizontally),
+            modifier = Modifier.align(Alignment.CenterHorizontally).padding(bottom = 16.dp),
             text = stringResource(R.string.note_forms_save_button),
             onClick = { onClickSave(selectedNote) },
             iconRes = R.drawable.ic_save
         )
+
     }
 }
 

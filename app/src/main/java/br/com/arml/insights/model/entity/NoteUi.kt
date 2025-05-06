@@ -55,13 +55,13 @@ data class NoteUi (
             noteUi.tagId < 0 ->
                 false to NoteException.NoteTagIdException()
 
-            noteUi.title.length !in 3..20 ->
+            noteUi.title.length !in 3..30 ->
                 false to NoteException.NoteTitleSizeException()
 
             noteUi.body.length !in 0..1000 ->
                 false to NoteException.NoteBodySizeException()
 
-            noteUi.situation.length !in 0..20 ->
+            noteUi.situation.length !in 0..30 ->
                 false to NoteException.NoteSituationSizeException()
 
             else -> true to null

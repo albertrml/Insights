@@ -1,8 +1,6 @@
 package br.com.arml.insights.ui.screen.note
 
 import android.annotation.SuppressLint
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,15 +11,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -47,46 +40,18 @@ fun NoteScreen(
 ){
     val viewModel = hiltViewModel<NoteViewModel>()
     val noteState by viewModel.state.collectAsStateWithLifecycle()
-
-    var isVisibleContentSheet by rememberSaveable { mutableStateOf(false) }
-    var isAlertDialogVisible by rememberSaveable { mutableStateOf(false) }
-    var searchQuery by rememberSaveable { mutableStateOf("")}
-
-    val bottomSheetState = rememberBottomSheetScaffoldState()
-    val configuration = LocalConfiguration.current
-    val targetPeekHeight = if(isVisibleContentSheet) configuration.screenHeightDp.dp * 0.8f else 0.dp
-    val animatedPeekHeight by animateFloatAsState(
-        targetValue = targetPeekHeight.value,
-        animationSpec = tween(durationMillis = 500),
-    )
+    val tagScreenState = rememberNoteScreenState()
 
     LaunchedEffect(Unit) {
         viewModel.effect.collect { effect ->
-            when(effect){
-                is NoteEffect.OnShowContentSheet -> {
-                    isVisibleContentSheet = true
-                }
-                is NoteEffect.OnHideContentSheet -> {
-                    isVisibleContentSheet = false
-                }
-                is NoteEffect.OnShowDeleteDialog -> {
-                    isAlertDialogVisible = true
-                }
-                is NoteEffect.OnHideDeleteDialog -> {
-                    isAlertDialogVisible = false
-                }
-                is NoteEffect.ShowSnackBar -> {
-                    bottomSheetState.snackbarHostState.showSnackbar(effect.message)
-                }
-                else -> {}
-            }
+            effect?.let { tagScreenState.onEffect(it) }
         }
     }
 
     BottomSheetScaffold(
         modifier = modifier.padding(top = 16.dp),
-        scaffoldState = bottomSheetState,
-        sheetPeekHeight = animatedPeekHeight.dp,
+        scaffoldState = tagScreenState.bottomSheetState,
+        sheetPeekHeight = tagScreenState.getSheetPeekHeight(),
         sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
         snackbarHost = {
             InsightErrorSnackBar(
@@ -94,7 +59,7 @@ fun NoteScreen(
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
                     .padding(top = 32.dp),
-                hostState = bottomSheetState.snackbarHostState
+                hostState = tagScreenState.bottomSheetState.snackbarHostState
             )
         },
         sheetContent = {
@@ -143,13 +108,13 @@ fun NoteScreen(
                     else
                         viewModel.onEvent(NoteEvent.OnSortTitleByDescending)
                 },
-                searchQuery = searchQuery,
+                searchQuery = tagScreenState.searchQuery,
                 onSearchTextChange = {
-                    searchQuery = it
+                    tagScreenState.searchQuery = it
                     viewModel.onEvent(NoteEvent.OnSearch(it, SearchNoteCategory.ByTitle))
                 },
                 onRefreshTags = {
-                    searchQuery = ""
+                    tagScreenState.searchQuery = ""
                     viewModel.onEvent(NoteEvent.OnFetchAllNotes)
                 }
             )
@@ -173,7 +138,7 @@ fun NoteScreen(
             NoteDeleteAlert(
                 modifier = modifier,
                 note = noteState.selectedNote,
-                showDialog = isAlertDialogVisible,
+                showDialog = tagScreenState.isAlertDialogVisible,
                 onDismissRequest = {
                     viewModel.onEvent(NoteEvent.OnClickToCloseDeleteDialog)
                 },
