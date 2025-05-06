@@ -2,6 +2,7 @@ package br.com.arml.insights.ui.component.common
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -35,7 +36,6 @@ fun InsightTextField(
         TextField(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(6.dp)
                 .background(color = MaterialTheme.colorScheme.background),
             value = text,
             onValueChange = { newText ->
@@ -52,10 +52,10 @@ fun InsightTextField(
             ),
             maxLines = maxLines
         )
+        Spacer(modifier = Modifier.padding(4.dp))
         Text(
             modifier = Modifier
-                .align(Alignment.End)
-                .padding(6.dp),
+                .align(Alignment.End),
             text = "$currentTextSize/$maxSize",
             style = MaterialTheme.typography.bodyMedium
         )

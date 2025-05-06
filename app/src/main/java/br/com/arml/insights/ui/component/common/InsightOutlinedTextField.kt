@@ -32,7 +32,7 @@ fun InsightOutlinedTextField(
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 6.dp),
+                .padding(bottom = 8.dp),
             value = text,
             onValueChange = { newText ->
                 if (newText.length <= maxSize) {

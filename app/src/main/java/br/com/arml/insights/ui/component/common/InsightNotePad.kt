@@ -47,7 +47,7 @@ fun InsightNotePad(
         ),
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
 

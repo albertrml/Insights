@@ -25,7 +25,7 @@ import br.com.arml.insights.ui.component.common.InsightErrorSnackBar
 import br.com.arml.insights.ui.component.tag.TagBodyContent
 import br.com.arml.insights.ui.component.tag.TagSheetContent
 import br.com.arml.insights.ui.component.tag.TagDeleteAlert
-import br.com.arml.insights.ui.component.common.TagFilterAndSort
+import br.com.arml.insights.ui.component.common.InsightFilterAndSort
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -66,15 +66,14 @@ fun TagScreenPortrait(
             InsightErrorSnackBar(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-                    .padding(top = 32.dp),
+                    .padding(16.dp),
                 hostState = tagScreenState.bottomSheetState.snackbarHostState
             )
         },
         sheetContent = {
             tagState.selectedTagUi?.let { selectedTagUi ->
                 TagSheetContent(
-                    modifier = modifier.padding(horizontal = 8.dp),
+                    modifier = modifier.padding(horizontal = 16.dp),
                     selectedTagUi = selectedTagUi,
                     onEditName = { viewModel.onEvent(TagEvent.OnEditName(it)) },
                     onEditDescription = { viewModel.onEvent(TagEvent.OnEditDescription(it)) },
@@ -100,14 +99,13 @@ fun TagScreenPortrait(
             HeaderScreen(
                 title = stringResource(R.string.tag_screen_title),
                 iconResId = R.drawable.ic_tag,
-                modifier = Modifier
-                    .padding(top = 24.dp),
+                modifier = Modifier.padding(top = 24.dp),
                 onAddItem = {
                     viewModel.onEvent(TagEvent.OnClickToOpenSheet(null,TagOperation.OnInsert))
                 }
             )
 
-            TagFilterAndSort(
+            InsightFilterAndSort(
                 modifier = modifier,
                 sortedBy = { ascending ->
                     if (ascending)

@@ -44,18 +44,18 @@ fun NoteSheetContent(
     ) {
 
         Row(
-            modifier = modifier
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.End,
             verticalAlignment = Alignment.CenterVertically
         )
         {
             IconButton(
-                modifier = Modifier,
                 onClick = onClickClose
             ) {
                 Icon(
-                    modifier = modifier.size(50.dp),
+                    modifier = Modifier.size(42.dp),
                     imageVector = Icons.Default.Close,
                     contentDescription = stringResource(
                         id = R.string.note_screen_close_menu,
@@ -68,7 +68,7 @@ fun NoteSheetContent(
         InsightNotePad(
             header = {
                 InsightTextField(
-                    modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+                    modifier = Modifier.fillMaxWidth(),
                     nameField = "Title",
                     text = selectedNote.title,
                     onChangeText = onEditTitle,
@@ -85,7 +85,7 @@ fun NoteSheetContent(
                     maxLines = 2,
                 )
             },
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 16.dp),
             noteName = "What is your insight?",
             text = selectedNote.body,
             onChangeText = onEditBody,

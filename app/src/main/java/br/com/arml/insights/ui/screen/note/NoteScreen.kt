@@ -25,7 +25,7 @@ import br.com.arml.insights.ui.component.common.InsightErrorSnackBar
 import br.com.arml.insights.ui.component.note.NoteBodyContent
 import br.com.arml.insights.ui.component.note.NoteDeleteAlert
 import br.com.arml.insights.ui.component.note.NoteSheetContent
-import br.com.arml.insights.ui.component.common.TagFilterAndSort
+import br.com.arml.insights.ui.component.common.InsightFilterAndSort
 import br.com.arml.insights.ui.screen.note.NoteEvent.OnClickToOpenDeleteDialog
 import br.com.arml.insights.utils.data.SearchNoteCategory
 
@@ -57,8 +57,7 @@ fun NoteScreen(
             InsightErrorSnackBar(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-                    .padding(top = 32.dp),
+                    .padding(horizontal = 16.dp),
                 hostState = tagScreenState.bottomSheetState.snackbarHostState
             )
         },
@@ -100,7 +99,7 @@ fun NoteScreen(
                 }
             )
 
-            TagFilterAndSort(
+            InsightFilterAndSort(
                 modifier = modifier,
                 sortedBy = { ascending ->
                     if (ascending)
