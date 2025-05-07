@@ -5,9 +5,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomSheetScaffold
@@ -31,26 +33,13 @@ import br.com.arml.insights.ui.component.tag.TagSheetContent
 import br.com.arml.insights.ui.theme.dimens
 import kotlinx.coroutines.flow.collectLatest
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TagScreen(
     modifier: Modifier = Modifier,
     onNavigateTo: (Int, String) -> Unit,
 ){
     val viewModel = hiltViewModel<TagViewModel>()
-    TagScreenPortrait(
-        viewModel = viewModel,
-        modifier = modifier,
-        onNavigateTo = onNavigateTo
-    )
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun TagScreenPortrait(
-    viewModel: TagViewModel,
-    modifier: Modifier = Modifier,
-    onNavigateTo: (Int, String) -> Unit,
-){
     val tagState by viewModel.state.collectAsStateWithLifecycle()
     val tagScreenState = rememberTagScreenState()
 
@@ -62,9 +51,11 @@ fun TagScreenPortrait(
 
     BottomSheetScaffold(
         modifier = modifier
-            ,
+            .consumeWindowInsets(WindowInsets.safeDrawing)
+            .fillMaxSize(),
         scaffoldState = tagScreenState.bottomSheetState,
-        sheetPeekHeight = tagScreenState.getSheetPeekHeight(),
+        sheetSwipeEnabled = false,
+        sheetPeekHeight = tagScreenState.getAnimatedSheetPeekHeight(),
         sheetShape = RoundedCornerShape(
             topStart = MaterialTheme.dimens.medium,
             topEnd = MaterialTheme.dimens.medium

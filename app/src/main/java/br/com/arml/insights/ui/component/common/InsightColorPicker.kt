@@ -83,6 +83,8 @@ fun InsightColorPicker(
                 initialColor = color,
             )
 
+            Spacer(modifier = Modifier.padding(MaterialTheme.dimens.small))
+
             Column(
                 modifier = Modifier.fillMaxHeight(),
                 verticalArrangement = Arrangement.Center,

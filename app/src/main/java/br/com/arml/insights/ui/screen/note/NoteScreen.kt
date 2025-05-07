@@ -45,11 +45,11 @@ fun NoteScreen(
 ){
     val viewModel = hiltViewModel<NoteViewModel>()
     val noteState by viewModel.state.collectAsStateWithLifecycle()
-    val tagScreenState = rememberNoteScreenState()
+    val noteScreenState = rememberNoteScreenState()
 
     LaunchedEffect(Unit) {
         viewModel.effect.collect { effect ->
-            effect?.let { tagScreenState.onEffect(it) }
+            effect?.let { noteScreenState.onEffect(it) }
         }
     }
 
@@ -57,8 +57,9 @@ fun NoteScreen(
         modifier = modifier
             .consumeWindowInsets(WindowInsets.safeDrawing)
             .fillMaxSize(),
-        scaffoldState = tagScreenState.bottomSheetState,
-        sheetPeekHeight = tagScreenState.getSheetPeekHeight(),
+        scaffoldState = noteScreenState.bottomSheetState,
+        sheetSwipeEnabled = false,
+        sheetPeekHeight = noteScreenState.getAnimatedSheetPeekHeight(),
         sheetShape = RoundedCornerShape(
             topStart = MaterialTheme.dimens.medium,
             topEnd = MaterialTheme.dimens.medium
@@ -69,7 +70,7 @@ fun NoteScreen(
                     .fillMaxWidth()
                     .padding(MaterialTheme.dimens.medium)
                     .windowInsetsPadding(WindowInsets.navigationBars),
-                hostState = tagScreenState.bottomSheetState.snackbarHostState
+                hostState = noteScreenState.bottomSheetState.snackbarHostState
             )
         },
         sheetContent = {
@@ -120,13 +121,13 @@ fun NoteScreen(
                     else
                         viewModel.onEvent(NoteEvent.OnSortTitleByDescending)
                 },
-                searchQuery = tagScreenState.searchQuery,
+                searchQuery = noteScreenState.searchQuery,
                 onSearchTextChange = {
-                    tagScreenState.searchQuery = it
+                    noteScreenState.searchQuery = it
                     viewModel.onEvent(NoteEvent.OnSearch(it, SearchNoteCategory.ByTitle))
                 },
                 onRefreshTags = {
-                    tagScreenState.searchQuery = ""
+                    noteScreenState.searchQuery = ""
                     viewModel.onEvent(NoteEvent.OnFetchAllNotes)
                 }
             )
@@ -150,7 +151,7 @@ fun NoteScreen(
             NoteDeleteAlert(
                 modifier = modifier,
                 note = noteState.selectedNote,
-                showDialog = tagScreenState.isAlertDialogVisible,
+                showDialog = noteScreenState.isAlertDialogVisible,
                 onDismissRequest = {
                     viewModel.onEvent(NoteEvent.OnClickToCloseDeleteDialog)
                 },

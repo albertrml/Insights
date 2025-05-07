@@ -2,6 +2,10 @@ package br.com.arml.insights.ui.screen.tag
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberBottomSheetScaffoldState
@@ -42,12 +46,27 @@ class TagScreenState @OptIn(ExperimentalMaterial3Api::class) constructor(
     }
 
     @Composable
-    fun getSheetPeekHeight() = animateFloatAsState(
-        targetValue = if(isVisibleContentSheet) {
-            (LocalConfiguration.current.screenHeightDp.dp * 1.0f).value
-        } else { 0.0f },
+    fun getAnimatedSheetPeekHeight() = animateFloatAsState(
+        targetValue = getSheetPeekHeight(),
         animationSpec = tween(durationMillis = 500),
     ).value.dp
+
+    @Composable
+    private fun getSheetPeekHeight() = if(isVisibleContentSheet) {
+        val deviceHeight = LocalConfiguration.current.screenHeightDp
+        val navigationBarHeight = WindowInsets
+            .navigationBars
+            .asPaddingValues()
+            .calculateBottomPadding()
+            .value
+        val statusBarHeight = WindowInsets
+            .statusBars
+            .asPaddingValues()
+            .calculateTopPadding()
+            .value
+
+        (deviceHeight + navigationBarHeight + statusBarHeight) * 1.0f
+    } else { 0f }
 
 }
 

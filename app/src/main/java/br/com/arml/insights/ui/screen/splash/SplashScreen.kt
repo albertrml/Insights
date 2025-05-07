@@ -27,7 +27,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.com.arml.insights.R
-import br.com.arml.insights.ui.theme.BlueLight
 import br.com.arml.insights.ui.theme.Yellow100
 import br.com.arml.insights.ui.theme.Yellow800
 import kotlinx.coroutines.delay
@@ -74,7 +73,10 @@ fun SplashScreen(
     )
 
     val animatedColor by animateColorAsState(
-        targetValue = if (colorStart.value == BlueLight) Yellow800 else Yellow100,
+        targetValue = if (colorStart.value == MaterialTheme.colorScheme.primary)
+            Yellow800
+        else
+            Yellow100,
         animationSpec = infiniteRepeatable(
             animation = tween(durationMillis = 2000, easing = LinearEasing),
             repeatMode = RepeatMode.Reverse
