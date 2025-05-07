@@ -59,7 +59,7 @@ fun NoteScreen(
             .fillMaxSize(),
         scaffoldState = noteScreenState.bottomSheetState,
         sheetSwipeEnabled = false,
-        sheetPeekHeight = noteScreenState.getAnimatedSheetPeekHeight(),
+        sheetPeekHeight = noteScreenState.rememberNoteSheetContent(),
         sheetShape = RoundedCornerShape(
             topStart = MaterialTheme.dimens.medium,
             topEnd = MaterialTheme.dimens.medium

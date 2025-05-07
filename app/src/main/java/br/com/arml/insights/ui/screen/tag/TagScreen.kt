@@ -55,7 +55,7 @@ fun TagScreen(
             .fillMaxSize(),
         scaffoldState = tagScreenState.bottomSheetState,
         sheetSwipeEnabled = false,
-        sheetPeekHeight = tagScreenState.getAnimatedSheetPeekHeight(),
+        sheetPeekHeight = tagScreenState.rememberSheetContent(),
         sheetShape = RoundedCornerShape(
             topStart = MaterialTheme.dimens.medium,
             topEnd = MaterialTheme.dimens.medium
