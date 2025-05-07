@@ -37,6 +37,7 @@ fun SplashScreen(
     modifier: Modifier = Modifier,
     onNavigateTo: () -> Unit = {}
 ){
+
     LaunchedEffect(Unit) {
         delay(5_000)
         onNavigateTo()

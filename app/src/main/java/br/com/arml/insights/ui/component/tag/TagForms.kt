@@ -1,10 +1,14 @@
 package br.com.arml.insights.ui.component.tag
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import br.com.arml.insights.R
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -16,12 +20,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import br.com.arml.insights.model.entity.TagUi
 import br.com.arml.insights.model.entity.TagUiSaver
 import br.com.arml.insights.ui.component.common.InsightColorPicker
 import br.com.arml.insights.ui.component.common.InsightButton
 import br.com.arml.insights.ui.component.common.InsightOutlinedTextField
+import br.com.arml.insights.ui.theme.dimens
 
 
 @OptIn(ExperimentalStdlibApi::class)
@@ -36,11 +40,12 @@ fun TagForms(
 ){
 
     Column(
-        modifier=modifier.padding(bottom = 16.dp)
+        modifier=modifier.verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.small)
     ) {
 
         InsightOutlinedTextField(
-            modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp),
+            modifier = Modifier.fillMaxWidth(),
             nameField = stringResource(id = R.string.tag_forms_name_field_label),
             maxSize = 20,
             text = tagUi.name,
@@ -48,7 +53,7 @@ fun TagForms(
         )
 
         InsightOutlinedTextField(
-            modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp),
+            modifier = Modifier.fillMaxWidth(),
             nameField = stringResource(id = R.string.tag_forms_description_field_label),
             maxSize = 150,
             maxLines = 3,
@@ -57,15 +62,15 @@ fun TagForms(
         )
 
         InsightColorPicker(
-            title = stringResource(id = R.string.tag_screen_title),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 12.dp)
                 .border(
-                    width = 1.dp,
+                    width = MaterialTheme.dimens.extraSmallThickness,
                     color = MaterialTheme.colorScheme.outline,
                     shape = MaterialTheme.shapes.small
-                ),
+                )
+                .padding(MaterialTheme.dimens.medium),
+            title = stringResource(id = R.string.tag_screen_title),
             color = tagUi.color,
             onChangeColor = { color -> onEditColor(color)}
         )
@@ -78,10 +83,12 @@ fun TagForms(
                 onClickSave(tagUi)
             }
         )
+
+        Spacer(modifier = Modifier.padding(MaterialTheme.dimens.small))
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun TagFormPreview(){
     var tagUi by rememberSaveable(stateSaver = TagUiSaver) {
@@ -89,7 +96,7 @@ fun TagFormPreview(){
     }
 
     TagForms(
-        modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
+        modifier = Modifier.padding(MaterialTheme.dimens.medium),
         tagUi = tagUi,
         onEditName = { tagUi = tagUi.copy(name = it) },
         onEditDescription = { tagUi = tagUi.copy(description = it) },

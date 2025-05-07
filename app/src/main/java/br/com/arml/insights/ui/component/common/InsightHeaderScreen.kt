@@ -20,9 +20,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
 import br.com.arml.insights.R
-import br.com.arml.insights.ui.theme.Gray500
+import br.com.arml.insights.ui.theme.dimens
 
 @Composable
 fun HeaderScreen(
@@ -37,10 +37,10 @@ fun HeaderScreen(
         Row(
             modifier = Modifier,
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.small)
         ) {
             Icon(
-                modifier = Modifier.size(42.dp),
+                modifier = Modifier.size(MaterialTheme.dimens.icon),
                 imageVector = ImageVector.vectorResource(iconResId),
                 contentDescription = stringResource(R.string.note_screen_title),
                 tint = MaterialTheme.colorScheme.onSurface
@@ -55,14 +55,27 @@ fun HeaderScreen(
                 onClick = onAddItem
             ) {
                 Icon(
-                    modifier = Modifier.size(42.dp),
+                    modifier = Modifier.size(MaterialTheme.dimens.icon),
                     imageVector = Icons.Default.AddCircle,
                     contentDescription = stringResource(R.string.header_screen_button,title),
                     tint = MaterialTheme.colorScheme.primary
                 )
             }
         }
-        Spacer(Modifier.height(8.dp))
-        HorizontalDivider(Modifier, 2.dp, Gray500)
+        Spacer(Modifier.height(MaterialTheme.dimens.small))
+        HorizontalDivider(
+            modifier = Modifier,
+            thickness = MaterialTheme.dimens.smallThickness,
+            color = MaterialTheme.colorScheme.onSurface
+        )
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun HeaderScreenPreview(){
+    HeaderScreen(
+        title = "Notes",
+        iconResId = R.drawable.ic_note
+    )
 }

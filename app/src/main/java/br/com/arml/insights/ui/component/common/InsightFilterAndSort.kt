@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -18,8 +19,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
 import br.com.arml.insights.R
+import br.com.arml.insights.ui.theme.dimens
 
 @Composable
 fun InsightFilterAndSort(
@@ -38,7 +40,7 @@ fun InsightFilterAndSort(
     Row(
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.Top,
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.medium)
     ){
 
         InsightOutlinedTextField(
@@ -53,16 +55,16 @@ fun InsightFilterAndSort(
 
         IconButton(
             modifier = Modifier
-                .padding(top = 16.dp)
-                .size(42.dp)
-                .clip(RoundedCornerShape(8.dp)),
+                .padding(top = MaterialTheme.dimens.medium)
+                .size(MaterialTheme.dimens.icon)
+                .clip(RoundedCornerShape(MaterialTheme.dimens.mediumCornerRadius)),
             onClick = {
                 isAscending = !isAscending
                 sortedBy(isAscending)
             },
         ) {
             Icon(
-                modifier = Modifier.padding(8.dp),
+                modifier = Modifier.padding(MaterialTheme.dimens.small),
                 imageVector = ImageVector.vectorResource(id = imageSort),
                 contentDescription = null
             )
@@ -70,9 +72,9 @@ fun InsightFilterAndSort(
 
         IconButton(
             modifier = Modifier
-                .padding(top = 16.dp)
-                .size(42.dp)
-                .clip(RoundedCornerShape(8.dp)),
+                .padding(top = MaterialTheme.dimens.medium)
+                .size(MaterialTheme.dimens.icon)
+                .clip(RoundedCornerShape(MaterialTheme.dimens.mediumCornerRadius)),
             onClick = {
                 isAscending = true
                 onRefreshTags()
@@ -87,4 +89,16 @@ fun InsightFilterAndSort(
 
     }
 
+}
+
+@Preview(showBackground = true)
+@Composable
+fun InsightFilterAndSortPreview(){
+    InsightFilterAndSort(
+        modifier = Modifier.padding(horizontal = MaterialTheme.dimens.medium),
+        sortedBy = {},
+        searchQuery = "",
+        onSearchTextChange = {},
+        onRefreshTags = {}
+    )
 }

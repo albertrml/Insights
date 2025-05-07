@@ -1,11 +1,16 @@
 package br.com.arml.insights.ui.component.note
 
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
@@ -20,12 +25,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import br.com.arml.insights.R
 import br.com.arml.insights.model.entity.NoteUi
 import br.com.arml.insights.ui.component.common.InsightButton
 import br.com.arml.insights.ui.component.common.InsightNotePad
 import br.com.arml.insights.ui.component.common.InsightTextField
+import br.com.arml.insights.ui.theme.dimens
 
 
 @Composable
@@ -39,14 +44,15 @@ fun NoteSheetContent(
     onClickSave: (NoteUi) -> Unit = {}
 ){
     Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = modifier.scrollable(
+            state = rememberScrollState(),
+            orientation = Orientation.Vertical
+        ),
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.small),
     ) {
 
         Row(
-            modifier = Modifier
-                .padding(horizontal = 16.dp)
-                .fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.End,
             verticalAlignment = Alignment.CenterVertically
         )
@@ -55,7 +61,7 @@ fun NoteSheetContent(
                 onClick = onClickClose
             ) {
                 Icon(
-                    modifier = Modifier.size(42.dp),
+                    modifier = Modifier.size(MaterialTheme.dimens.icon),
                     imageVector = Icons.Default.Close,
                     contentDescription = stringResource(
                         id = R.string.note_screen_close_menu,
@@ -65,41 +71,60 @@ fun NoteSheetContent(
             }
         }
 
-        InsightNotePad(
-            header = {
-                InsightTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    nameField = "Title",
-                    text = selectedNote.title,
-                    onChangeText = onEditTitle,
-                    maxSize = 30,
-                )
 
-                InsightTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    nameField = "Situation",
-                    text = selectedNote.situation,
-                    onChangeText = onEditSituation,
-                    textStyle = MaterialTheme.typography.headlineSmall,
-                    maxSize = 30,
-                    maxLines = 2,
-                )
-            },
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 16.dp),
-            noteName = "What is your insight?",
-            text = selectedNote.body,
-            onChangeText = onEditBody,
-            maxSize = 1000,
-            minLines = 20,
-            maxLines = 20
-        )
+        Column (
+            modifier = Modifier
+                .fillMaxWidth()
+                .verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
 
-        InsightButton(
-            modifier = Modifier.align(Alignment.CenterHorizontally).padding(bottom = 16.dp),
-            text = stringResource(R.string.note_forms_save_button),
-            onClick = { onClickSave(selectedNote) },
-            iconRes = R.drawable.ic_save
-        )
+            InsightNotePad(
+                header = {
+                    InsightTextField(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(MaterialTheme.dimens.small),
+                        nameField = "Title",
+                        text = selectedNote.title,
+                        onChangeText = onEditTitle,
+                        maxSize = 30,
+                        textStyle = MaterialTheme.typography.bodyLarge
+                    )
+
+                    InsightTextField(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(MaterialTheme.dimens.small),
+                        nameField = "Situation",
+                        text = selectedNote.situation,
+                        onChangeText = onEditSituation,
+                        maxSize = 30,
+                        maxLines = 2,
+                        textStyle = MaterialTheme.typography.bodyLarge
+                    )
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(MaterialTheme.dimens.small),
+                noteName = "What is your insight?",
+                text = selectedNote.body,
+                textStyle = MaterialTheme.typography.bodyLarge,
+                onChangeText = onEditBody,
+                maxSize = 1000,
+                minLines = 20,
+                maxLines = 20
+            )
+
+            InsightButton(
+                text = stringResource(R.string.note_forms_save_button),
+                onClick = { onClickSave(selectedNote) },
+                iconRes = R.drawable.ic_save
+            )
+
+            Spacer(modifier = Modifier.size(MaterialTheme.dimens.small))
+
+        }
 
     }
 }
@@ -109,6 +134,9 @@ fun NoteSheetContent(
 fun NoteSheetContentPreview(){
     var note by remember { mutableStateOf(NoteUi.fromNote(null)) }
     NoteSheetContent(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(MaterialTheme.dimens.small),
         selectedNote = note,
         onEditTitle = { note = note.copy(title = it) },
         onEditSituation = { note = note.copy(situation = it) },

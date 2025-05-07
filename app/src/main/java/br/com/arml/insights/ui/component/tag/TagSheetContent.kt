@@ -1,12 +1,10 @@
 package br.com.arml.insights.ui.component.tag
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.HorizontalDivider
@@ -18,10 +16,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
 import br.com.arml.insights.R
 import br.com.arml.insights.model.entity.TagUi
-import br.com.arml.insights.ui.theme.Gray300
+import br.com.arml.insights.ui.theme.dimens
 
 @Composable
 fun TagSheetContent(
@@ -36,9 +34,6 @@ fun TagSheetContent(
 
     Column (
         modifier = modifier
-            .fillMaxWidth()
-            .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
 
         Row(
@@ -54,7 +49,7 @@ fun TagSheetContent(
                 onClick = onClickClose
             ) {
                 Icon(
-                    modifier = Modifier.size(42.dp),
+                    modifier = Modifier.size(MaterialTheme.dimens.icon),
                     imageVector = Icons.Default.Close,
                     contentDescription = stringResource(
                         id = R.string.tag_screen_close_menu,
@@ -65,11 +60,14 @@ fun TagSheetContent(
             }
         }
 
+        Spacer(modifier = Modifier.size(MaterialTheme.dimens.small))
+
         HorizontalDivider(
             modifier = Modifier,
-            thickness = 2.dp,
-            color = Gray300
+            thickness = MaterialTheme.dimens.smallThickness
         )
+
+        Spacer(modifier = Modifier.size(MaterialTheme.dimens.small))
 
         TagForms(
             modifier = modifier,
@@ -81,4 +79,13 @@ fun TagSheetContent(
         )
 
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun TagSheetContentPreview(){
+    TagSheetContent(
+        modifier = Modifier.padding(MaterialTheme.dimens.small),
+        selectedTagUi = TagUi.fromTag(null)
+    )
 }

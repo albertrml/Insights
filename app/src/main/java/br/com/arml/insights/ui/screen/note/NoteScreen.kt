@@ -4,9 +4,14 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -15,7 +20,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.arml.insights.R
@@ -27,6 +31,7 @@ import br.com.arml.insights.ui.component.note.NoteDeleteAlert
 import br.com.arml.insights.ui.component.note.NoteSheetContent
 import br.com.arml.insights.ui.component.common.InsightFilterAndSort
 import br.com.arml.insights.ui.screen.note.NoteEvent.OnClickToOpenDeleteDialog
+import br.com.arml.insights.ui.theme.dimens
 import br.com.arml.insights.utils.data.SearchNoteCategory
 
 @SuppressLint("ConfigurationScreenWidthHeight")
@@ -49,21 +54,29 @@ fun NoteScreen(
     }
 
     BottomSheetScaffold(
-        modifier = modifier.padding(top = 16.dp),
+        modifier = modifier
+            .consumeWindowInsets(WindowInsets.safeDrawing)
+            .fillMaxSize(),
         scaffoldState = tagScreenState.bottomSheetState,
         sheetPeekHeight = tagScreenState.getSheetPeekHeight(),
-        sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+        sheetShape = RoundedCornerShape(
+            topStart = MaterialTheme.dimens.medium,
+            topEnd = MaterialTheme.dimens.medium
+        ),
         snackbarHost = {
             InsightErrorSnackBar(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
+                    .padding(MaterialTheme.dimens.medium)
+                    .windowInsetsPadding(WindowInsets.navigationBars),
                 hostState = tagScreenState.bottomSheetState.snackbarHostState
             )
         },
         sheetContent = {
             NoteSheetContent(
-                modifier = modifier.padding(horizontal = 8.dp),
+                modifier = modifier
+                    .padding(horizontal = MaterialTheme.dimens.medium)
+                    .windowInsetsPadding(WindowInsets.navigationBars),
                 selectedNote = noteState.selectedNote,
                 onEditTitle = { viewModel.onEvent(NoteEvent.OnEditTitle(it)) },
                 onEditSituation = { viewModel.onEvent(NoteEvent.OnEditSituation(it)) },
@@ -80,13 +93,13 @@ fun NoteScreen(
         Column(
             modifier = modifier
                 .background(MaterialTheme.colorScheme.background)
-                .padding(horizontal = 16.dp)
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+                .padding(MaterialTheme.dimens.medium)
+                .consumeWindowInsets(padding),
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.medium)
         ) {
             HeaderScreen(
                 modifier = Modifier
-                    .padding(top = 24.dp),
+                    .padding(top = MaterialTheme.dimens.large),
                 iconResId = R.drawable.ic_note,
                 title = tagName,
                 onAddItem = {

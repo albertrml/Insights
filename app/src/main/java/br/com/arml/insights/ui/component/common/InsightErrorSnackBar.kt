@@ -8,8 +8,8 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
+import br.com.arml.insights.ui.theme.dimens
 
 @Composable
 fun InsightErrorSnackBar(
@@ -26,7 +26,7 @@ fun InsightErrorSnackBar(
             ) {
                 Snackbar(
                     snackbarData = snackBarData,
-                    shape = RoundedCornerShape(8.dp),
+                    shape = RoundedCornerShape(MaterialTheme.dimens.mediumCornerRadius),
                     containerColor = MaterialTheme.colorScheme.error,
                     contentColor = MaterialTheme.colorScheme.onError,
                 )

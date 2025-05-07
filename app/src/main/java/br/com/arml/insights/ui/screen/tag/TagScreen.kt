@@ -3,9 +3,12 @@ package br.com.arml.insights.ui.screen.tag
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -15,17 +18,17 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.arml.insights.R
 import br.com.arml.insights.model.entity.TagUi
 import br.com.arml.insights.ui.component.common.HeaderScreen
 import br.com.arml.insights.ui.component.common.InsightErrorSnackBar
-import br.com.arml.insights.ui.component.tag.TagBodyContent
-import br.com.arml.insights.ui.component.tag.TagSheetContent
-import br.com.arml.insights.ui.component.tag.TagDeleteAlert
 import br.com.arml.insights.ui.component.common.InsightFilterAndSort
+import br.com.arml.insights.ui.component.tag.TagBodyContent
+import br.com.arml.insights.ui.component.tag.TagDeleteAlert
+import br.com.arml.insights.ui.component.tag.TagSheetContent
+import br.com.arml.insights.ui.theme.dimens
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -58,22 +61,29 @@ fun TagScreenPortrait(
     }
 
     BottomSheetScaffold(
-        modifier = modifier.padding(vertical = 16.dp),
+        modifier = modifier
+            ,
         scaffoldState = tagScreenState.bottomSheetState,
         sheetPeekHeight = tagScreenState.getSheetPeekHeight(),
-        sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+        sheetShape = RoundedCornerShape(
+            topStart = MaterialTheme.dimens.medium,
+            topEnd = MaterialTheme.dimens.medium
+        ),
         snackbarHost = {
             InsightErrorSnackBar(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
+                    .padding(MaterialTheme.dimens.medium)
+                    .windowInsetsPadding(WindowInsets.navigationBars),
                 hostState = tagScreenState.bottomSheetState.snackbarHostState
             )
         },
         sheetContent = {
             tagState.selectedTagUi?.let { selectedTagUi ->
                 TagSheetContent(
-                    modifier = modifier.padding(horizontal = 16.dp),
+                    modifier = modifier
+                        .padding(horizontal = MaterialTheme.dimens.medium)
+                        .windowInsetsPadding(WindowInsets.navigationBars),
                     selectedTagUi = selectedTagUi,
                     onEditName = { viewModel.onEvent(TagEvent.OnEditName(it)) },
                     onEditDescription = { viewModel.onEvent(TagEvent.OnEditDescription(it)) },
@@ -91,15 +101,15 @@ fun TagScreenPortrait(
         Column(
             modifier = modifier
                 .background(MaterialTheme.colorScheme.background)
-                .padding(horizontal = 16.dp)
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+                .padding(MaterialTheme.dimens.medium)
+                .consumeWindowInsets(padding),
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.medium)
         ) {
 
             HeaderScreen(
                 title = stringResource(R.string.tag_screen_title),
                 iconResId = R.drawable.ic_tag,
-                modifier = Modifier.padding(top = 24.dp),
+                modifier = Modifier.padding(top = MaterialTheme.dimens.large),
                 onAddItem = {
                     viewModel.onEvent(TagEvent.OnClickToOpenSheet(null,TagOperation.OnInsert))
                 }

@@ -11,35 +11,42 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import br.com.arml.insights.ui.component.common.AnimatedHorizontalDivider
 import br.com.arml.insights.ui.theme.Gray200
-import br.com.arml.insights.ui.theme.Gray300
+import br.com.arml.insights.ui.theme.dimens
 
 @Composable
 fun TagCardLoading(
     modifier: Modifier = Modifier,
 ){
     OutlinedCard(
-        elevation = CardDefaults.cardElevation(8.dp)
+        elevation = CardDefaults.cardElevation(MaterialTheme.dimens.cardElevation)
     ) {
         Column(
-            modifier = modifier.padding(vertical = 8.dp, horizontal = 8.dp),
+            modifier = modifier.padding(MaterialTheme.dimens.small),
         ){
             LoadingTagCardHeader(modifier = modifier)
 
-            HorizontalDivider(modifier = modifier.padding(vertical = 8.dp), color = Gray200)
+            HorizontalDivider(
+                modifier = modifier.padding(vertical = MaterialTheme.dimens.small),
+                color = Gray200
+            )
             LoadingTagCardContent(modifier = modifier)
 
-            Spacer(modifier = Modifier.padding(vertical = 8.dp))
-            AnimatedHorizontalDivider(Modifier.padding(horizontal = 8.dp), 4.dp, Gray300)
+            Spacer(modifier = Modifier.padding(vertical = MaterialTheme.dimens.small))
+            AnimatedHorizontalDivider(
+                modifier = Modifier.padding(horizontal = MaterialTheme.dimens.small),
+                thickness = MaterialTheme.dimens.mediumThickness,
+                endColor = MaterialTheme.colorScheme.outline
+            )
 
-            Spacer(modifier = Modifier.padding(vertical = 8.dp))
+            Spacer(modifier = Modifier.padding(vertical = MaterialTheme.dimens.small))
             LoadingTagCardFoot(modifier = modifier)
         }
     }
@@ -56,16 +63,16 @@ fun LoadingTagCardHeader(
     ) {
         AnimatedHorizontalDivider(
             modifier = Modifier.weight(1f),
-            thickness = 42.dp,
-            endColor = Gray300
+            thickness = MaterialTheme.dimens.icon,
+            endColor = MaterialTheme.colorScheme.outline
         )
 
-        Spacer(modifier = Modifier.padding(horizontal = 8.dp))
+        Spacer(modifier = Modifier.padding(horizontal = MaterialTheme.dimens.small))
 
         AnimatedHorizontalDivider(
-            modifier = Modifier.size(42.dp),
-            thickness = 42.dp,
-            endColor = Gray300
+            modifier = Modifier.size(MaterialTheme.dimens.icon),
+            thickness = MaterialTheme.dimens.icon,
+            endColor = MaterialTheme.colorScheme.outline
         )
 
     }
@@ -77,8 +84,8 @@ fun LoadingTagCardContent(
 ){
     AnimatedHorizontalDivider(
         modifier = modifier,
-        thickness = 42.dp,
-        endColor = Gray300
+        thickness = MaterialTheme.dimens.icon,
+        endColor = MaterialTheme.colorScheme.outline
     )
 }
 
@@ -91,15 +98,15 @@ fun LoadingTagCardFoot(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         AnimatedHorizontalDivider(
-            modifier = Modifier.size(42.dp),
-            thickness = 42.dp,
-            endColor = Gray300
+            modifier = Modifier.size(MaterialTheme.dimens.icon),
+            thickness = MaterialTheme.dimens.icon,
+            endColor = MaterialTheme.colorScheme.outline
         )
         Spacer(Modifier.weight(1f))
         AnimatedHorizontalDivider(
-            modifier = Modifier.width(100.dp),
-            thickness = 42.dp,
-            endColor = Gray300
+            modifier = Modifier.width(MaterialTheme.dimens.noteSize),
+            thickness = MaterialTheme.dimens.icon,
+            endColor = MaterialTheme.colorScheme.outline
         )
     }
 }
@@ -111,10 +118,10 @@ fun TagCardLoadingList(
     val list = listOf(1,2,3,4,5,6,7,8,9,10)
     LazyColumn(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.medium)
     ) {
         items(list){ _ ->
-            TagCardLoading(modifier = Modifier.padding(8.dp))
+            TagCardLoading(modifier = Modifier.padding(MaterialTheme.dimens.small))
         }
     }
 }
@@ -122,6 +129,6 @@ fun TagCardLoadingList(
 @Preview
 @Composable
 fun LoadingTagCardsPreview() {
-    TagCardLoadingList(modifier = Modifier.padding(8.dp))
+    TagCardLoadingList(modifier = Modifier.padding(MaterialTheme.dimens.small))
 }
 
