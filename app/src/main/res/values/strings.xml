@@ -39,4 +39,8 @@
     </string>
     <string name="note_screen_title">Notes</string>
     <string name="note_forms_save_button">Save Note</string>
+    <string name="tag_operation_insert">Add Tag</string>
+    <string name="tag_operation_edit">Edit Tag</string>
+    <string name="note_operation_insert">Add Note</string>
+    <string name="note_operation_edit">Edit Note</string>
 </resources>

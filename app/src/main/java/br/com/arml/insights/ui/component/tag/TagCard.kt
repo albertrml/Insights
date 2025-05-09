@@ -11,8 +11,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
@@ -34,6 +35,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import br.com.arml.insights.R
 import br.com.arml.insights.model.entity.TagUi
 import br.com.arml.insights.model.mock.mockTags
@@ -198,13 +200,16 @@ fun TagCardFoot(
 fun TagList(
     modifier: Modifier = Modifier,
     tagList: List<TagUi>,
+    minSize: Dp = MaterialTheme.dimens.noteSize,
     onEditTagUi: (TagUi) -> Unit,
     onDeleteTagUi: (TagUi) -> Unit = {},
     onNavigationTo: (TagUi) -> Unit = {}
 ){
-    LazyColumn(
+    LazyVerticalStaggeredGrid(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.medium)
+        columns = StaggeredGridCells.Adaptive(minSize = minSize*2),
+        verticalItemSpacing = MaterialTheme.dimens.medium,
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.small)
     ){
         items(tagList) { tagUi ->
             TagCard(

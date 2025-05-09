@@ -10,7 +10,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -29,21 +28,19 @@ fun NoteForms(
     onEditSituation: (String) -> Unit = {},
     onEditBody: (String) -> Unit = {},
     onClickSave: (NoteUi) -> Unit = {}
-){
-    val scrollState = rememberScrollState()
-    LaunchedEffect(selectedNote.id) {
-        scrollState.animateScrollTo(0)
-    }
+) {
 
     Column(
-        modifier = modifier.verticalScroll(scrollState),
+        modifier = modifier.verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.small)
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.medium)
     ) {
         InsightNotePad(
             header = {
                 InsightTextField(
-                    modifier = Modifier.fillMaxWidth().padding(MaterialTheme.dimens.small),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(MaterialTheme.dimens.small),
                     nameField = "Title",
                     text = selectedNote.title,
                     onChangeText = onEditTitle,
@@ -52,7 +49,9 @@ fun NoteForms(
                 )
 
                 InsightTextField(
-                    modifier = Modifier.fillMaxWidth().padding(MaterialTheme.dimens.small),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(MaterialTheme.dimens.small),
                     nameField = "Situation",
                     text = selectedNote.situation,
                     onChangeText = onEditSituation,
@@ -67,7 +66,7 @@ fun NoteForms(
             textStyle = MaterialTheme.typography.bodyLarge,
             onChangeText = onEditBody,
             maxSize = 1000,
-            minLines = 20,
+            minLines = 10,
             maxLines = 20
         )
 
@@ -79,59 +78,4 @@ fun NoteForms(
 
         Spacer(modifier = Modifier.size(MaterialTheme.dimens.small))
     }
-
-    /*LazyColumn(
-        modifier = modifier,
-        state = lazyListState,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        item {
-            InsightNotePad(
-                header = {
-                    InsightTextField(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(MaterialTheme.dimens.small),
-                        nameField = "Title",
-                        text = selectedNote.title,
-                        onChangeText = onEditTitle,
-                        maxSize = 30,
-                        textStyle = MaterialTheme.typography.bodyLarge
-                    )
-
-                    InsightTextField(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(MaterialTheme.dimens.small),
-                        nameField = "Situation",
-                        text = selectedNote.situation,
-                        onChangeText = onEditSituation,
-                        maxSize = 30,
-                        maxLines = 2,
-                        textStyle = MaterialTheme.typography.bodyLarge
-                    )
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(MaterialTheme.dimens.small),
-                noteName = "What is your insight?",
-                text = selectedNote.body,
-                textStyle = MaterialTheme.typography.bodyLarge,
-                onChangeText = onEditBody,
-                maxSize = 1000,
-                minLines = 20,
-                maxLines = 20
-            )
-
-            InsightButton(
-                text = stringResource(R.string.note_forms_save_button),
-                onClick = { onClickSave(selectedNote) },
-                iconRes = R.drawable.ic_save
-            )
-
-            Spacer(modifier = Modifier.size(MaterialTheme.dimens.small))
-
-        }
-    }*/
-
 }

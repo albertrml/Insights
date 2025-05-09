@@ -24,7 +24,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.arml.insights.R
 import br.com.arml.insights.model.entity.TagUi
-import br.com.arml.insights.ui.component.common.HeaderScreen
+import br.com.arml.insights.ui.component.common.InsightHeaderScreen
 import br.com.arml.insights.ui.component.common.InsightErrorSnackBar
 import br.com.arml.insights.ui.component.common.InsightFilterAndSort
 import br.com.arml.insights.ui.component.tag.TagBodyContent
@@ -76,6 +76,7 @@ fun TagScreen(
                         .padding(horizontal = MaterialTheme.dimens.medium)
                         .windowInsetsPadding(WindowInsets.navigationBars),
                     selectedTagUi = selectedTagUi,
+                    selectedOperation = tagState.selectedOperation,
                     onEditName = { viewModel.onEvent(TagEvent.OnEditName(it)) },
                     onEditDescription = { viewModel.onEvent(TagEvent.OnEditDescription(it)) },
                     onEditColor = { viewModel.onEvent(TagEvent.OnEditColor(it)) },
@@ -97,7 +98,7 @@ fun TagScreen(
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.medium)
         ) {
 
-            HeaderScreen(
+            InsightHeaderScreen(
                 title = stringResource(R.string.tag_screen_title),
                 iconResId = R.drawable.ic_tag,
                 modifier = Modifier.padding(top = MaterialTheme.dimens.large),

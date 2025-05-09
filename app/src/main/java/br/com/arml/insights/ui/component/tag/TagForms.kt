@@ -2,16 +2,14 @@ package br.com.arml.insights.ui.component.tag
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -29,8 +27,6 @@ import br.com.arml.insights.ui.component.common.InsightColorPicker
 import br.com.arml.insights.ui.component.common.InsightOutlinedTextField
 import br.com.arml.insights.ui.theme.dimens
 
-
-@OptIn(ExperimentalStdlibApi::class)
 @Composable
 fun TagForms(
     modifier: Modifier = Modifier,
@@ -38,111 +34,113 @@ fun TagForms(
     onEditName: (String) -> Unit = {},
     onEditDescription: (String) -> Unit = {},
     onEditColor: (Color) -> Unit = {},
-    onClickSave: (tagUi: TagUi) -> Unit = { }
+    onClickSave: (tagUi: TagUi) -> Unit = {},
 ){
-
-    val lazyListState = rememberLazyListState()
-    LaunchedEffect(tagUi.id) {
-        lazyListState.scrollToItem(0)
-    }
 
     Column(
         modifier = modifier.verticalScroll(rememberScrollState()),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.medium)
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.small),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        InsightOutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            nameField = stringResource(id = R.string.tag_forms_name_field_label),
-            maxSize = 20,
-            text = tagUi.name,
-            onChangeText = { name -> onEditName(name) }
-        )
 
-        InsightOutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            nameField = stringResource(id = R.string.tag_forms_description_field_label),
-            maxSize = 150,
-            maxLines = 3,
-            text = tagUi.description,
-            onChangeText = { description -> onEditDescription(description) }
-        )
-
-        InsightColorPicker(
+        TagFields(
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(MaterialTheme.dimens.small),
+            name = tagUi.name,
+            description = tagUi.description,
+            onNameChange = onEditName,
+            onDescriptionChange = onEditDescription
+        )
+        TagColorPicker(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(MaterialTheme.dimens.small),
+            selectedColor = tagUi.color,
+            onColorChange = onEditColor
+        )
+        TagSaveButton(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(MaterialTheme.dimens.small),
+            onClickSave = { onClickSave(tagUi) }
+        )
+    }
+
+}
+
+@Composable
+fun TagFields(
+    modifier: Modifier = Modifier,
+    name: String,
+    description: String,
+    onNameChange: (String) -> Unit,
+    onDescriptionChange: (String) -> Unit
+){
+
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.small),
+        horizontalAlignment = Alignment.Start
+    ) {
+        InsightOutlinedTextField(
+            nameField = stringResource(id = R.string.tag_forms_name_field_label),
+            text = name,
+            onChangeText = onNameChange,
+            maxSize = 30
+        )
+        InsightOutlinedTextField(
+            nameField = stringResource(id = R.string.tag_forms_description_field_label),
+            text = description,
+            onChangeText = onDescriptionChange,
+            maxSize = 30
+        )
+    }
+
+}
+
+@Composable
+fun TagColorPicker(
+    modifier: Modifier = Modifier,
+    selectedColor: Color,
+    onColorChange: (Color) -> Unit
+){
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.Center
+    ) {
+        InsightColorPicker(
+            modifier = Modifier
                 .border(
                     width = MaterialTheme.dimens.extraSmallThickness,
                     color = MaterialTheme.colorScheme.outline,
                     shape = MaterialTheme.shapes.small
                 )
                 .padding(MaterialTheme.dimens.medium),
-            title = stringResource(id = R.string.tag_screen_title),
-            color = tagUi.color,
-            onChangeColor = { color -> onEditColor(color)}
+            title = "Tag",
+            color = selectedColor,
+            onChangeColor = onColorChange
         )
-
-        InsightButton(
-            modifier = Modifier,
-            text = stringResource(id = R.string.tag_forms_save_button),
-            iconRes = R.drawable.ic_save,
-            onClick = {
-                onClickSave(tagUi)
-            }
-        )
-
-        Spacer(modifier = Modifier.padding(MaterialTheme.dimens.small))
     }
-
-    /*LazyColumn(
-        modifier = modifier,
-        state = lazyListState,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.medium)
-    ) {
-        item{
-            InsightOutlinedTextField(
-                modifier = Modifier.fillMaxWidth(),
-                nameField = stringResource(id = R.string.tag_forms_name_field_label),
-                maxSize = 20,
-                text = tagUi.name,
-                onChangeText = { name -> onEditName(name) }
-            )
-
-            InsightOutlinedTextField(
-                modifier = Modifier.fillMaxWidth(),
-                nameField = stringResource(id = R.string.tag_forms_description_field_label),
-                maxSize = 150,
-                maxLines = 3,
-                text = tagUi.description,
-                onChangeText = { description -> onEditDescription(description) }
-            )
-
-            InsightColorPicker(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .border(
-                        width = MaterialTheme.dimens.extraSmallThickness,
-                        color = MaterialTheme.colorScheme.outline,
-                        shape = MaterialTheme.shapes.small
-                    )
-                    .padding(MaterialTheme.dimens.medium),
-                title = stringResource(id = R.string.tag_screen_title),
-                color = tagUi.color,
-                onChangeColor = { color -> onEditColor(color)}
-            )
-
-            InsightButton(
-                modifier = Modifier,
-                text = stringResource(id = R.string.tag_forms_save_button),
-                iconRes = R.drawable.ic_save,
-                onClick = {
-                    onClickSave(tagUi)
-                }
-            )
-        }
-    }*/
 }
+
+@Composable
+fun TagSaveButton(
+    modifier: Modifier = Modifier,
+    onClickSave: () -> Unit = {}
+){
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.Center
+    ) {
+        InsightButton(
+            text = "Save",
+            onClick = onClickSave,
+            iconRes = R.drawable.ic_save
+        )
+    }
+}
+
 
 @Preview(showBackground = true)
 @Composable

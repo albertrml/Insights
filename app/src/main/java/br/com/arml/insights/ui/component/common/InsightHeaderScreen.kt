@@ -25,7 +25,7 @@ import br.com.arml.insights.R
 import br.com.arml.insights.ui.theme.dimens
 
 @Composable
-fun HeaderScreen(
+fun InsightHeaderScreen(
     modifier: Modifier = Modifier,
     title: String,
     @DrawableRes iconResId: Int,
@@ -74,7 +74,7 @@ fun HeaderScreen(
 @Preview(showBackground = true)
 @Composable
 fun HeaderScreenPreview(){
-    HeaderScreen(
+    InsightHeaderScreen(
         title = "Notes",
         iconResId = R.drawable.ic_note
     )

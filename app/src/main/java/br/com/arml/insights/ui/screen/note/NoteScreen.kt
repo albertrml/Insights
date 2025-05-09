@@ -24,7 +24,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.arml.insights.R
 import br.com.arml.insights.model.entity.NoteUi
-import br.com.arml.insights.ui.component.common.HeaderScreen
+import br.com.arml.insights.ui.component.common.InsightHeaderScreen
 import br.com.arml.insights.ui.component.common.InsightErrorSnackBar
 import br.com.arml.insights.ui.component.note.NoteBodyContent
 import br.com.arml.insights.ui.component.note.NoteDeleteAlert
@@ -79,6 +79,7 @@ fun NoteScreen(
                     .padding(horizontal = MaterialTheme.dimens.medium)
                     .windowInsetsPadding(WindowInsets.navigationBars),
                 selectedNote = noteState.selectedNote,
+                selectedOperation = noteState.noteOperation,
                 onEditTitle = { viewModel.onEvent(NoteEvent.OnEditTitle(it)) },
                 onEditSituation = { viewModel.onEvent(NoteEvent.OnEditSituation(it)) },
                 onEditBody = { viewModel.onEvent(NoteEvent.OnEditBody(it)) },
@@ -98,7 +99,7 @@ fun NoteScreen(
                 .consumeWindowInsets(padding),
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.medium)
         ) {
-            HeaderScreen(
+            InsightHeaderScreen(
                 modifier = Modifier
                     .padding(top = MaterialTheme.dimens.large),
                 iconResId = R.drawable.ic_note,
