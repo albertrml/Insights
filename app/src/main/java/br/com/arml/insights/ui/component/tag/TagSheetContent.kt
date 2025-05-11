@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -25,6 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import br.com.arml.insights.R
 import br.com.arml.insights.model.entity.TagUi
 import br.com.arml.insights.ui.screen.tag.TagOperation
+import br.com.arml.insights.ui.theme.Green500
 import br.com.arml.insights.ui.theme.dimens
 
 @Composable
@@ -46,7 +48,8 @@ fun TagSheetContent(
         TagSheetHeader(
             modifier = Modifier.fillMaxWidth(),
             operation = selectedOperation,
-            onClickClose = onClickClose
+            onClickClose = onClickClose,
+            onClickSave = { onClickSave(selectedTagUi) }
         )
 
         HorizontalDivider(
@@ -59,8 +62,7 @@ fun TagSheetContent(
             tagUi = selectedTagUi,
             onEditName = onEditName,
             onEditDescription = onEditDescription,
-            onEditColor = onEditColor,
-            onClickSave = { onClickSave(it) }
+            onEditColor = onEditColor
         )
     }
 }
@@ -69,7 +71,8 @@ fun TagSheetContent(
 fun TagSheetHeader(
     modifier: Modifier = Modifier,
     operation: TagOperation,
-    onClickClose: () -> Unit
+    onClickClose: () -> Unit,
+    onClickSave: () -> Unit
 ){
 
     val title = getTagHeaderTitle(operation)
@@ -95,6 +98,20 @@ fun TagSheetHeader(
         )
 
         IconButton(
+            onClick = onClickSave
+        ) {
+
+            Icon(
+                modifier = Modifier.size(MaterialTheme.dimens.icon),
+                imageVector = Icons.Default.Check,
+                contentDescription = stringResource(
+                    id = R.string.tag_forms_save_button,title
+                ),
+                tint = Green500
+            )
+        }
+
+        IconButton(
             onClick = onClickClose
         ) {
 
@@ -103,7 +120,8 @@ fun TagSheetHeader(
                 imageVector = Icons.Default.Close,
                 contentDescription = stringResource(
                     id = R.string.tag_screen_close_menu,title
-                )
+                ),
+                tint = Color.Red
             )
         }
     }

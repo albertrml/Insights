@@ -22,7 +22,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import br.com.arml.insights.R
 import br.com.arml.insights.model.entity.TagUi
 import br.com.arml.insights.model.entity.TagUiSaver
-import br.com.arml.insights.ui.component.common.InsightButton
 import br.com.arml.insights.ui.component.common.InsightColorPicker
 import br.com.arml.insights.ui.component.common.InsightOutlinedTextField
 import br.com.arml.insights.ui.theme.dimens
@@ -33,8 +32,7 @@ fun TagForms(
     tagUi: TagUi,
     onEditName: (String) -> Unit = {},
     onEditDescription: (String) -> Unit = {},
-    onEditColor: (Color) -> Unit = {},
-    onClickSave: (tagUi: TagUi) -> Unit = {},
+    onEditColor: (Color) -> Unit = {}
 ){
 
     Column(
@@ -59,14 +57,7 @@ fun TagForms(
             selectedColor = tagUi.color,
             onColorChange = onEditColor
         )
-        TagSaveButton(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(MaterialTheme.dimens.small),
-            onClickSave = { onClickSave(tagUi) }
-        )
     }
-
 }
 
 @Composable
@@ -123,24 +114,6 @@ fun TagColorPicker(
         )
     }
 }
-
-@Composable
-fun TagSaveButton(
-    modifier: Modifier = Modifier,
-    onClickSave: () -> Unit = {}
-){
-    Box(
-        modifier = modifier,
-        contentAlignment = Alignment.Center
-    ) {
-        InsightButton(
-            text = "Save",
-            onClick = onClickSave,
-            iconRes = R.drawable.ic_save
-        )
-    }
-}
-
 
 @Preview(showBackground = true)
 @Composable

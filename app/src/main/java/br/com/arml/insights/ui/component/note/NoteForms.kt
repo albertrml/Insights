@@ -12,10 +12,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import br.com.arml.insights.R
 import br.com.arml.insights.model.entity.NoteUi
-import br.com.arml.insights.ui.component.common.InsightButton
 import br.com.arml.insights.ui.component.common.InsightNotePad
 import br.com.arml.insights.ui.component.common.InsightTextField
 import br.com.arml.insights.ui.theme.dimens
@@ -27,7 +24,6 @@ fun NoteForms(
     onEditTitle: (String) -> Unit = {},
     onEditSituation: (String) -> Unit = {},
     onEditBody: (String) -> Unit = {},
-    onClickSave: (NoteUi) -> Unit = {}
 ) {
 
     Column(
@@ -68,12 +64,6 @@ fun NoteForms(
             maxSize = 1000,
             minLines = 10,
             maxLines = 20
-        )
-
-        InsightButton(
-            text = stringResource(R.string.note_forms_save_button),
-            onClick = { onClickSave(selectedNote) },
-            iconRes = R.drawable.ic_save
         )
 
         Spacer(modifier = Modifier.size(MaterialTheme.dimens.small))
