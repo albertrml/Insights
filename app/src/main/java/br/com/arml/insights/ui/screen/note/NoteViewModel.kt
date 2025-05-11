@@ -9,13 +9,14 @@ import br.com.arml.insights.ui.screen.common.BaseViewModel
 import br.com.arml.insights.utils.data.Response
 import br.com.arml.insights.utils.data.SearchNoteCategory
 import br.com.arml.insights.utils.data.SortedNote
+import br.com.arml.insights.utils.data.SortedTag
 import br.com.arml.insights.utils.data.update
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.Date
+import javax.inject.Inject
 
 @HiltViewModel
 class NoteViewModel @Inject constructor(
@@ -30,8 +31,10 @@ class NoteViewModel @Inject constructor(
 
 
     init {
-        Log.i("NoteViewModel", "tagId: $tagId")
         fetchAllNotes(tagId, SortedNote.ByTitleAscending)
+        fetchTags()
+        Log.i("NoteViewModel", "tagId: $tagId")
+        Log.i("NoteViewModel", "tags: ${state.value.tags}")
     }
 
     fun onEvent(event: NoteEvent) {
@@ -46,7 +49,18 @@ class NoteViewModel @Inject constructor(
             }
             is NoteEvent.OnFetchAllNotes -> { fetchAllNotes(tagId, SortedNote.ByTitleAscending) }
             is NoteEvent.OnSearch -> { searchNoteByTitle(event.query, event.searchNoteCategory) }
+            is NoteEvent.OnFetchTags -> { fetchTags() }
             else -> sendEventForEffect(event)
+        }
+    }
+
+    private fun fetchTags(sortBy: SortedTag = SortedTag.ByNameAscending){
+        viewModelScope.launch {
+            noteUiUseCase.fetchTagUi(sortBy = sortBy).collectLatest { response ->
+                response.update(_state) { state, res ->
+                    state.copy(tags = res)
+                }
+            }
         }
     }
 

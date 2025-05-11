@@ -82,9 +82,11 @@ fun NoteScreen(
                     .windowInsetsPadding(WindowInsets.navigationBars),
                 selectedNote = noteState.selectedNote,
                 selectedOperation = noteState.noteOperation,
+                tags = noteState.tags,
                 onEditTitle = { viewModel.onEvent(NoteEvent.OnEditTitle(it)) },
                 onEditSituation = { viewModel.onEvent(NoteEvent.OnEditSituation(it)) },
                 onEditBody = { viewModel.onEvent(NoteEvent.OnEditBody(it)) },
+                onEditTagId = { viewModel.onEvent(NoteEvent.OnSelectTag(it)) },
                 onClickClose = {
                     viewModel.onEvent(NoteEvent.OnClickToCloseSheet)
                 },

@@ -12,25 +12,25 @@ val mockTags = arrayListOf(
         description = "Ideas for dinner recipes"
     ),
     Tag(
-        id = 0,
+        id = 1,
         name = "App",
         color = -442044L, //0xFFF94144,
         description = "Ideas for project app"
     ),
     Tag(
-        id = 0,
+        id = 2,
         name = "Beer",
         color = -15825407L, //0xFF0E8601,
         description = "Ideas for beer recipes"
     ),
     Tag(
-        id = 0,
+        id = 3,
         name = "Business",
         color = -28928L, //0xFFFF8F00,
         description = "Business Ideas"
     ),
     Tag(
-        id = 0,
+        id = 4,
         name = "Dinheiro",
         color = -442044L, //0xFFF94144,
         description = "Ideas for Money"

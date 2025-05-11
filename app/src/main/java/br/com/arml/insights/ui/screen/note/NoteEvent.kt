@@ -14,6 +14,8 @@ sealed class NoteEvent: Reducer.ViewEvent{
         val query: String,
         val searchNoteCategory: SearchNoteCategory
     ): NoteEvent()
+    data object OnFetchTags: NoteEvent()
+    data class OnSelectTag(val tagId: Int): NoteEvent()
 
     /* Actions to handle frontend events */
     data class OnClickToOpenSheet(
@@ -26,6 +28,7 @@ sealed class NoteEvent: Reducer.ViewEvent{
     data class OnEditTitle(val title: String): NoteEvent()
     data class OnEditSituation(val situation: String): NoteEvent()
     data class OnEditBody(val body: String): NoteEvent()
+
     data object OnSortTitleByAscending: NoteEvent()
     data object OnSortTitleByDescending: NoteEvent()
 }

@@ -28,10 +28,15 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.arml.insights.R
 import br.com.arml.insights.model.entity.NoteUi
+import br.com.arml.insights.model.entity.TagUi
+import br.com.arml.insights.model.mock.createSampleNotes
+import br.com.arml.insights.model.mock.mockTags
 import br.com.arml.insights.ui.screen.note.NoteOperation
 import br.com.arml.insights.ui.theme.Green500
 import br.com.arml.insights.ui.theme.RedBase
 import br.com.arml.insights.ui.theme.dimens
+import br.com.arml.insights.utils.data.Response
+import br.com.arml.insights.utils.data.ShowResults
 
 
 @Composable
@@ -39,13 +44,47 @@ fun NoteSheetContent(
     modifier: Modifier = Modifier,
     selectedNote: NoteUi,
     selectedOperation: NoteOperation,
+    tags: Response<List<TagUi>>,
+    onEditTitle: (String) -> Unit,
+    onEditSituation: (String) -> Unit,
+    onEditBody: (String) -> Unit,
+    onEditTagId: (Int) -> Unit,
+    onClickClose: () -> Unit,
+    onClickSave: (NoteUi) -> Unit
+){
+
+    tags.ShowResults(
+        successContent = {
+            OnSuccess(
+                modifier = modifier,
+                selectedNote = selectedNote,
+                selectedOperation = selectedOperation,
+                tags = it,
+                onEditTitle = onEditTitle,
+                onEditSituation = onEditSituation,
+                onEditBody = onEditBody,
+                onEditTagId = onEditTagId,
+                onClickClose = onClickClose,
+                onClickSave = onClickSave
+            )
+        }
+    )
+}
+
+
+@Composable
+fun OnSuccess(
+    modifier: Modifier = Modifier,
+    selectedNote: NoteUi,
+    selectedOperation: NoteOperation,
+    tags: List<TagUi>,
     onEditTitle: (String) -> Unit = {},
     onEditSituation: (String) -> Unit = {},
     onEditBody: (String) -> Unit = {},
+    onEditTagId: (Int) -> Unit = {},
     onClickClose: () -> Unit = {},
     onClickSave: (NoteUi) -> Unit = {}
 ){
-
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.medium),
@@ -65,9 +104,11 @@ fun NoteSheetContent(
         NoteForms(
             modifier = Modifier.fillMaxSize(),
             selectedNote = selectedNote,
+            tags = tags,
             onEditTitle = onEditTitle,
             onEditSituation = onEditSituation,
-            onEditBody = onEditBody
+            onEditBody = onEditBody,
+            onEditTagId = onEditTagId,
         )
 
     }
@@ -103,7 +144,7 @@ fun NoteSheetHeader(
         )
 
         IconButton(
-            onClick = onClickSave
+            onClick = onClickSave,
         ) {
 
             Icon(
@@ -146,16 +187,19 @@ fun getNoteHeaderTitle(
 @Preview(showBackground = true)
 @Composable
 fun NoteSheetContentPreview(){
-    var note by remember { mutableStateOf(NoteUi.fromNote(null)) }
-    NoteSheetContent(
+    var tags by remember { mutableStateOf(mockTags.map { TagUi.fromTag(it) }.toList()) }
+    var note by remember { mutableStateOf(createSampleNotes().toList().first()) }
+    OnSuccess(
         modifier = Modifier
             .fillMaxWidth()
             .padding(MaterialTheme.dimens.small),
         selectedNote = note,
+        tags = tags,
         selectedOperation = NoteOperation.OnInsert,
         onEditTitle = { note = note.copy(title = it) },
         onEditSituation = { note = note.copy(situation = it) },
         onEditBody = { note = note.copy(body = it) },
+        onEditTagId = { tagId -> note = note.copy(tagId = tagId) },
         onClickClose = {},
         onClickSave = {}
     )

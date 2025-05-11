@@ -22,8 +22,11 @@ object UseCaseModule {
 
     @Provides
     @Singleton
-    fun provideNoteUiUseCase(noteRepository: NoteRepository): NoteUiUseCase {
-        return NoteUiUseCase(noteRepository)
+    fun provideNoteUiUseCase(
+        tagRepository: TagRepository,
+        noteRepository: NoteRepository,
+    ): NoteUiUseCase {
+        return NoteUiUseCase(tagRepository,noteRepository)
     }
 
 }

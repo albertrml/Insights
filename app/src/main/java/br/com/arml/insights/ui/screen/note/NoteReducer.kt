@@ -15,6 +15,12 @@ class NoteReducer @Inject constructor() : Reducer<NoteState, NoteEvent, NoteEffe
             is NoteEvent.OnFetchAllNotes -> previousState to null
             is NoteEvent.OnDeleteNote -> previousState to null
             is NoteEvent.OnSearch -> previousState to null
+            is NoteEvent.OnFetchTags -> previousState to null
+            is NoteEvent.OnSelectTag -> {
+                val newNote = previousState.selectedNote.copy(tagId = event.tagId)
+                val updatedState = previousState.copy(selectedNote = newNote)
+                updatedState to null
+            }
 
             is NoteEvent.OnEditTitle -> {
                 val updatedState = previousState.selectedNote.copy(title = event.title)
@@ -28,6 +34,7 @@ class NoteReducer @Inject constructor() : Reducer<NoteState, NoteEvent, NoteEffe
                 val updatedState = previousState.selectedNote.copy(body = event.body)
                 previousState.copy(selectedNote = updatedState) to null
             }
+
             is NoteEvent.OnSortTitleByAscending -> {
                 val newState =  if (previousState.notes is Response.Success){
                     previousState.copy(
