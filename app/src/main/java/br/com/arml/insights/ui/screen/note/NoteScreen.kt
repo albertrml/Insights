@@ -30,6 +30,8 @@ import br.com.arml.insights.ui.component.note.NoteBodyContent
 import br.com.arml.insights.ui.component.note.NoteDeleteAlert
 import br.com.arml.insights.ui.component.note.NoteSheetContent
 import br.com.arml.insights.ui.component.common.InsightFilterAndSort
+import br.com.arml.insights.ui.screen.common.calculateBottomPadding
+import br.com.arml.insights.ui.screen.common.calculateTopPadding
 import br.com.arml.insights.ui.screen.note.NoteEvent.OnClickToOpenDeleteDialog
 import br.com.arml.insights.ui.theme.dimens
 import br.com.arml.insights.utils.data.SearchNoteCategory
@@ -95,8 +97,11 @@ fun NoteScreen(
         Column(
             modifier = modifier
                 .background(MaterialTheme.colorScheme.background)
-                .padding(MaterialTheme.dimens.medium)
-                .consumeWindowInsets(padding),
+                .padding(horizontal = MaterialTheme.dimens.medium)
+                .padding(
+                    top = calculateTopPadding(padding),
+                    bottom = calculateBottomPadding(padding)
+                ),
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.medium)
         ) {
             InsightHeaderScreen(

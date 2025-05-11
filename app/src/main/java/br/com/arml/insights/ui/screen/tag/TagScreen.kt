@@ -24,12 +24,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.arml.insights.R
 import br.com.arml.insights.model.entity.TagUi
-import br.com.arml.insights.ui.component.common.InsightHeaderScreen
 import br.com.arml.insights.ui.component.common.InsightErrorSnackBar
 import br.com.arml.insights.ui.component.common.InsightFilterAndSort
+import br.com.arml.insights.ui.component.common.InsightHeaderScreen
 import br.com.arml.insights.ui.component.tag.TagBodyContent
 import br.com.arml.insights.ui.component.tag.TagDeleteAlert
 import br.com.arml.insights.ui.component.tag.TagSheetContent
+import br.com.arml.insights.ui.screen.common.calculateBottomPadding
+import br.com.arml.insights.ui.screen.common.calculateTopPadding
 import br.com.arml.insights.ui.theme.dimens
 import kotlinx.coroutines.flow.collectLatest
 
@@ -90,11 +92,15 @@ fun TagScreen(
             }
         },
     ) { padding ->
+
         Column(
             modifier = modifier
                 .background(MaterialTheme.colorScheme.background)
-                .padding(MaterialTheme.dimens.medium)
-                .consumeWindowInsets(padding),
+                .padding(horizontal = MaterialTheme.dimens.medium)
+                .padding(
+                    top = calculateTopPadding(padding),
+                    bottom = calculateBottomPadding(padding)
+                ),
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.medium)
         ) {
 
