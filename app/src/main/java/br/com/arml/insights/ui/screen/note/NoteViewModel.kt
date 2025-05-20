@@ -57,6 +57,13 @@ class NoteViewModel @Inject constructor(
     private fun fetchTags(sortBy: SortedTag = SortedTag.ByNameAscending){
         viewModelScope.launch {
             noteUiUseCase.fetchTagUi(sortBy = sortBy).collectLatest { response ->
+                if(response is Response.Failure)
+                    sendEffect(
+                        NoteEffect.ShowSnackBar(
+                            response.exception.message?:"Something went wrong"
+                        )
+                    )
+
                 response.update(_state) { state, res ->
                     state.copy(tags = res)
                 }

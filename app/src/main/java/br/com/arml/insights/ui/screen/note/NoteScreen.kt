@@ -24,12 +24,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.arml.insights.R
 import br.com.arml.insights.model.entity.NoteUi
-import br.com.arml.insights.ui.component.common.InsightHeaderScreen
 import br.com.arml.insights.ui.component.common.InsightErrorSnackBar
+import br.com.arml.insights.ui.component.common.InsightFilterAndSort
+import br.com.arml.insights.ui.component.common.InsightHeaderScreen
 import br.com.arml.insights.ui.component.note.NoteBodyContent
 import br.com.arml.insights.ui.component.note.NoteDeleteAlert
 import br.com.arml.insights.ui.component.note.NoteSheetContent
-import br.com.arml.insights.ui.component.common.InsightFilterAndSort
 import br.com.arml.insights.ui.screen.common.calculateBottomPadding
 import br.com.arml.insights.ui.screen.common.calculateTopPadding
 import br.com.arml.insights.ui.screen.note.NoteEvent.OnClickToOpenDeleteDialog
@@ -48,6 +48,7 @@ fun NoteScreen(
     val viewModel = hiltViewModel<NoteViewModel>()
     val noteState by viewModel.state.collectAsStateWithLifecycle()
     val noteScreenState = rememberNoteScreenState()
+
 
     LaunchedEffect(Unit) {
         viewModel.effect.collect { effect ->

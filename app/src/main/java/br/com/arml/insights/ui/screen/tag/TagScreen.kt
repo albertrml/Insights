@@ -135,7 +135,7 @@ fun TagScreen(
             TagBodyContent(
                 modifier = modifier,
                 tags = tagState.tags,
-                onDeleteTag = {
+                onDeleteTagUi = {
                     viewModel.onEvent(
                         TagEvent.OnClickToShowDeleteDialog(selectedTag = it)
                     )

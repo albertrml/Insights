@@ -39,7 +39,7 @@ data class TagUi(
             tagUi == null ->
                 false to TagException.TagIsNullException()
 
-            tagUi.name.length !in 3..20 ->
+            tagUi.name.length !in 3..30 ->
                 false to TagException.TagNameSizeException()
 
             else -> true to null

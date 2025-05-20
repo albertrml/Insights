@@ -24,3 +24,6 @@ out/
 # Other
 local.properties
 *.log
+
+app/release
+app/debug

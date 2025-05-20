@@ -1,6 +1,5 @@
 package br.com.arml.insights.ui.component.note
 
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import br.com.arml.insights.model.entity.NoteUi
@@ -22,12 +21,6 @@ fun NoteBodyContent(
                 onClick = onEditNote,
                 onLongClick = onDeleteNote
             )
-        },
-        loadingContent = {
-            CircularProgressIndicator()
-        },
-        failureContent = { exception ->
-
         }
     )
 }
