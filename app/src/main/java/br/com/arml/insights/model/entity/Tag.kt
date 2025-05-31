@@ -10,4 +10,9 @@ data class Tag(
     val name: String,
     val color: Long,
     val description: String
-)
+){
+    override fun equals(other: Any?): Boolean {
+        val other = other as Tag
+        return id == other.id && name == other.name && description == other.description
+    }
+}
