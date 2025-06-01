@@ -1,7 +1,6 @@
 package br.com.arml.insights.ui.screen.note
 
 import android.util.Log
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import br.com.arml.insights.domain.NoteUiUseCase
 import br.com.arml.insights.model.entity.NoteUi
@@ -22,21 +21,10 @@ import javax.inject.Inject
 class NoteViewModel @Inject constructor(
     private val noteUiUseCase: NoteUiUseCase,
     reducer: NoteReducer,
-    saveStateHandle: SavedStateHandle,
 ) : BaseViewModel<NoteState, NoteEvent, NoteEffect>(
     initialState = NoteState(),
     reducer = reducer,
 ){
-    private val tagId = saveStateHandle.get<Int>("tag_id")?:0
-
-
-    init {
-        fetchAllNotes(tagId, SortedNote.ByTitleAscending)
-        fetchTags()
-        Log.i("NoteViewModel", "tagId: $tagId")
-        Log.i("NoteViewModel", "tags: ${state.value.tags}")
-    }
-
     fun onEvent(event: NoteEvent) {
         when (event) {
             is NoteEvent.OnDeleteNote -> { deleteNote() }
@@ -47,11 +35,18 @@ class NoteViewModel @Inject constructor(
                     is NoteOperation.None -> {}
                 }
             }
-            is NoteEvent.OnFetchAllNotes -> { fetchAllNotes(tagId, SortedNote.ByTitleAscending) }
+            is NoteEvent.OnFetchAllNotes -> { fetchAllNotes(SortedNote.ByTitleAscending) }
             is NoteEvent.OnSearch -> { searchNoteByTitle(event.query, event.searchNoteCategory) }
             is NoteEvent.OnFetchTags -> { fetchTags() }
+            is NoteEvent.OnInit -> { initViewModel(event.tagId) }
             else -> sendEventForEffect(event)
         }
+    }
+
+    private fun initViewModel(tagId: Int){
+        _state.update { state -> state.copy(tagId = tagId) }
+        fetchAllNotes(SortedNote.ByTitleAscending)
+        fetchTags()
     }
 
     private fun fetchTags(sortBy: SortedTag = SortedTag.ByNameAscending){
@@ -63,7 +58,6 @@ class NoteViewModel @Inject constructor(
                             response.exception.message?:"Something went wrong"
                         )
                     )
-
                 response.update(_state) { state, res ->
                     state.copy(tags = res)
                 }
@@ -74,7 +68,6 @@ class NoteViewModel @Inject constructor(
     private fun deleteNote(){
         viewModelScope.launch {
             val noteForDelete = state.value.selectedNote
-
             noteUiUseCase.deleteNote(noteForDelete).collect { response ->
                 response.update(_state) { state, res ->
                     when(res){
@@ -96,7 +89,6 @@ class NoteViewModel @Inject constructor(
                     }
                 }
             }
-
         }
     }
 
@@ -142,7 +134,7 @@ class NoteViewModel @Inject constructor(
 
     private fun searchNoteByTitle(query: String, searchNoteCategory: SearchNoteCategory) {
         viewModelScope.launch {
-            noteUiUseCase.searchNotes(query, searchNoteCategory).collect {
+            noteUiUseCase.searchNotes(state.value.tagId, query, searchNoteCategory).collect {
                 it.update(_state) { state, res ->
                     state.copy(notes = res)
                 }
@@ -192,9 +184,9 @@ class NoteViewModel @Inject constructor(
         }
     }
 
-    private fun fetchAllNotes(tagId: Int, sortedNote: SortedNote) {
+    private fun fetchAllNotes(sortedNote: SortedNote) {
         viewModelScope.launch {
-            noteUiUseCase.fetchNotesByTag(tagId,sortedNote).collectLatest { response ->
+            noteUiUseCase.fetchNotesByTag(state.value.tagId,sortedNote).collectLatest { response ->
                 if(response is Response.Failure)
                     sendEffect(
                         NoteEffect.ShowSnackBar(
@@ -204,9 +196,11 @@ class NoteViewModel @Inject constructor(
                 response.update(_state) { state, res ->
                     state.copy(notes = res)
                 }
+
+                Log.i("NoteViewModel", "note: ${state.value.notes}")
             }
         }
     }
 
-    private fun resetNoteUi() = NoteUi.fromNote(null).copy(tagId = tagId)
+    private fun resetNoteUi() = NoteUi.fromNote(null).copy(tagId = state.value.tagId)
 }

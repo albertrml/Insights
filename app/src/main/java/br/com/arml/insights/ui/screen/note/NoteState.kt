@@ -10,5 +10,6 @@ data class NoteState (
     val tags: Response<List<TagUi>> = Response.Loading,
     val operationState: Response<Unit> = Response.Loading,
     val noteOperation: NoteOperation = NoteOperation.None,
-    val selectedNote: NoteUi = NoteUi.fromNote(null)
+    val selectedNote: NoteUi = NoteUi.fromNote(null),
+    val tagId: Int = 0
 ) : Reducer.ViewState

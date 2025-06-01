@@ -7,6 +7,7 @@ import br.com.arml.insights.utils.data.SearchNoteCategory
 
 sealed class NoteEvent: Reducer.ViewEvent{
     /* Actions to handle backend events */
+    data class OnInit(val tagId: Int) : NoteEvent()
     data object OnDeleteNote : NoteEvent()
     data object OnFetchAllNotes: NoteEvent()
     data class OnInsertOrUpdate(val operation: NoteOperation): NoteEvent()
@@ -15,7 +16,7 @@ sealed class NoteEvent: Reducer.ViewEvent{
         val searchNoteCategory: SearchNoteCategory
     ): NoteEvent()
     data object OnFetchTags: NoteEvent()
-    data class OnSelectTag(val tagId: Int): NoteEvent()
+    data class OnSelectNewTag(val tagId: Int): NoteEvent()
 
     /* Actions to handle frontend events */
     data class OnClickToOpenSheet(

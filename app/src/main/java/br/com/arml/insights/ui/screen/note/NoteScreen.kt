@@ -1,17 +1,8 @@
 package br.com.arml.insights.ui.screen.note
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.consumeWindowInsets
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -30,8 +21,7 @@ import br.com.arml.insights.ui.component.common.InsightHeaderScreen
 import br.com.arml.insights.ui.component.note.NoteBodyContent
 import br.com.arml.insights.ui.component.note.NoteDeleteAlert
 import br.com.arml.insights.ui.component.note.NoteSheetContent
-import br.com.arml.insights.ui.screen.common.calculateBottomPadding
-import br.com.arml.insights.ui.screen.common.calculateTopPadding
+import br.com.arml.insights.ui.screen.common.setMargin
 import br.com.arml.insights.ui.screen.note.NoteEvent.OnClickToOpenDeleteDialog
 import br.com.arml.insights.ui.theme.dimens
 import br.com.arml.insights.utils.data.SearchNoteCategory
@@ -49,6 +39,9 @@ fun NoteScreen(
     val noteState by viewModel.state.collectAsStateWithLifecycle()
     val noteScreenState = rememberNoteScreenState()
 
+    LaunchedEffect(tagId) {
+        viewModel.onEvent(NoteEvent.OnInit(tagId))
+    }
 
     LaunchedEffect(Unit) {
         viewModel.effect.collect { effect ->
@@ -57,9 +50,7 @@ fun NoteScreen(
     }
 
     BottomSheetScaffold(
-        modifier = modifier
-            .consumeWindowInsets(WindowInsets.safeDrawing)
-            .fillMaxSize(),
+        modifier = modifier,
         scaffoldState = noteScreenState.bottomSheetState,
         sheetSwipeEnabled = false,
         sheetPeekHeight = noteScreenState.rememberNoteSheetContent(),
@@ -69,25 +60,20 @@ fun NoteScreen(
         ),
         snackbarHost = {
             InsightErrorSnackBar(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(MaterialTheme.dimens.medium)
-                    .windowInsetsPadding(WindowInsets.navigationBars),
+                modifier = Modifier,
                 hostState = noteScreenState.bottomSheetState.snackbarHostState
             )
         },
         sheetContent = {
             NoteSheetContent(
-                modifier = modifier
-                    .padding(horizontal = MaterialTheme.dimens.medium)
-                    .windowInsetsPadding(WindowInsets.navigationBars),
+                modifier = Modifier.setMargin(),
                 selectedNote = noteState.selectedNote,
                 selectedOperation = noteState.noteOperation,
                 tags = noteState.tags,
                 onEditTitle = { viewModel.onEvent(NoteEvent.OnEditTitle(it)) },
                 onEditSituation = { viewModel.onEvent(NoteEvent.OnEditSituation(it)) },
                 onEditBody = { viewModel.onEvent(NoteEvent.OnEditBody(it)) },
-                onEditTagId = { viewModel.onEvent(NoteEvent.OnSelectTag(it)) },
+                onEditTagId = { viewModel.onEvent(NoteEvent.OnSelectNewTag(it)) },
                 onClickClose = {
                     viewModel.onEvent(NoteEvent.OnClickToCloseSheet)
                 },
@@ -98,18 +84,11 @@ fun NoteScreen(
         }
     ) { padding ->
         Column(
-            modifier = modifier
-                .background(MaterialTheme.colorScheme.background)
-                .padding(horizontal = MaterialTheme.dimens.medium)
-                .padding(
-                    top = calculateTopPadding(padding),
-                    bottom = calculateBottomPadding(padding)
-                ),
+            modifier = Modifier,
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.medium)
         ) {
             InsightHeaderScreen(
-                modifier = Modifier
-                    .padding(top = MaterialTheme.dimens.large),
+                modifier = Modifier,
                 iconResId = R.drawable.ic_note,
                 title = tagName,
                 onAddItem = {
@@ -123,7 +102,7 @@ fun NoteScreen(
             )
 
             InsightFilterAndSort(
-                modifier = modifier,
+                modifier = Modifier,
                 sortedBy = { ascending ->
                     if (ascending)
                         viewModel.onEvent(NoteEvent.OnSortTitleByAscending)
@@ -142,7 +121,7 @@ fun NoteScreen(
             )
 
             NoteBodyContent(
-                modifier = modifier.fillMaxWidth(),
+                modifier = Modifier,
                 response = noteState.notes,
                 onEditNote = {
                     viewModel.onEvent(
@@ -158,7 +137,7 @@ fun NoteScreen(
             )
 
             NoteDeleteAlert(
-                modifier = modifier,
+                modifier = Modifier,
                 note = noteState.selectedNote,
                 showDialog = noteScreenState.isAlertDialogVisible,
                 onDismissRequest = {

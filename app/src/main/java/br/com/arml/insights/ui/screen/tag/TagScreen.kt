@@ -1,20 +1,14 @@
+@file:OptIn(ExperimentalMaterial3AdaptiveApi::class)
+
 package br.com.arml.insights.ui.screen.tag
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.consumeWindowInsets
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -30,8 +24,7 @@ import br.com.arml.insights.ui.component.common.InsightHeaderScreen
 import br.com.arml.insights.ui.component.tag.TagBodyContent
 import br.com.arml.insights.ui.component.tag.TagDeleteAlert
 import br.com.arml.insights.ui.component.tag.TagSheetContent
-import br.com.arml.insights.ui.screen.common.calculateBottomPadding
-import br.com.arml.insights.ui.screen.common.calculateTopPadding
+import br.com.arml.insights.ui.screen.common.setMargin
 import br.com.arml.insights.ui.theme.dimens
 import kotlinx.coroutines.flow.collectLatest
 
@@ -52,9 +45,7 @@ fun TagScreen(
     }
 
     BottomSheetScaffold(
-        modifier = modifier
-            .consumeWindowInsets(WindowInsets.safeDrawing)
-            .fillMaxSize(),
+        modifier = modifier,
         scaffoldState = tagScreenState.bottomSheetState,
         sheetSwipeEnabled = false,
         sheetPeekHeight = tagScreenState.rememberSheetContent(),
@@ -64,19 +55,14 @@ fun TagScreen(
         ),
         snackbarHost = {
             InsightErrorSnackBar(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(MaterialTheme.dimens.medium)
-                    .windowInsetsPadding(WindowInsets.navigationBars),
+                modifier = Modifier,
                 hostState = tagScreenState.bottomSheetState.snackbarHostState
             )
         },
         sheetContent = {
             tagState.selectedTagUi?.let { selectedTagUi ->
                 TagSheetContent(
-                    modifier = modifier
-                        .padding(horizontal = MaterialTheme.dimens.medium)
-                        .windowInsetsPadding(WindowInsets.navigationBars),
+                    modifier = Modifier.setMargin(),
                     selectedTagUi = selectedTagUi,
                     selectedOperation = tagState.selectedOperation,
                     onEditName = { viewModel.onEvent(TagEvent.OnEditName(it)) },
@@ -92,29 +78,21 @@ fun TagScreen(
             }
         },
     ) { padding ->
-
         Column(
-            modifier = modifier
-                .background(MaterialTheme.colorScheme.background)
-                .padding(horizontal = MaterialTheme.dimens.medium)
-                .padding(
-                    top = calculateTopPadding(padding),
-                    bottom = calculateBottomPadding(padding)
-                ),
+            modifier = Modifier,
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.medium)
         ) {
-
             InsightHeaderScreen(
+                modifier = Modifier,
                 title = stringResource(R.string.tag_screen_title),
                 iconResId = R.drawable.ic_tag,
-                modifier = Modifier.padding(top = MaterialTheme.dimens.large),
                 onAddItem = {
                     viewModel.onEvent(TagEvent.OnClickToOpenSheet(null,TagOperation.OnInsert))
                 }
             )
 
             InsightFilterAndSort(
-                modifier = modifier,
+                modifier = Modifier,
                 sortedBy = { ascending ->
                     if (ascending)
                         viewModel.onEvent(TagEvent.OnSortTagsByNameAscending)
@@ -133,7 +111,7 @@ fun TagScreen(
             )
 
             TagBodyContent(
-                modifier = modifier,
+                modifier = Modifier,
                 tags = tagState.tags,
                 onDeleteTagUi = {
                     viewModel.onEvent(
@@ -151,7 +129,7 @@ fun TagScreen(
             )
 
             TagDeleteAlert(
-                modifier = modifier,
+                modifier = Modifier,
                 tagName = (tagState.selectedTagUi?:TagUi.fromTag(null)).name,
                 showDialog = tagScreenState.isAlertDialogVisible,
                 onDismissRequest = {
@@ -164,3 +142,4 @@ fun TagScreen(
         }
     }
 }
+
