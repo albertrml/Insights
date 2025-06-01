@@ -11,12 +11,13 @@ class NoteReducer @Inject constructor() : Reducer<NoteState, NoteEvent, NoteEffe
         event: NoteEvent
     ): Pair<NoteState, NoteEffect?> {
         return when(event){
+            is NoteEvent.OnInit -> previousState to null
             is NoteEvent.OnInsertOrUpdate -> previousState to null
             is NoteEvent.OnFetchAllNotes -> previousState to null
             is NoteEvent.OnDeleteNote -> previousState to null
             is NoteEvent.OnSearch -> previousState to null
             is NoteEvent.OnFetchTags -> previousState to null
-            is NoteEvent.OnSelectTag -> {
+            is NoteEvent.OnSelectNewTag -> {
                 val newNote = previousState.selectedNote.copy(tagId = event.tagId)
                 val updatedState = previousState.copy(selectedNote = newNote)
                 updatedState to null

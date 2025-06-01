@@ -2,18 +2,17 @@ package br.com.arml.insights.ui.screen.common
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.systemBars
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.foundation.layout.systemGestures
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.unit.dp
-import br.com.arml.insights.ui.theme.dimens
-
 
 @Composable
 fun calculateContentSheetPeekHeight(
@@ -36,11 +35,9 @@ fun rememberAnimatedSheetPeekHeight(isVisibleContentSheet: Boolean) = animateFlo
 ).value.dp
 
 @Composable
-fun calculateTopPadding(padding: PaddingValues) = padding.calculateTopPadding() +
-        WindowInsets.systemBars.asPaddingValues().calculateTopPadding() +
-        MaterialTheme.dimens.medium
-
-@Composable
-fun calculateBottomPadding(padding: PaddingValues) = padding.calculateBottomPadding() +
-        WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding() +
-        MaterialTheme.dimens.medium
+fun Modifier.setMargin(): Modifier {
+    return this.windowInsetsPadding(WindowInsets.systemBars)
+        .windowInsetsPadding(WindowInsets.displayCutout)
+        .windowInsetsPadding(WindowInsets.navigationBars)
+        .windowInsetsPadding(WindowInsets.systemGestures)
+}

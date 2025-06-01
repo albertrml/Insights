@@ -31,10 +31,10 @@ class NoteUiUseCase @Inject constructor(
             }
         }
 
-    fun searchNotes(query: String, searchNoteCategory: SearchNoteCategory) = noteRepository.getAll()
-        .map { response ->
+    fun searchNotes(tagId: Int, query: String, searchNoteCategory: SearchNoteCategory) =
+        noteRepository.getByTag(tagId).map { response ->
             response.mapTo { notes ->
-                notes.filterNotesBy(query,searchNoteCategory).map { NoteUi.fromNote(it) }
+                notes.filterNotesBy(query, searchNoteCategory).map { NoteUi.fromNote(it) }
             }
         }
 

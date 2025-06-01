@@ -138,7 +138,18 @@ fun getTagHeaderTitle(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(
+    name = "compact screen",
+    showBackground = true,
+    device = "spec:width=360dp,height=640dp")
+@Preview(
+    name = "medium screen",
+    showBackground = true,
+    device = "spec:width=412dp,height=924dp")
+@Preview(
+    name = "expanded screen",
+    showBackground = true,
+    device = "spec:width=1280dp,height=800dp")
 @Composable
 fun TagSheetContentPreview(){
     TagSheetContent(
