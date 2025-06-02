@@ -2,8 +2,10 @@
 
 package br.com.arml.insights.ui.screen.tag
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -62,7 +64,9 @@ fun TagScreen(
         sheetContent = {
             tagState.selectedTagUi?.let { selectedTagUi ->
                 TagSheetContent(
-                    modifier = Modifier.setMargin(),
+                    modifier = Modifier
+                        .setMargin()
+                        .padding(horizontal = MaterialTheme.dimens.smallMargin),
                     selectedTagUi = selectedTagUi,
                     selectedOperation = tagState.selectedOperation,
                     onEditName = { viewModel.onEvent(TagEvent.OnEditName(it)) },
@@ -79,7 +83,7 @@ fun TagScreen(
         },
     ) { padding ->
         Column(
-            modifier = Modifier,
+            modifier = Modifier.background(MaterialTheme.colorScheme.background),
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.mediumSpacing)
         ) {
             InsightHeaderScreen(

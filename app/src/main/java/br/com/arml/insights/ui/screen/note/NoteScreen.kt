@@ -1,8 +1,10 @@
 package br.com.arml.insights.ui.screen.note
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -66,7 +68,9 @@ fun NoteScreen(
         },
         sheetContent = {
             NoteSheetContent(
-                modifier = Modifier.setMargin(),
+                modifier = Modifier
+                    .setMargin()
+                    .padding(horizontal = MaterialTheme.dimens.smallMargin),
                 selectedNote = noteState.selectedNote,
                 selectedOperation = noteState.noteOperation,
                 tags = noteState.tags,
@@ -84,7 +88,7 @@ fun NoteScreen(
         }
     ) { padding ->
         Column(
-            modifier = Modifier,
+            modifier = Modifier.background(MaterialTheme.colorScheme.background),
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.mediumSpacing)
         ) {
             InsightHeaderScreen(

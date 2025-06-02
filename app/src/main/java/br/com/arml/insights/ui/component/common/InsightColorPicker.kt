@@ -44,8 +44,7 @@ fun InsightColorPicker(
     modifier: Modifier = Modifier,
     color: Color,
     onChangeColor: (Color) -> Unit,
-    title: String,
-    titleStyle: TextStyle = MaterialTheme.typography.headlineSmall
+    titleStyle: TextStyle = MaterialTheme.typography.bodyLarge
 ){
     val controller = rememberColorPickerController()
 
@@ -57,7 +56,7 @@ fun InsightColorPicker(
     {
         Text(
             modifier = Modifier.align(alignment = Alignment.CenterHorizontally),
-            text = stringResource(id = R.string.colorpicker_title_label,title),
+            text = stringResource(id = R.string.colorpicker_title_label),
             style = titleStyle
         )
 
@@ -116,7 +115,7 @@ fun InsightColorPicker(
                 .fillMaxWidth()
                 .align(alignment = Alignment.CenterHorizontally),
             text = stringResource(id = R.string.colorpicker_alpha_label),
-            style = MaterialTheme.typography.bodyLarge
+            style = titleStyle
         )
 
         Spacer(modifier = Modifier.padding(MaterialTheme.dimens.smallSpacing))
@@ -139,7 +138,7 @@ fun InsightColorPicker(
                 .fillMaxWidth()
                 .align(alignment = Alignment.CenterHorizontally),
             text = stringResource(id = R.string.colorpicker_brightness_label),
-            style = MaterialTheme.typography.bodyLarge
+            style = titleStyle
         )
 
         Spacer(modifier = Modifier.padding(MaterialTheme.dimens.smallSpacing))
@@ -176,7 +175,6 @@ fun ColorPickerPreview(){
         contentAlignment = Alignment.Center
     ){
         InsightColorPicker(
-            title = "Tag",
             modifier = Modifier
                 .border(
                     width = MaterialTheme.dimens.smallThickness,
