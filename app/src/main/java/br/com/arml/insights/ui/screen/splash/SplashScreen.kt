@@ -13,7 +13,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -27,8 +26,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.com.arml.insights.R
-import br.com.arml.insights.ui.theme.Yellow100
-import br.com.arml.insights.ui.theme.Yellow800
+import br.com.arml.insights.ui.theme.startLampSplashScreen
+import br.com.arml.insights.ui.theme.endLampSplashScreen
+import br.com.arml.insights.ui.theme.endSplashScreen
+import br.com.arml.insights.ui.theme.startSplashScreen
 import kotlinx.coroutines.delay
 
 @Composable
@@ -53,8 +54,8 @@ fun SplashScreen(
     )
 
     val colorStart = infiniteTransition.animateColor(
-        initialValue = MaterialTheme.colorScheme.primary,
-        targetValue = MaterialTheme.colorScheme.tertiary,
+        initialValue = startSplashScreen,
+        targetValue = endSplashScreen,
         animationSpec = infiniteRepeatable(
             animation = tween(2000, easing = LinearEasing),
             repeatMode = RepeatMode.Reverse
@@ -63,8 +64,8 @@ fun SplashScreen(
     )
 
     val colorEnd = infiniteTransition.animateColor(
-        initialValue = MaterialTheme.colorScheme.tertiary,
-        targetValue = MaterialTheme.colorScheme.primary,
+        initialValue = endSplashScreen,
+        targetValue = startSplashScreen,
         animationSpec = infiniteRepeatable(
             animation = tween(2000, easing = LinearEasing),
             repeatMode = RepeatMode.Reverse
@@ -73,10 +74,10 @@ fun SplashScreen(
     )
 
     val animatedColor by animateColorAsState(
-        targetValue = if (colorStart.value == MaterialTheme.colorScheme.primary)
-            Yellow800
+        targetValue = if (colorStart.value == startSplashScreen)
+            endLampSplashScreen
         else
-            Yellow100,
+            startLampSplashScreen,
         animationSpec = infiniteRepeatable(
             animation = tween(durationMillis = 2000, easing = LinearEasing),
             repeatMode = RepeatMode.Reverse

@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import br.com.arml.insights.R
 
 @Composable
@@ -39,14 +40,14 @@ fun InsightAlertDialog(
             Button(
                 onClick = onConfirmation,
             ) {
-                Text( text = stringResource(R.string.alert_dialog_confirm_button) )
+                Text(text = stringResource(R.string.alert_dialog_confirm_button))
             }
         },
         dismissButton = {
             OutlinedButton(
                 onClick = onDismissRequest,
             ) {
-                Text( text = stringResource(R.string.alert_dialog_dismiss_button) )
+                Text(text = stringResource(R.string.alert_dialog_dismiss_button))
             }
         }
 
@@ -56,11 +57,11 @@ fun InsightAlertDialog(
 
 @Preview
 @Composable
-fun InsightAlertDialogPreview(){
+fun InsightAlertDialogPreview() {
     InsightAlertDialog(
         modifier = Modifier,
         dialogTitle = "Title",
-        dialogText = "Text",
+        dialogText = LoremIpsum(20).values.toString(),
         onDismissRequest = {},
         onConfirmation = {}
     )

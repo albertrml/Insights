@@ -26,7 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import br.com.arml.insights.R
 import br.com.arml.insights.model.entity.TagUi
 import br.com.arml.insights.ui.screen.tag.TagOperation
-import br.com.arml.insights.ui.theme.Green500
+import br.com.arml.insights.ui.theme.confirmColor
 import br.com.arml.insights.ui.theme.dimens
 
 @Composable
@@ -43,7 +43,7 @@ fun TagSheetContent(
 
     Column (
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.medium),
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.mediumSpacing),
     ) {
         TagSheetHeader(
             modifier = Modifier.fillMaxWidth(),
@@ -79,13 +79,13 @@ fun TagSheetHeader(
 
     Row(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.small),
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.smallSpacing),
         verticalAlignment = Alignment.CenterVertically
     )
     {
 
         Icon(
-            modifier = Modifier.size(MaterialTheme.dimens.icon),
+            modifier = Modifier.size(MaterialTheme.dimens.smallIcon),
             imageVector = ImageVector.vectorResource(R.drawable.ic_tag),
             contentDescription = stringResource(R.string.tag_screen_title),
             tint = MaterialTheme.colorScheme.onSurface
@@ -102,12 +102,12 @@ fun TagSheetHeader(
         ) {
 
             Icon(
-                modifier = Modifier.size(MaterialTheme.dimens.icon),
+                modifier = Modifier.size(MaterialTheme.dimens.smallIcon),
                 imageVector = Icons.Default.Check,
                 contentDescription = stringResource(
                     id = R.string.tag_forms_save_button,title
                 ),
-                tint = Green500
+                tint = confirmColor
             )
         }
 
@@ -116,7 +116,7 @@ fun TagSheetHeader(
         ) {
 
             Icon(
-                modifier = Modifier.size(MaterialTheme.dimens.icon),
+                modifier = Modifier.size(MaterialTheme.dimens.smallIcon),
                 imageVector = Icons.Default.Close,
                 contentDescription = stringResource(
                     id = R.string.tag_screen_close_menu,title
@@ -138,11 +138,22 @@ fun getTagHeaderTitle(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(
+    name = "compact screen",
+    showBackground = true,
+    device = "spec:width=360dp,height=640dp")
+@Preview(
+    name = "medium screen",
+    showBackground = true,
+    device = "spec:width=412dp,height=924dp")
+@Preview(
+    name = "expanded screen",
+    showBackground = true,
+    device = "spec:width=1280dp,height=800dp")
 @Composable
 fun TagSheetContentPreview(){
     TagSheetContent(
-        modifier = Modifier.padding(MaterialTheme.dimens.small),
+        modifier = Modifier.padding(MaterialTheme.dimens.smallPadding),
         selectedTagUi = TagUi.fromTag(null)
     )
 }

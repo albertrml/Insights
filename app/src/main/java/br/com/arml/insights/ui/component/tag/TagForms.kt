@@ -37,14 +37,14 @@ fun TagForms(
 
     Column(
         modifier = modifier.verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.small),
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.smallSpacing),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
         TagFields(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(MaterialTheme.dimens.small),
+                .padding(MaterialTheme.dimens.smallPadding),
             name = tagUi.name,
             description = tagUi.description,
             onNameChange = onEditName,
@@ -53,7 +53,7 @@ fun TagForms(
         TagColorPicker(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(MaterialTheme.dimens.small),
+                .padding(MaterialTheme.dimens.smallPadding),
             selectedColor = tagUi.color,
             onColorChange = onEditColor
         )
@@ -71,20 +71,22 @@ fun TagFields(
 
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.small),
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.smallSpacing),
         horizontalAlignment = Alignment.Start
     ) {
         InsightOutlinedTextField(
             nameField = stringResource(id = R.string.tag_forms_name_field_label),
             text = name,
             onChangeText = onNameChange,
-            maxSize = 30
+            maxSize = 30,
+            textStyle = MaterialTheme.typography.bodyLarge
         )
         InsightOutlinedTextField(
             nameField = stringResource(id = R.string.tag_forms_description_field_label),
             text = description,
             onChangeText = onDescriptionChange,
-            maxSize = 30
+            maxSize = 30,
+            textStyle = MaterialTheme.typography.bodyLarge
         )
     }
 
@@ -103,11 +105,11 @@ fun TagColorPicker(
         InsightColorPicker(
             modifier = Modifier
                 .border(
-                    width = MaterialTheme.dimens.extraSmallThickness,
+                    width = MaterialTheme.dimens.smallThickness,
                     color = MaterialTheme.colorScheme.outline,
                     shape = MaterialTheme.shapes.small
                 )
-                .padding(MaterialTheme.dimens.medium),
+                .padding(MaterialTheme.dimens.mediumPadding),
             title = "Tag",
             color = selectedColor,
             onChangeColor = onColorChange
@@ -123,7 +125,7 @@ fun TagFormPreview(){
     }
 
     TagForms(
-        modifier = Modifier.padding(MaterialTheme.dimens.medium),
+        modifier = Modifier.padding(MaterialTheme.dimens.mediumPadding),
         tagUi = tagUi,
         onEditName = { tagUi = tagUi.copy(name = it) },
         onEditDescription = { tagUi = tagUi.copy(description = it) },
