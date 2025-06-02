@@ -1,6 +1,5 @@
 package br.com.arml.insights.ui.screen.note
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import br.com.arml.insights.domain.NoteUiUseCase
 import br.com.arml.insights.model.entity.NoteUi
@@ -196,8 +195,6 @@ class NoteViewModel @Inject constructor(
                 response.update(_state) { state, res ->
                     state.copy(notes = res)
                 }
-
-                Log.i("NoteViewModel", "note: ${state.value.notes}")
             }
         }
     }

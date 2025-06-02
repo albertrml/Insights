@@ -52,14 +52,14 @@ fun NoteForms(
     Column(
         modifier = modifier.verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.medium)
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.mediumSpacing)
     ) {
         InsightNotePad(
             header = {
                 InsightTextField(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(MaterialTheme.dimens.small),
+                        .padding(MaterialTheme.dimens.smallPadding),
                     nameField = "Title",
                     text = selectedNote.title,
                     onChangeText = onEditTitle,
@@ -70,7 +70,7 @@ fun NoteForms(
                 InsightTextField(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(MaterialTheme.dimens.small),
+                        .padding(MaterialTheme.dimens.smallPadding),
                     nameField = "Situation",
                     text = selectedNote.situation,
                     onChangeText = onEditSituation,
@@ -82,13 +82,13 @@ fun NoteForms(
                 InsightDropdownMenu(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(MaterialTheme.dimens.small),
+                        .padding(MaterialTheme.dimens.smallPadding),
                     selectedNote = selectedNote,
                     tags = tags,
                     onEditTagId = onEditTagId
                 )
             },
-            modifier = Modifier.padding(MaterialTheme.dimens.small),
+            modifier = Modifier.padding(MaterialTheme.dimens.smallPadding),
             noteName = "What is your insight?",
             text = selectedNote.body,
             textStyle = MaterialTheme.typography.bodyLarge,
@@ -98,7 +98,7 @@ fun NoteForms(
             maxLines = 20
         )
 
-        Spacer(modifier = Modifier.size(MaterialTheme.dimens.small))
+        Spacer(modifier = Modifier.size(MaterialTheme.dimens.smallSpacing))
     }
 }
 
@@ -117,7 +117,7 @@ fun InsightDropdownMenu(
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.small)
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.smallSpacing)
         ) {
 
             TextField(

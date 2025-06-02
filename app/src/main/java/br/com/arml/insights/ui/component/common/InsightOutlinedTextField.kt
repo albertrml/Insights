@@ -35,7 +35,7 @@ fun InsightOutlinedTextField(
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = MaterialTheme.dimens.small),
+                .padding(bottom = MaterialTheme.dimens.smallPadding),
             value = text,
             onValueChange = { newText ->
                 if (newText.length <= maxSize) {

@@ -55,8 +55,8 @@ fun NoteScreen(
         sheetSwipeEnabled = false,
         sheetPeekHeight = noteScreenState.rememberNoteSheetContent(),
         sheetShape = RoundedCornerShape(
-            topStart = MaterialTheme.dimens.medium,
-            topEnd = MaterialTheme.dimens.medium
+            topStart = MaterialTheme.dimens.largeCornerRadius,
+            topEnd = MaterialTheme.dimens.largeCornerRadius
         ),
         snackbarHost = {
             InsightErrorSnackBar(
@@ -85,7 +85,7 @@ fun NoteScreen(
     ) { padding ->
         Column(
             modifier = Modifier,
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.medium)
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.mediumSpacing)
         ) {
             InsightHeaderScreen(
                 modifier = Modifier,

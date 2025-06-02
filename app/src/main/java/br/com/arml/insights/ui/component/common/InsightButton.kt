@@ -4,6 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -24,31 +25,32 @@ import br.com.arml.insights.ui.theme.dimens
 @Composable
 fun InsightButton(
     modifier: Modifier = Modifier,
-    text: String? = null,
+    color: Color = MaterialTheme.colorScheme.primary,
     @DrawableRes iconRes: Int? = null,
     onClick: () -> Unit,
-    color: Color = MaterialTheme.colorScheme.primary
+    text: String? = null
 ) {
     Button(
         modifier = modifier,
-        shape = RoundedCornerShape(MaterialTheme.dimens.medium),
+        shape = RoundedCornerShape(MaterialTheme.dimens.largeCornerRadius),
         contentPadding = contentPaddingButton(text, iconRes),
         colors = ButtonDefaults.buttonColors(containerColor = color),
         onClick = onClick
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.small)
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.mediumSpacing)
         ) {
             iconRes?.let {
                 Icon(
+                    modifier = Modifier.size(MaterialTheme.dimens.smallIcon),
                     painter = painterResource(id = iconRes),
                     contentDescription = stringResource(R.string.button_description, text?:"")
                 )
             }
             text?.let {
                 Text(
-                    text = text.uppercase(),
+                    text = text,
                     style = MaterialTheme.typography.labelLarge
                 )
             }
@@ -60,11 +62,7 @@ fun contentPaddingButton(
     text: String?,
     iconRes: Int?
 ): PaddingValues = if ( text == null && iconRes != null )
-{
-    PaddingValues(0.dp)
-} else {
-    ButtonDefaults.ContentPadding
-}
+    { PaddingValues(0.dp) } else { ButtonDefaults.ContentPadding }
 
 @Preview
 @Composable

@@ -22,7 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import br.com.arml.insights.R
-import br.com.arml.insights.ui.theme.RedBase
+import br.com.arml.insights.ui.theme.cancelColor
 import br.com.arml.insights.ui.theme.dimens
 
 @Composable
@@ -82,6 +82,6 @@ fun AnimatedHorizontalDivider(
 fun AnimatedHorizontalDividerPreview(){
     AnimatedHorizontalDivider(
         thickness = MaterialTheme.dimens.mediumThickness,
-        endColor = RedBase
+        endColor = cancelColor
     )
 }

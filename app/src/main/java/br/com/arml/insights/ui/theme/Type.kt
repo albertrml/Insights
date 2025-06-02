@@ -22,140 +22,73 @@ val ubuntuFontFamily = FontFamily(
 
 private const val activatePreview = true
 
-// Compact Small Typography (Smaller Font Sizes)
-val CompactSmallTypography = Typography(
+val smallTypography = Typography(
     headlineLarge = TextStyle(
         fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
         fontWeight = FontWeight.Bold,
-        fontSize = 22.sp, // Slightly smaller
+        fontSize = 20.sp,
     ),
     headlineMedium = TextStyle(
         fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
         fontWeight = FontWeight.Medium,
-        fontSize = 18.sp, // Slightly smaller
+        fontSize = 16.sp,
     ),
     headlineSmall = TextStyle(
         fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
         fontWeight = FontWeight.Normal,
-        fontSize = 14.sp, // Slightly smaller
+        fontSize = 12.sp,
     ),
     titleLarge = TextStyle(
         fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
         fontWeight = FontWeight.Bold,
-        fontSize = 12.sp, // Smaller
+        fontSize = 16.sp,
     ),
     titleMedium = TextStyle(
         fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
         fontWeight = FontWeight.Bold,
-        fontSize = 10.sp, // Smaller
+        fontSize = 14.sp,
     ),
     titleSmall = TextStyle(
         fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
         fontWeight = FontWeight.Bold,
-        fontSize = 8.sp, // Smaller
+        fontSize = 12.sp,
     ),
     bodyLarge = TextStyle(
         fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
         fontWeight = FontWeight.Normal,
-        fontSize = 12.sp, // Smaller
+        fontSize = 16.sp,
     ),
     bodyMedium = TextStyle(
         fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
         fontWeight = FontWeight.Normal,
-        fontSize = 10.sp, // Smaller
+        fontSize = 14.sp,
     ),
     bodySmall = TextStyle(
         fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
         fontWeight = FontWeight.Light,
-        fontSize = 8.sp, // Smaller
+        fontSize = 12.sp,
     ),
     labelLarge = TextStyle(
         fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
         fontWeight = FontWeight.Bold,
         fontStyle = FontStyle.Italic,
-        fontSize = 12.sp, // Smaller
+        fontSize = 14.sp,
     ),
     labelMedium = TextStyle(
         fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
         fontWeight = FontWeight.Bold,
         fontStyle = FontStyle.Italic,
-        fontSize = 10.sp, // Smaller
+        fontSize = 12.sp,
     ),
     labelSmall = TextStyle(
         fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
         fontWeight = FontWeight.Bold,
         fontStyle = FontStyle.Italic,
-        fontSize = 8.sp, // Smaller
+        fontSize = 10.sp,
     )
 )
 
-val CompactMediumTypography = Typography(
-    headlineLarge = TextStyle(
-        fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
-        fontWeight = FontWeight.Bold,
-        fontSize = 23.sp, // In between
-    ),
-    headlineMedium = TextStyle(
-        fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
-        fontWeight = FontWeight.Medium,
-        fontSize = 19.sp, // In between
-    ),
-    headlineSmall = TextStyle(
-        fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
-        fontWeight = FontWeight.Normal,
-        fontSize = 15.sp, // In between
-    ),
-    titleLarge = TextStyle(
-        fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
-        fontWeight = FontWeight.Bold,
-        fontSize = 13.sp, // In between
-    ),
-    titleMedium = TextStyle(
-        fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
-        fontWeight = FontWeight.Bold,
-        fontSize = 11.sp, // In between
-    ),
-    titleSmall = TextStyle(
-        fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
-        fontWeight = FontWeight.Bold,
-        fontSize = 9.sp, // In between
-    ),
-    bodyLarge = TextStyle(
-        fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
-        fontWeight = FontWeight.Normal,
-        fontSize = 13.sp, // In between
-    ),
-    bodyMedium = TextStyle(
-        fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
-        fontWeight = FontWeight.Normal,
-        fontSize = 11.sp, // In between
-    ),
-    bodySmall = TextStyle(
-        fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
-        fontWeight = FontWeight.Light,
-        fontSize = 9.sp, // In between
-    ),
-    labelLarge = TextStyle(
-        fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
-        fontWeight = FontWeight.Bold,
-        fontStyle = FontStyle.Italic,
-        fontSize = 13.sp, // In between
-    ),
-    labelMedium = TextStyle(
-        fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
-        fontWeight = FontWeight.Bold,
-        fontStyle = FontStyle.Italic,
-        fontSize = 11.sp, // In between
-    ),
-    labelSmall = TextStyle(
-        fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
-        fontWeight = FontWeight.Bold,
-        fontStyle = FontStyle.Italic,
-        fontSize = 9.sp, // In between
-    )
-)
-
-val CompactTypography = Typography(
+val mediumTypography = Typography(
     headlineLarge = TextStyle(
         fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
         fontWeight = FontWeight.Bold,
@@ -205,133 +138,133 @@ val CompactTypography = Typography(
         fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
         fontWeight = FontWeight.Bold,
         fontStyle = FontStyle.Italic,
-        fontSize = 14.sp,
+        fontSize = 16.sp,
     ),
     labelMedium = TextStyle(
         fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
         fontWeight = FontWeight.Bold,
         fontStyle = FontStyle.Italic,
-        fontSize = 12.sp,
+        fontSize = 14.sp,
     ),
     labelSmall = TextStyle(
         fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
         fontWeight = FontWeight.Bold,
         fontStyle = FontStyle.Italic,
-        fontSize = 10.sp,
+        fontSize = 12.sp,
     )
 )
 
-val MediumTypography = Typography(
+val expandedTypography = Typography(
     headlineLarge = TextStyle(
         fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
         fontWeight = FontWeight.Bold,
-        fontSize = 24.sp,
+        fontSize = 28.sp,
     ),
     headlineMedium = TextStyle(
         fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
         fontWeight = FontWeight.Medium,
-        fontSize = 20.sp,
+        fontSize = 24.sp,
     ),
     headlineSmall = TextStyle(
         fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
         fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
+        fontSize = 20.sp,
     ),
     titleLarge = TextStyle(
         fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
         fontWeight = FontWeight.Bold,
-        fontSize = 14.sp,
+        fontSize = 20.sp,
     ),
     titleMedium = TextStyle(
         fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
         fontWeight = FontWeight.Bold,
-        fontSize = 12.sp,
+        fontSize = 18.sp,
     ),
     titleSmall = TextStyle(
         fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
         fontWeight = FontWeight.Bold,
-        fontSize = 10.sp,
+        fontSize = 16.sp,
     ),
     bodyLarge = TextStyle(
         fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
         fontWeight = FontWeight.Normal,
-        fontSize = 14.sp,
+        fontSize = 20.sp,
     ),
     bodyMedium = TextStyle(
         fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
         fontWeight = FontWeight.Normal,
-        fontSize = 12.sp,
+        fontSize = 18.sp,
     ),
     bodySmall = TextStyle(
         fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
         fontWeight = FontWeight.Light,
-        fontSize = 10.sp,
+        fontSize = 16.sp,
     ),
     labelLarge = TextStyle(
         fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
         fontWeight = FontWeight.Bold,
         fontStyle = FontStyle.Italic,
-        fontSize = 14.sp,
+        fontSize = 18.sp,
     ),
     labelMedium = TextStyle(
         fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
         fontWeight = FontWeight.Bold,
         fontStyle = FontStyle.Italic,
-        fontSize = 12.sp,
+        fontSize = 16.sp,
     ),
     labelSmall = TextStyle(
         fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
         fontWeight = FontWeight.Bold,
         fontStyle = FontStyle.Italic,
-        fontSize = 10.sp,
+        fontSize = 14.sp,
     )
 )
 
-val LargeTypography = Typography(
+val largeTypography = Typography(
     headlineLarge = TextStyle(
         fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
         fontWeight = FontWeight.Bold,
+        fontSize = 34.sp, // Larger
+    ),
+    headlineMedium = TextStyle(
+        fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
+        fontWeight = FontWeight.Medium,
         fontSize = 30.sp, // Larger
     ),
-    headlineMedium = TextStyle(
+    headlineSmall = TextStyle(
         fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
-        fontWeight = FontWeight.Medium,
+        fontWeight = FontWeight.Normal,
         fontSize = 26.sp, // Larger
     ),
-    headlineSmall = TextStyle(
+    titleLarge = TextStyle(
+        fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
+        fontWeight = FontWeight.Bold,
+        fontSize = 22.sp, // Larger
+    ),
+    titleMedium = TextStyle(
+        fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
+        fontWeight = FontWeight.Bold,
+        fontSize = 20.sp, // Larger
+    ),
+    titleSmall = TextStyle(
+        fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
+        fontWeight = FontWeight.Bold,
+        fontSize = 18.sp, // Larger
+    ),
+    bodyLarge = TextStyle(
+        fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 22.sp, // Larger
+    ),
+    bodyMedium = TextStyle(
         fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
         fontWeight = FontWeight.Normal,
         fontSize = 20.sp, // Larger
     ),
-    titleLarge = TextStyle(
-        fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
-        fontWeight = FontWeight.Bold,
-        fontSize = 18.sp, // Larger
-    ),
-    titleMedium = TextStyle(
-        fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
-        fontWeight = FontWeight.Bold,
-        fontSize = 16.sp, // Larger
-    ),
-    titleSmall = TextStyle(
-        fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
-        fontWeight = FontWeight.Bold,
-        fontSize = 14.sp, // Larger
-    ),
-    bodyLarge = TextStyle(
-        fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
-        fontWeight = FontWeight.Normal,
-        fontSize = 18.sp, // Larger
-    ),
-    bodyMedium = TextStyle(
-        fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
-        fontWeight = FontWeight.Normal,
-        fontSize = 16.sp, // Larger
-    ),
     bodySmall = TextStyle(
         fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
         fontWeight = FontWeight.Light,
-        fontSize = 14.sp, // Larger
+        fontSize = 18.sp, // Larger
     ),
     labelLarge = TextStyle(
         fontFamily = if (activatePreview) FontFamily.Default else ubuntuFontFamily,
