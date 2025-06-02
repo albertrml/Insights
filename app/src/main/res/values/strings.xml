@@ -1,46 +1,51 @@
 <resources>
+    <string name="alert_dialog_confirm_button">Confirm</string>
+    <string name="alert_dialog_dismiss_button">Dismiss</string>
     <string name="app_name">Insights</string>
     <string name="button_description">%1$s button</string>
     <string name="colorpicker_alpha_label">Alpha</string>
     <string name="colorpicker_brightness_label">Brightness</string>
-    <string name="colorpicker_selected_color_label">Selected Color</string>
-    <string name="colorpicker_title_label">%1$s: Pick a color</string>
+    <string name="colorpicker_selected_color_label">Selected color</string>
+    <string name="colorpicker_title_label">Tag color</string>
+    <string name="filter_name_label">Filter</string>
     <string name="gradient_end_color_label">End Background color</string>
     <string name="gradient_lamp_label">Lamp\'s light</string>
     <string name="gradient_start_color_label">Start Background color</string>
     <string name="header_screen_button">Add New %1$s</string>
     <string name="insight_logo_description">Insight Logo</string>
-    <string name="note_screen_close_menu">Close %1$s menu</string>
-    <string name="note_screen_title_label">Title</string>
+    <string name="note_forms_insight">What is your insight?</string>
+    <string name="note_forms_save_button">Save Note</string>
+    <string name="note_forms_situation">Situation</string>
+    <string name="note_forms_tag_description">More options</string>
+    <string name="note_forms_tag_selection">tag</string>
+    <string name="note_forms_title">Title</string>
+    <string name="note_operation_edit">Edit Note</string>
+    <string name="note_operation_insert">Add Note</string>
     <string name="note_screen_alert_dialog_message">
         The selected %1$s insight created at %2$s will be deleted.
-        Are you sure you want to delete it?
-    </string>
+        Are you sure you want to delete it?</string>
+    <string name="note_screen_close_menu">Close %1$s menu</string>
+    <string name="note_screen_title">Notes</string>
+    <string name="note_screen_title_label">Title</string>
+    <string name="tag_operation_edit">Edit Tag</string>
+    <string name="tag_operation_insert">Add Tag</string>
     <string name="outlined_text_field_label">%1$s</string>
-    <string name="text_field_label">%1$s</string>
-    <string name="tag_card_edit_button">Edit %1$s</string>
-    <string name="tag_card_read_more_button">Read more</string>
-    <string name="tag_card_read_less_button">Read less</string>
-    <string name="tag_card_see_insights_button">See insights</string>
     <string name="tag_card_delete_button">Delete %1$s tag</string>
+    <string name="tag_card_edit_button">Edit %1$s</string>
+    <string name="tag_card_read_less_button">Read less</string>
+    <string name="tag_card_read_more_button">Read more</string>
+    <string name="tag_card_see_insights_button">See insights</string>
     <string name="tag_forms_description_field_label">Description</string>
     <string name="tag_forms_name_field_label">Name</string>
     <string name="tag_forms_save_button">Save</string>
+    <string name="tag_screen_alert_dialog_message">
+        You will lost all insights related to this tag.
+        Are you sure you want to delete it?
+    </string>
     <string name="tag_screen_close_menu">Close %1$s menu</string>
     <string name="tag_screen_edit_menu">Edit tag</string>
     <string name="tag_screen_remove_menu">Remove tag</string>
     <string name="tag_screen_see_insights_menu">See insights</string>
     <string name="tag_screen_title">Tag</string>
-    <string name="alert_dialog_confirm_button">Confirm</string>
-    <string name="alert_dialog_dismiss_button">Dismiss</string>
-    <string name="tag_screen_alert_dialog_message">
-        You will lost all insights related to this tag.
-        Are you sure you want to delete it?
-    </string>
-    <string name="note_screen_title">Notes</string>
-    <string name="note_forms_save_button">Save Note</string>
-    <string name="tag_operation_insert">Add Tag</string>
-    <string name="tag_operation_edit">Edit Tag</string>
-    <string name="note_operation_insert">Add Note</string>
-    <string name="note_operation_edit">Edit Note</string>
+    <string name="text_field_label">%1$s</string>
 </resources>

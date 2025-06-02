@@ -28,8 +28,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
+import br.com.arml.insights.R
 import br.com.arml.insights.model.entity.NoteUi
 import br.com.arml.insights.model.entity.TagUi
 import br.com.arml.insights.model.mock.createSampleNotes
@@ -60,7 +62,7 @@ fun NoteForms(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(MaterialTheme.dimens.smallPadding),
-                    nameField = "Title",
+                    nameField = stringResource(R.string.note_forms_title),
                     text = selectedNote.title,
                     onChangeText = onEditTitle,
                     maxSize = 30,
@@ -71,7 +73,7 @@ fun NoteForms(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(MaterialTheme.dimens.smallPadding),
-                    nameField = "Situation",
+                    nameField = stringResource(R.string.note_forms_situation),
                     text = selectedNote.situation,
                     onChangeText = onEditSituation,
                     maxSize = 30,
@@ -89,7 +91,7 @@ fun NoteForms(
                 )
             },
             modifier = Modifier.padding(MaterialTheme.dimens.smallPadding),
-            noteName = "What is your insight?",
+            noteName = stringResource(R.string.note_forms_insight),
             text = selectedNote.body,
             textStyle = MaterialTheme.typography.bodyLarge,
             onChangeText = onEditBody,
@@ -128,7 +130,7 @@ fun InsightDropdownMenu(
                 onValueChange = { },
                 label = {
                     Text(
-                        text = "Tag",
+                        text = stringResource(R.string.note_forms_tag_selection),
                         style = textStyle
                     )
                 },
@@ -140,7 +142,10 @@ fun InsightDropdownMenu(
                 maxLines = 1
             )
             IconButton(onClick = { expanded = !expanded }) {
-                Icon(Icons.Default.ArrowDropDown, contentDescription = "More options")
+                Icon(
+                    imageVector = Icons.Default.ArrowDropDown,
+                    contentDescription = stringResource(R.string.note_forms_tag_description)
+                )
             }
         }
         DropdownMenu(
