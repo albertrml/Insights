@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -42,15 +42,15 @@ import com.github.skydoves.colorpicker.compose.rememberColorPickerController
 @Composable
 fun InsightColorPicker(
     modifier: Modifier = Modifier,
-    title: String,
-    titleStyle: TextStyle = MaterialTheme.typography.headlineSmall,
     color: Color,
-    onChangeColor: (Color) -> Unit
+    onChangeColor: (Color) -> Unit,
+    title: String,
+    titleStyle: TextStyle = MaterialTheme.typography.headlineSmall
 ){
     val controller = rememberColorPickerController()
 
     Column(
-        modifier = modifier,
+        modifier = modifier.padding(MaterialTheme.dimens.mediumPadding),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     )
@@ -62,14 +62,12 @@ fun InsightColorPicker(
         )
 
         HorizontalDivider(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = MaterialTheme.dimens.medium),
+            modifier = Modifier.padding(vertical = MaterialTheme.dimens.largePadding),
             thickness = MaterialTheme.dimens.smallThickness
         )
 
         Row(
-            modifier = Modifier.height(MaterialTheme.dimens.hsvColorPicker),
+            modifier = Modifier.height(MaterialTheme.dimens.colorPickerHeight),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -83,10 +81,10 @@ fun InsightColorPicker(
                 initialColor = color,
             )
 
-            Spacer(modifier = Modifier.padding(MaterialTheme.dimens.small))
+            Spacer(modifier = Modifier.padding(MaterialTheme.dimens.smallSpacing))
 
             Column(
-                modifier = Modifier.fillMaxHeight(),
+                modifier = Modifier,
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -95,12 +93,12 @@ fun InsightColorPicker(
                     text = stringResource(id = R.string.colorpicker_selected_color_label),
                     style = MaterialTheme.typography.labelLarge
                 )
-                Spacer(modifier = Modifier.padding(MaterialTheme.dimens.small))
+                Spacer(modifier = Modifier.padding(MaterialTheme.dimens.smallSpacing))
                 Box(
                     modifier = Modifier
-                        .size(MaterialTheme.dimens.icon)
+                        .size(MaterialTheme.dimens.smallIcon)
                         .border(
-                            width = MaterialTheme.dimens.extraSmallThickness,
+                            width = MaterialTheme.dimens.smallThickness,
                             color = MaterialTheme.colorScheme.onBackground,
                             shape = MaterialTheme.shapes.small
                         )
@@ -111,7 +109,7 @@ fun InsightColorPicker(
 
         }
 
-        Spacer(modifier = Modifier.padding(MaterialTheme.dimens.medium))
+        Spacer(modifier = Modifier.padding(MaterialTheme.dimens.mediumSpacing))
 
         Text(
             modifier = Modifier
@@ -121,20 +119,20 @@ fun InsightColorPicker(
             style = MaterialTheme.typography.bodyLarge
         )
 
+        Spacer(modifier = Modifier.padding(MaterialTheme.dimens.smallSpacing))
 
         AlphaSlider(
             modifier = Modifier
-                .fillMaxWidth()
-                .height(MaterialTheme.dimens.extraLarge),
+                .height(MaterialTheme.dimens.sliderHeight),
             borderRadius = MaterialTheme.dimens.mediumThickness,
             borderSize = MaterialTheme.dimens.mediumThickness,
-            wheelRadius = MaterialTheme.dimens.medium,
+            wheelRadius = MaterialTheme.dimens.sliderWheelRadius,
             wheelColor = MaterialTheme.colorScheme.onSurface,
             borderColor = MaterialTheme.colorScheme.onSurface,
             controller = controller,
         )
 
-        Spacer(modifier = Modifier.padding(MaterialTheme.dimens.small))
+        Spacer(modifier = Modifier.padding(MaterialTheme.dimens.mediumSpacing))
 
         Text(
             modifier = Modifier
@@ -144,23 +142,26 @@ fun InsightColorPicker(
             style = MaterialTheme.typography.bodyLarge
         )
 
+        Spacer(modifier = Modifier.padding(MaterialTheme.dimens.smallSpacing))
+
         BrightnessSlider(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(MaterialTheme.dimens.extraLarge),
+            modifier = Modifier.height(MaterialTheme.dimens.sliderHeight),
             borderRadius = MaterialTheme.dimens.mediumThickness,
             borderSize = MaterialTheme.dimens.mediumThickness,
-            wheelRadius = MaterialTheme.dimens.medium,
+            wheelRadius = MaterialTheme.dimens.sliderWheelRadius,
             wheelColor = MaterialTheme.colorScheme.onSurface,
             borderColor = MaterialTheme.colorScheme.onSurface,
             controller = controller,
         )
 
-        Spacer(modifier = Modifier.padding(MaterialTheme.dimens.small))
+        Spacer(modifier = Modifier.padding(MaterialTheme.dimens.smallSpacing))
     }
 }
 
-@Preview(showBackground = true)
+@Preview(
+    name = "expanded screen",
+    showBackground = true,
+    device = "spec:width=1280dp,height=800dp")
 @Composable
 fun ColorPickerPreview(){
     val colorSaver: Saver<Color, *> = Saver(
@@ -169,16 +170,22 @@ fun ColorPickerPreview(){
     )
 
     var tagUi by rememberSaveable(stateSaver = colorSaver) { mutableStateOf(TagUi.fromTag(null).color) }
-    InsightColorPicker(
-        title = "Tag",
-        modifier = Modifier
-            .border(
-                width = MaterialTheme.dimens.extraSmallThickness,
-                color = MaterialTheme.colorScheme.outline,
-                shape = MaterialTheme.shapes.small
-            )
-            .padding(MaterialTheme.dimens.medium),
-        color = tagUi,
-        onChangeColor = { color -> tagUi = color}
-    )
+
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ){
+        InsightColorPicker(
+            title = "Tag",
+            modifier = Modifier
+                .border(
+                    width = MaterialTheme.dimens.smallThickness,
+                    color = MaterialTheme.colorScheme.outline,
+                    shape = MaterialTheme.shapes.small
+                )
+                .padding(MaterialTheme.dimens.mediumSpacing),
+            color = tagUi,
+            onChangeColor = { color -> tagUi = color}
+        )
+    }
 }

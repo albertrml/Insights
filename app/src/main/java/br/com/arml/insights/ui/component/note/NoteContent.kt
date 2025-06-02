@@ -30,19 +30,19 @@ import br.com.arml.insights.ui.theme.dimens
 fun NoteList(
     modifier: Modifier = Modifier,
     notes: List<NoteUi>,
-    minSize: Dp = MaterialTheme.dimens.noteSize,
+    minSize: Dp = MaterialTheme.dimens.xLargeIcon,
     onClick: (NoteUi) -> Unit = {},
     onLongClick: (NoteUi) -> Unit = {}
 ){
     LazyVerticalStaggeredGrid(
         modifier = modifier,
         columns = StaggeredGridCells.Adaptive(minSize = minSize),
-        verticalItemSpacing = MaterialTheme.dimens.small,
-        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.small)
+        verticalItemSpacing = MaterialTheme.dimens.mediumSpacing,
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.mediumSpacing)
     ){
         items(notes){ note ->
             NoteElement(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier,
                 note = note,
                 onClick = onClick,
                 onLongClick = onLongClick
@@ -71,7 +71,7 @@ fun NoteElement(
                 onClick = { onClick(note) },
                 onLongClick = { onLongClick(note) }
             ),
-        elevation = CardDefaults.cardElevation(MaterialTheme.dimens.cardElevation),
+        elevation = CardDefaults.cardElevation(MaterialTheme.dimens.mediumElevation),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
         )
@@ -79,25 +79,25 @@ fun NoteElement(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(MaterialTheme.dimens.small),
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.small),
+                .padding(MaterialTheme.dimens.smallPadding),
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.smallSpacing),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
                 text = note.title,
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleLarge
             )
-            Spacer(modifier = Modifier.padding(MaterialTheme.dimens.small))
+            Spacer(modifier = Modifier.padding(MaterialTheme.dimens.smallSpacing))
             Text(
                 text = note.body,
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.bodyLarge,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 5
             )
-            Spacer(modifier = Modifier.padding(MaterialTheme.dimens.small))
+            Spacer(modifier = Modifier.padding(MaterialTheme.dimens.smallSpacing))
             Text(
                 text = note.getCreationDate(),
-                style = MaterialTheme.typography.bodySmall
+                style = MaterialTheme.typography.bodyMedium
             )
         }
     }
@@ -111,7 +111,7 @@ fun NoteListPreview(){
     NoteList(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(MaterialTheme.dimens.small),
+            .padding(MaterialTheme.dimens.smallPadding),
         notes = notes
     )
 }

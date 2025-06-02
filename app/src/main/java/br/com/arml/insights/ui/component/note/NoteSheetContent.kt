@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
@@ -32,8 +31,8 @@ import br.com.arml.insights.model.entity.TagUi
 import br.com.arml.insights.model.mock.createSampleNotes
 import br.com.arml.insights.model.mock.mockTags
 import br.com.arml.insights.ui.screen.note.NoteOperation
-import br.com.arml.insights.ui.theme.Green500
-import br.com.arml.insights.ui.theme.RedBase
+import br.com.arml.insights.ui.theme.confirmColor
+import br.com.arml.insights.ui.theme.cancelColor
 import br.com.arml.insights.ui.theme.dimens
 import br.com.arml.insights.utils.data.Response
 import br.com.arml.insights.utils.data.ShowResults
@@ -87,7 +86,7 @@ fun OnSuccess(
 ){
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.medium),
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.mediumSpacing),
     ) {
         NoteSheetHeader(
             modifier = Modifier.fillMaxWidth(),
@@ -125,13 +124,13 @@ fun NoteSheetHeader(
 
     Row(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.small),
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.smallSpacing),
         verticalAlignment = Alignment.CenterVertically
     )
     {
 
         Icon(
-            modifier = Modifier.size(MaterialTheme.dimens.icon),
+            modifier = Modifier.size(MaterialTheme.dimens.smallIcon),
             imageVector = ImageVector.vectorResource(R.drawable.ic_note),
             contentDescription = stringResource(R.string.note_screen_title),
             tint = MaterialTheme.colorScheme.onSurface
@@ -148,12 +147,12 @@ fun NoteSheetHeader(
         ) {
 
             Icon(
-                modifier = Modifier.size(MaterialTheme.dimens.icon),
+                modifier = Modifier.size(MaterialTheme.dimens.smallIcon),
                 imageVector = Icons.Default.Check,
                 contentDescription = stringResource(
                     id = R.string.note_forms_save_button,title
                 ),
-                tint = Green500
+                tint = confirmColor
             )
         }
 
@@ -162,12 +161,12 @@ fun NoteSheetHeader(
         ) {
 
             Icon(
-                modifier = Modifier.size(MaterialTheme.dimens.icon),
+                modifier = Modifier.size(MaterialTheme.dimens.smallIcon),
                 imageVector = Icons.Default.Close,
                 contentDescription = stringResource(
                     id = R.string.note_screen_close_menu,title
                 ),
-                tint = RedBase
+                tint = cancelColor
             )
         }
     }
@@ -190,9 +189,7 @@ fun NoteSheetContentPreview(){
     var tags by remember { mutableStateOf(mockTags.map { TagUi.fromTag(it) }.toList()) }
     var note by remember { mutableStateOf(createSampleNotes().toList().first()) }
     OnSuccess(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(MaterialTheme.dimens.small),
+        modifier = Modifier,
         selectedNote = note,
         tags = tags,
         selectedOperation = NoteOperation.OnInsert,

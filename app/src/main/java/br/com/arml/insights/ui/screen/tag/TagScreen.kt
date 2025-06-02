@@ -50,8 +50,8 @@ fun TagScreen(
         sheetSwipeEnabled = false,
         sheetPeekHeight = tagScreenState.rememberSheetContent(),
         sheetShape = RoundedCornerShape(
-            topStart = MaterialTheme.dimens.medium,
-            topEnd = MaterialTheme.dimens.medium
+            topStart = MaterialTheme.dimens.largeCornerRadius,
+            topEnd = MaterialTheme.dimens.largeCornerRadius
         ),
         snackbarHost = {
             InsightErrorSnackBar(
@@ -80,7 +80,7 @@ fun TagScreen(
     ) { padding ->
         Column(
             modifier = Modifier,
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.medium)
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.mediumSpacing)
         ) {
             InsightHeaderScreen(
                 modifier = Modifier,

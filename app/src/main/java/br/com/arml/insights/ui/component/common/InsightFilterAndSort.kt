@@ -1,11 +1,14 @@
 package br.com.arml.insights.ui.component.common
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -16,7 +19,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -40,7 +42,7 @@ fun InsightFilterAndSort(
     Row(
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.Top,
-        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.medium)
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.smallSpacing)
     ){
 
         InsightOutlinedTextField(
@@ -53,49 +55,65 @@ fun InsightFilterAndSort(
             maxSize = 20,
         )
 
-        IconButton(
-            modifier = Modifier
-                .padding(top = MaterialTheme.dimens.medium)
-                .size(MaterialTheme.dimens.icon)
-                .clip(RoundedCornerShape(MaterialTheme.dimens.mediumCornerRadius)),
+        InsightIconButton(
+            modifier = Modifier,
+            imageVector = ImageVector.vectorResource(id = imageSort),
             onClick = {
                 isAscending = !isAscending
                 sortedBy(isAscending)
-            },
-        ) {
-            Icon(
-                modifier = Modifier.padding(MaterialTheme.dimens.small),
-                imageVector = ImageVector.vectorResource(id = imageSort),
-                contentDescription = null
-            )
-        }
+            }
+        )
 
-        IconButton(
-            modifier = Modifier
-                .padding(top = MaterialTheme.dimens.medium)
-                .size(MaterialTheme.dimens.icon)
-                .clip(RoundedCornerShape(MaterialTheme.dimens.mediumCornerRadius)),
+        InsightIconButton(
+            modifier = Modifier,
+            imageVector = Icons.Filled.Refresh,
             onClick = {
                 isAscending = true
                 onRefreshTags()
-            },
-        ) {
-            Icon(
-                modifier = Modifier,
-                imageVector = ImageVector.vectorResource(id = R.drawable.ic_refresh),
-                contentDescription = null
-            )
-        }
+            }
+        )
 
     }
 
 }
 
+@Composable
+fun InsightIconButton(
+    modifier: Modifier = Modifier,
+    imageVector: ImageVector,
+    contentDescription: String? = null,
+    onClick: () -> Unit = {}
+){
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally
+    )  {
+        Spacer(modifier = Modifier.padding(vertical = MaterialTheme.dimens.outlinedTextFieldTopPadding))
+        IconButton(
+            modifier = Modifier
+                .size(MaterialTheme.dimens.mediumIcon),
+            onClick = onClick,
+        ) {
+            Icon(
+                modifier = Modifier.size(MaterialTheme.dimens.mediumIcon),
+                imageVector = imageVector,
+                contentDescription = contentDescription
+            )
+        }
+
+    }
+}
+
+
+@Preview(
+    name = "expanded screen",
+    showBackground = true,
+    device = "spec:width=1280dp,height=800dp")
 @Preview(showBackground = true)
 @Composable
 fun InsightFilterAndSortPreview(){
     InsightFilterAndSort(
-        modifier = Modifier.padding(horizontal = MaterialTheme.dimens.medium),
+        modifier = Modifier,
         sortedBy = {},
         searchQuery = "",
         onSearchTextChange = {},
