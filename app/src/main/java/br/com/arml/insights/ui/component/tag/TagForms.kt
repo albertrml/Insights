@@ -110,7 +110,6 @@ fun TagColorPicker(
                     shape = MaterialTheme.shapes.small
                 )
                 .padding(MaterialTheme.dimens.mediumPadding),
-            title = "Tag",
             color = selectedColor,
             onChangeColor = onColorChange
         )

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Insights</string>
+    <string name="alert_dialog_confirm_button">Confirmar</string>
+    <string name="alert_dialog_dismiss_button">Cancelar</string>
+    <string name="button_description">Botão %1$s</string>
+    <string name="colorpicker_alpha_label">Transparência</string>
+    <string name="colorpicker_brightness_label">Brilho</string>
+    <string name="colorpicker_selected_color_label">Cor selecionada</string>
+    <string name="colorpicker_title_label">Cor da categoria</string>
+    <string name="filter_name_label">Filtro</string>
+    <string name="gradient_end_color_label">Cor final de fundo</string>
+    <string name="gradient_lamp_label">Luz da lâmpada em splash screen</string>
+    <string name="gradient_start_color_label">Cor inicial de fundo</string>
+    <string name="header_screen_button">Botão para adicionar %1$s</string>
+    <string name="insight_logo_description">Logo insight</string>
+    <string name="note_screen_alert_dialog_message">
+        O pensamento %1$s criado em %2$s será deletado.
+        Tens certeza que queres apagá-lo?</string>
+    <string name="note_forms_insight">Qual é o seu pensamento?</string>
+    <string name="note_forms_save_button">Salvar Nota</string>
+    <string name="note_forms_situation">Situação</string>
+    <string name="note_forms_tag_description">Mais opções</string>
+    <string name="note_forms_tag_selection">Categoria</string>
+    <string name="note_forms_title">Título</string>
+    <string name="note_operation_edit">Editar</string>
+    <string name="note_operation_insert">Adicionar</string>
+    <string name="note_screen_close_menu">Fechar menu %1$s</string>
+    <string name="note_screen_title">Notas</string>
+    <string name="note_screen_title_label">Título</string>
+    <string name="tag_operation_edit">Editar</string>
+    <string name="tag_operation_insert">Adicionar</string>
+    <string name="outlined_text_field_label">%1$s</string>
+    <string name="tag_card_delete_button">Botão de apagar a categoria %1$s</string>
+    <string name="tag_card_edit_button">Botão para editar %1$s</string>
+    <string name="tag_card_read_less_button">Leia menos</string>
+    <string name="tag_card_read_more_button">Leia mais</string>
+    <string name="tag_card_see_insights_button">Pensamentos</string>
+    <string name="tag_forms_description_field_label">Descrição</string>
+    <string name="tag_forms_name_field_label">Nome</string>
+    <string name="tag_forms_save_button">Botão salvar</string>
+    <string name="tag_screen_alert_dialog_message">
+        Os pensamentos relacionados a esta categoria serão apagados.
+        Tens certeza que queres apagar esta categoria?</string>
+    <string name="tag_screen_close_menu">Botão fechar menu %1$s</string>
+    <string name="tag_screen_edit_menu">Editar</string>
+    <string name="tag_screen_remove_menu">Apagar categoria</string>
+    <string name="tag_screen_see_insights_menu">Pensamentos</string>
+    <string name="tag_screen_title">Categoria</string>
+    <string name="text_field_label">%1$s</string>
+</resources>
