@@ -4,9 +4,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import br.com.arml.insights.utils.exception.TagException
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertNull
-import org.junit.Assert.assertTrue
+import org.junit.Assert.assertThrows
 import org.junit.Test
 
 class TagUiTests {
@@ -35,26 +33,24 @@ class TagUiTests {
     @Test
     fun `should return true and null when TagUi is valid`(){
         val result = TagUi.isValid(validTagUi)
-        assertTrue(result.first)
-        assertNull(result.second)
+        assertEquals(Unit, result)
     }
 
     @Test
     fun `should return false and TagIsNullException when TagUi is null`(){
-        val result = TagUi.isValid(null)
-        assertFalse(result.first)
-        assertTrue(result.second is TagException.TagIsNullException)
+        assertThrows(TagException.TagIsNullException::class.java) {
+            TagUi.isValid(null)
+        }
     }
 
     @Test
     fun `should return false and TagNameSizeException when name length is not in 3 to 20`(){
-        val result = TagUi.isValid(
-            validTagUi.copy(
-                name = "a".repeat(21)
-            )
-        )
-        assertFalse(result.first)
-        assertTrue(result.second is TagException.TagNameSizeException)
+        assertThrows(TagException.TagNameSizeException::class.java) {
+            TagUi.isValid(validTagUi.copy(name = "a".repeat(MIN_TAG_NAME_LENGTH - 1)))
+        }
+        assertThrows(TagException.TagNameSizeException::class.java) {
+            TagUi.isValid(validTagUi.copy(name = "a".repeat(MAX_TAG_NAME_LENGTH + 1)))
+        }
     }
 
     @Test

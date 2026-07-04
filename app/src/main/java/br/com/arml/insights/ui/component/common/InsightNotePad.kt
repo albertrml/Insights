@@ -40,7 +40,7 @@ fun InsightNotePad(
     var currentTextSize by rememberSaveable { mutableIntStateOf(text.length) }
 
     Card(
-        modifier = Modifier.border(
+        modifier = modifier.border(
             width = MaterialTheme.dimens.smallThickness,
             color = MaterialTheme.colorScheme.onSurface,
             RoundedCornerShape(MaterialTheme.dimens.mediumCornerRadius)
@@ -51,21 +51,21 @@ fun InsightNotePad(
         ),
     ) {
         Column(
-            modifier = modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.smallSpacing)
         ) {
 
             header()
 
             TextField(
-                modifier = modifier
+                modifier = Modifier
                     .fillMaxWidth()
                     .background(color = MaterialTheme.colorScheme.background),
                 value = text,
-                onValueChange = { nexText ->
-                    if (nexText.length <= maxSize) {
-                        currentTextSize = nexText.length
-                        onChangeText(nexText)
+                onValueChange = { newText ->
+                    if (newText.length <= maxSize) {
+                        currentTextSize = newText.length
+                        onChangeText(newText)
                     }
                 },
                 textStyle = textStyle,
@@ -85,7 +85,7 @@ fun InsightNotePad(
                 )
             )
             Text(
-                modifier = modifier
+                modifier = Modifier
                     .align(Alignment.End)
                     .padding(
                         end = MaterialTheme.dimens.smallPadding,

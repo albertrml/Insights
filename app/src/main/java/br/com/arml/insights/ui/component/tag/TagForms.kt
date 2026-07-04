@@ -85,7 +85,7 @@ fun TagFields(
             nameField = stringResource(id = R.string.tag_forms_description_field_label),
             text = description,
             onChangeText = onDescriptionChange,
-            maxSize = 30,
+            maxSize = 200,
             textStyle = MaterialTheme.typography.bodyLarge
         )
     }

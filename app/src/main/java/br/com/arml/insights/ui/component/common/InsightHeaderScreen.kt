@@ -42,7 +42,7 @@ fun InsightHeaderScreen(
             Icon(
                 modifier = Modifier.size(MaterialTheme.dimens.smallIcon),
                 imageVector = ImageVector.vectorResource(iconResId),
-                contentDescription = stringResource(R.string.note_screen_title),
+                contentDescription = title,
                 tint = MaterialTheme.colorScheme.onSurface
             )
 

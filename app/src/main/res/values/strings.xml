@@ -39,9 +39,12 @@
     <string name="tag_forms_name_field_label">Name</string>
     <string name="tag_forms_save_button">Save</string>
     <string name="tag_screen_alert_dialog_message">
-        You will lost all insights related to this tag.
+        You will lose all insights related to this tag.
         Are you sure you want to delete it?
     </string>
+    <string name="sort_button_description">Sort items</string>
+    <string name="refresh_button_description">Refresh list</string>
+    <string name="clear_search_description">Clear search text</string>
     <string name="tag_screen_close_menu">Close %1$s menu</string>
     <string name="tag_screen_edit_menu">Edit tag</string>
     <string name="tag_screen_remove_menu">Remove tag</string>

@@ -6,6 +6,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import br.com.arml.insights.utils.exception.TagException
 
+const val MIN_TAG_NAME_LENGTH = 3
+const val MAX_TAG_NAME_LENGTH = 20
+
 data class TagUi(
     val id: Int,
     val name: String,
@@ -35,14 +38,14 @@ data class TagUi(
             description = "",
         )
 
-        fun isValid(tagUi: TagUi?): Pair<Boolean, TagException?> = when {
+        fun isValid(tagUi: TagUi?): Unit = when {
             tagUi == null ->
-                false to TagException.TagIsNullException()
+                throw TagException.TagIsNullException()
 
-            tagUi.name.length !in 3..30 ->
-                false to TagException.TagNameSizeException()
+            tagUi.name.length !in MIN_TAG_NAME_LENGTH..MAX_TAG_NAME_LENGTH ->
+                throw TagException.TagNameSizeException()
 
-            else -> true to null
+            else -> Unit
         }
 
     }

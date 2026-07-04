@@ -66,7 +66,7 @@ fun TagCard(
                 thickness = MaterialTheme.dimens.smallThickness
             )
             Spacer(modifier = Modifier.padding(MaterialTheme.dimens.smallSpacing))
-            TagCardContent(modifier = modifier, bodyContent = tagUi.description)
+            TagCardContent(modifier = Modifier, bodyContent = tagUi.description)
             Spacer(modifier = Modifier.padding(MaterialTheme.dimens.smallSpacing))
             AnimatedHorizontalDivider(
                 modifier = Modifier,
@@ -98,7 +98,9 @@ fun TagCardHeader(
         Text(
             modifier = Modifier.weight(1f),
             text = tagUi.name,
-            style = textStyle
+            style = textStyle,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
         )
         IconButton(
             onClick = { onEditTag(tagUi) }
@@ -136,7 +138,7 @@ fun TagCardContent(
                 ),
             text = bodyContent,
             style = textStyle,
-            maxLines = if (isExpanded) 3 else 1,
+            maxLines = if (isExpanded) Int.MAX_VALUE else 1,
             overflow = TextOverflow.Ellipsis
         )
 
@@ -213,7 +215,7 @@ fun TagList(
     ){
         items(tagList) { tagUi ->
             TagCard(
-                modifier = modifier,
+                modifier = Modifier.fillMaxWidth(),
                 tagUi = tagUi,
                 onEditTagUi = { onEditTagUi(tagUi) },
                 onDeleteTagUi = { onDeleteTagUi(tagUi) },

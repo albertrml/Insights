@@ -10,7 +10,6 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
-import br.com.arml.insights.application.HideStatusBarSystem
 import br.com.arml.insights.application.LockScreenOrientation
 import br.com.arml.insights.ui.navigation.InsightRoute
 import br.com.arml.insights.ui.theme.InsightsTheme
@@ -26,16 +25,15 @@ class MainActivity : ComponentActivity() {
             val density = LocalDensity.current
             val screenHeightDp = with(density) { LocalWindowInfo.current.containerSize.height.toDp() }
             val screenWidthDp = with(density) { LocalWindowInfo.current.containerSize.width.toDp() }
-            if(screenHeightDp < 1000.dp && screenWidthDp < 1000.dp)
+            if (screenHeightDp < 1000.dp && screenWidthDp < 1000.dp) {
                 LockScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+            }
 
-            HideStatusBarSystem {
-                InsightsTheme {
-                    val navController = rememberNavController()
-                    InsightRoute(
-                        navController = navController
-                    )
-                }
+            InsightsTheme {
+                val navController = rememberNavController()
+                InsightRoute(
+                    navController = navController
+                )
             }
         }
     }

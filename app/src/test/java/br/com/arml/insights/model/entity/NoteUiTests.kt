@@ -2,7 +2,7 @@ package br.com.arml.insights.model.entity
 
 import br.com.arml.insights.utils.exception.NoteException
 import junit.framework.TestCase.assertEquals
-import junit.framework.TestCase.assertTrue
+import org.junit.Assert.assertThrows
 import org.junit.Test
 import java.util.Date
 
@@ -62,85 +62,67 @@ class NoteUiTests {
 
     @Test
     fun `should throw NoteIsNullException when NoteUi is null`() {
-        val invalidNoteUi = NoteUi.isValid(null)
-        assertEquals(false, invalidNoteUi.first)
-        assertTrue(
-            invalidNoteUi.second is NoteException.NoteIsNullException
-        )
+        assertThrows(NoteException.NoteIsNullException::class.java){
+            NoteUi.isValid(null)
+        }
     }
 
     @Test
     fun `should throw NoteTagIdException when tagId is lower 0`() {
-        val invalidNoteUi = NoteUi.isValid(
-            validNoteUi.copy(
-                tagId = -1
+        assertThrows(NoteException.NoteTagIdException::class.java){
+            NoteUi.isValid(
+                validNoteUi.copy(
+                    tagId = -1
+                )
             )
-        )
-        assertEquals(false, invalidNoteUi.first)
-        assertTrue(
-            invalidNoteUi.second is NoteException.NoteTagIdException
-        )
-        assertEquals(
-            NoteException.NoteTagIdException().message,
-            invalidNoteUi.second?.message
-        )
+        }
     }
 
     @Test
     fun `should throw NoteTitleSizeException when title length is not in 3 to 20`() {
-        val invalidNoteUi = NoteUi.isValid(
-            validNoteUi.copy(
-                title = "a".repeat(21)
+        assertThrows(NoteException.NoteTitleSizeException::class.java){
+            NoteUi.isValid(
+                validNoteUi.copy(
+                    title = "a".repeat(MIN_TITLE_LENGTH - 1)
+                )
             )
-        )
-        assertEquals(false, invalidNoteUi.first)
-        assertTrue(
-            invalidNoteUi.second is NoteException.NoteTitleSizeException
-        )
-        assertEquals(
-            NoteException.NoteTitleSizeException().message,
-            invalidNoteUi.second?.message
-        )
+        }
+
+        assertThrows(NoteException.NoteTitleSizeException::class.java){
+            NoteUi.isValid(
+                validNoteUi.copy(
+                    title = "a".repeat(MAX_TITLE_LENGTH + 1)
+                )
+            )
+        }
     }
 
     @Test
     fun `should throw NoteBodySizeException when body length is not in 0 to 1000`() {
-        val invalidNoteUi = NoteUi.isValid(
-            validNoteUi.copy(
-                body = "a".repeat(1001)
+        assertThrows(NoteException.NoteBodySizeException::class.java){
+            NoteUi.isValid(
+                validNoteUi.copy(
+                    body = "a".repeat(MAX_BODY_LENGTH + 1)
+                )
             )
-        )
-        assertEquals(false, invalidNoteUi.first)
-        assertTrue(
-            invalidNoteUi.second is NoteException.NoteBodySizeException
-        )
-        assertEquals(
-            NoteException.NoteBodySizeException().message,
-            invalidNoteUi.second?.message
-        )
+        }
     }
 
     @Test
     fun `should throw NoteSituationSizeException when situation length is not in 0 to 20`() {
-        val invalidNoteUi = NoteUi.isValid(
-            validNoteUi.copy(
-                situation = "a".repeat(21)
+        assertThrows(NoteException.NoteSituationSizeException::class.java){
+            NoteUi.isValid(
+                validNoteUi.copy(
+                    situation = "a".repeat(MAX_SITUATION_LENGTH + 1)
+                )
             )
-        )
-        assertEquals(false, invalidNoteUi.first)
-        assertTrue(
-            invalidNoteUi.second is NoteException.NoteSituationSizeException
-        )
-        assertEquals(
-            NoteException.NoteSituationSizeException().message,
-            invalidNoteUi.second?.message
-        )
+        }
     }
 
     @Test
     fun `should return true and null when NoteUi is valid`() {
         val result = NoteUi.isValid(validNoteUi)
-        assertEquals(Pair(true,null), result)
+        assertEquals(Unit, result)
     }
 
 }

@@ -4,8 +4,8 @@ package br.com.arml.insights.ui.screen.insight
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.layout.AnimatedPane
@@ -14,7 +14,11 @@ import androidx.compose.material3.adaptive.layout.rememberPaneExpansionState
 import androidx.compose.material3.adaptive.navigation.NavigableListDetailPaneScaffold
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import br.com.arml.insights.ui.screen.common.setMargin
 import br.com.arml.insights.ui.screen.note.NoteScreen
@@ -29,6 +33,7 @@ fun InsightScreen(
     val scope = rememberCoroutineScope()
     val navigator = rememberListDetailPaneScaffoldNavigator()
     val paneExpansionState = rememberPaneExpansionState()
+    var isShownDetailPane by rememberSaveable { mutableStateOf(false) }
 
     Box(modifier = modifier.background(color = MaterialTheme.colorScheme.background)) {
         NavigableListDetailPaneScaffold(
@@ -36,14 +41,16 @@ fun InsightScreen(
             navigator = navigator,
             paneExpansionState = paneExpansionState,
             listPane = {
-                paneExpansionState.setFirstPaneProportion(0.5f)
+                //paneExpansionState.setFirstPaneProportion(0.5f)
                 AnimatedPane {
                     TagScreen(
                         modifier = Modifier
                             .fillMaxSize()
-                            .setMargin()
-                            .padding(horizontal = MaterialTheme.dimens.smallMargin),
+                            .setMargin(
+                                padding = PaddingValues(horizontal = MaterialTheme.dimens.smallMargin)
+                            ),
                         onNavigateTo = { tagId, tagName ->
+                            isShownDetailPane = true
                             scope.launch {
                                 navigator.navigateTo(
                                     pane = ListDetailPaneScaffoldRole.Detail,
@@ -55,21 +62,25 @@ fun InsightScreen(
                 }
             },
             detailPane = {
-                AnimatedPane {
-                    navigator.currentDestination?.contentKey?.let{
-                        NoteScreen(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .setMargin()
-                                .padding(horizontal = MaterialTheme.dimens.smallMargin),
-                            tagId = (it as Pair<*, *>).first as Int,
-                            tagName = it.second as String,
-                            onNavigateTo = {
-                                scope.launch {
-                                    navigator.navigateBack()
+                if (isShownDetailPane) {
+                    AnimatedPane {
+                        navigator.currentDestination?.contentKey?.let {
+                            NoteScreen(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .setMargin(
+                                        padding = PaddingValues(horizontal = MaterialTheme.dimens.smallMargin)
+                                    ),
+                                tagId = (it as Pair<*, *>).first as Int,
+                                tagName = it.second as String,
+                                onNavigateTo = {
+                                    isShownDetailPane = false
+                                    scope.launch {
+                                        navigator.navigateBack()
+                                    }
                                 }
-                            }
-                        )
+                            )
+                        }
                     }
                 }
             }

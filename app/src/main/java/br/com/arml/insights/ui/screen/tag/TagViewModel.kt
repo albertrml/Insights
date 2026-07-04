@@ -46,7 +46,17 @@ class TagViewModel @Inject constructor(
         viewModelScope.launch {
             val newTagUi = state.value.selectedTagUi
 
-            if (newTagUi == null){
+            try {
+                TagUi.isValid(newTagUi)
+            } catch (e: Exception) {
+                sendEffect(TagEffect.ShowSnackBar(e.message!!))
+                _state.update { state ->
+                    state.copy(operationState = Response.Failure(e))
+                }
+                return@launch
+            }
+
+            /*if (newTagUi == null){
                 sendEffect(TagEffect.ShowSnackBar(TagIsNullException().message))
                 _state.update { state ->
                     state.copy(operationState = Response.Failure(TagIsNullException()))
@@ -61,33 +71,34 @@ class TagViewModel @Inject constructor(
                     state.copy(operationState = Response.Failure(invalidException))
                 }
                 return@launch
-            }
+            }*/
 
-            if (tagUiUseCase.isTagNameExists(newTagUi.id, newTagUi.name)) {
-                sendEffect(TagEffect.ShowSnackBar(TagAlreadyExistsException().message))
-                _state.update { state ->
-                    state.copy(operationState = Response.Failure(TagAlreadyExistsException()))
+            newTagUi?.let { tag ->
+                if (tagUiUseCase.isTagNameExists(tag.id, tag.name)) {
+                    sendEffect(TagEffect.ShowSnackBar(TagAlreadyExistsException().message))
+                    _state.update { state ->
+                        state.copy(operationState = Response.Failure(TagAlreadyExistsException()))
+                    }
+                    return@launch
                 }
-                return@launch
-            }
 
-
-            tagUiUseCase.insertTagUi(newTagUi).collect { response ->
-                response.update(_state) { state, res ->
-                    when(res){
-                        is Response.Loading -> { state.copy(operationState = res) }
-                        is Response.Success -> {
-                            sendEffect(TagEffect.OnHideBottomSheet)
-                            state.copy(
-                                selectedTagUi = null,
-                                selectedOperation = TagOperation.None,
-                                operationState = res
-                            )
-                        }
-                        is Response.Failure -> {
-                            val failureMsg = res.exception.message?:"Something went wrong"
-                            sendEffect(TagEffect.ShowSnackBar(failureMsg))
-                            state.copy(operationState = res)
+                tagUiUseCase.insertTagUi(tag).collect { response ->
+                    response.update(_state) { state, res ->
+                        when(res){
+                            is Response.Loading -> { state.copy(operationState = res) }
+                            is Response.Success -> {
+                                sendEffect(TagEffect.OnHideBottomSheet)
+                                state.copy(
+                                    selectedTagUi = null,
+                                    selectedOperation = TagOperation.None,
+                                    operationState = res
+                                )
+                            }
+                            is Response.Failure -> {
+                                val failureMsg = res.exception.message?:"Something went wrong"
+                                sendEffect(TagEffect.ShowSnackBar(failureMsg))
+                                state.copy(operationState = res)
+                            }
                         }
                     }
                 }
@@ -99,7 +110,7 @@ class TagViewModel @Inject constructor(
         viewModelScope.launch {
             val updatedTagUi = state.value.selectedTagUi
 
-            if (updatedTagUi == null){
+            /*if (updatedTagUi == null){
                 sendEffect(TagEffect.ShowSnackBar(TagIsNullException().message))
                 _state.update { state ->
                     state.copy(operationState = Response.Failure(TagIsNullException()))
@@ -122,21 +133,33 @@ class TagViewModel @Inject constructor(
                     state.copy(operationState = Response.Failure(TagAlreadyExistsException()))
                 }
                 return@launch
-            }
+            }*/
 
-            tagUiUseCase.updateTagUi(updatedTagUi).collect { response ->
-                response.update(_state) { state, res ->
-                    when(res){
-                        is Response.Loading -> {}
-                        is Response.Success -> {
-                            sendEffect(TagEffect.OnHideBottomSheet)
-                        }
-                        is Response.Failure -> {
-                            val failureMsg = res.exception.message?:"Something went wrong"
-                            sendEffect(TagEffect.ShowSnackBar(failureMsg))
-                        }
+            updatedTagUi?.let { tag ->
+                try {
+                    TagUi.isValid(tag)
+                } catch (e: Exception) {
+                    sendEffect(TagEffect.ShowSnackBar(e.message!!))
+                    _state.update { state ->
+                        state.copy(operationState = Response.Failure(e))
                     }
-                    state.copy(operationState = res)
+                    return@launch
+                }
+
+                tagUiUseCase.updateTagUi(tag).collect { response ->
+                    response.update(_state) { state, res ->
+                        when(res){
+                            is Response.Loading -> {}
+                            is Response.Success -> {
+                                sendEffect(TagEffect.OnHideBottomSheet)
+                            }
+                            is Response.Failure -> {
+                                val failureMsg = res.exception.message?:"Something went wrong"
+                                sendEffect(TagEffect.ShowSnackBar(failureMsg))
+                            }
+                        }
+                        state.copy(operationState = res)
+                    }
                 }
             }
         }

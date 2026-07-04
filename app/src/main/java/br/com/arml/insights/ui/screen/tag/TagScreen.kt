@@ -16,7 +16,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.arml.insights.R
 import br.com.arml.insights.model.entity.TagUi
@@ -26,7 +26,6 @@ import br.com.arml.insights.ui.component.common.InsightHeaderScreen
 import br.com.arml.insights.ui.component.tag.TagBodyContent
 import br.com.arml.insights.ui.component.tag.TagDeleteAlert
 import br.com.arml.insights.ui.component.tag.TagSheetContent
-import br.com.arml.insights.ui.screen.common.setMargin
 import br.com.arml.insights.ui.theme.dimens
 import kotlinx.coroutines.flow.collectLatest
 
@@ -65,7 +64,6 @@ fun TagScreen(
             tagState.selectedTagUi?.let { selectedTagUi ->
                 TagSheetContent(
                     modifier = Modifier
-                        .setMargin()
                         .padding(horizontal = MaterialTheme.dimens.smallMargin),
                     selectedTagUi = selectedTagUi,
                     selectedOperation = tagState.selectedOperation,
@@ -83,7 +81,9 @@ fun TagScreen(
         },
     ) { padding ->
         Column(
-            modifier = Modifier.background(MaterialTheme.colorScheme.background),
+            modifier = Modifier
+                .padding(padding)
+                .background(MaterialTheme.colorScheme.background),
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.mediumSpacing)
         ) {
             InsightHeaderScreen(

@@ -2,20 +2,19 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.android.hilt)
     alias(libs.plugins.compose.compiler)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.ksp)
 }
 
 android {
     namespace = "br.com.arml.insights"
-    compileSdk = 35
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "br.com.arml.insights"
         minSdk = 24
-        targetSdk = 35
-        versionCode = 2
-        versionName = "1.1"
+        targetSdk = 37
+        versionCode = 3
+        versionName = "1.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -23,6 +22,7 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -33,9 +33,10 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    kotlinOptions {
-        jvmTarget = "11"
-    }
+}
+
+kotlin {
+    jvmToolchain(11)
 }
 
 dependencies {
@@ -67,10 +68,11 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.material3.windowsizeclass)
+    implementation(libs.androidx.compose.material.icons.core)
+    implementation(libs.androidx.compose.material.icons.extended)
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.text.google.fonts)
-    implementation(libs.androidx.compose.ui.tooling)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(platform(libs.androidx.compose.bom))
 
@@ -82,17 +84,23 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
 
+    val sharedTestLibs = listOf(
+        libs.kotlinx.coroutines.test,
+    )
+    sharedTestLibs.forEach {
+        testImplementation(it)
+        androidTestImplementation(it)
+    }
+
     // Unit Test
     testImplementation(libs.junit)
     testImplementation(libs.mockk)
-    testImplementation(libs.kotlinx.coroutines.test)
 
     // Instrumented Test
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.junit.ktx)
-    androidTestImplementation(libs.kotlinx.coroutines.test)
     androidTestImplementation(platform(libs.androidx.compose.bom))
 
     // Debug

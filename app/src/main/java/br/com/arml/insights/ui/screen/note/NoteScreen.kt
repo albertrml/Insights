@@ -13,7 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.arml.insights.R
 import br.com.arml.insights.model.entity.NoteUi
@@ -23,7 +23,6 @@ import br.com.arml.insights.ui.component.common.InsightHeaderScreen
 import br.com.arml.insights.ui.component.note.NoteBodyContent
 import br.com.arml.insights.ui.component.note.NoteDeleteAlert
 import br.com.arml.insights.ui.component.note.NoteSheetContent
-import br.com.arml.insights.ui.screen.common.setMargin
 import br.com.arml.insights.ui.screen.note.NoteEvent.OnClickToOpenDeleteDialog
 import br.com.arml.insights.ui.theme.dimens
 import br.com.arml.insights.utils.data.SearchNoteCategory
@@ -69,7 +68,6 @@ fun NoteScreen(
         sheetContent = {
             NoteSheetContent(
                 modifier = Modifier
-                    .setMargin()
                     .padding(horizontal = MaterialTheme.dimens.smallMargin),
                 selectedNote = noteState.selectedNote,
                 selectedOperation = noteState.noteOperation,
@@ -88,7 +86,9 @@ fun NoteScreen(
         }
     ) { padding ->
         Column(
-            modifier = Modifier.background(MaterialTheme.colorScheme.background),
+            modifier = Modifier
+                .padding(padding)
+                .background(MaterialTheme.colorScheme.background),
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.mediumSpacing)
         ) {
             InsightHeaderScreen(

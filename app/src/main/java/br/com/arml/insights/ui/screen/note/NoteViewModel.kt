@@ -97,12 +97,13 @@ class NoteViewModel @Inject constructor(
                 creationDate = Date()
             )
 
-            val (isNoteUiValid, invalidException) = NoteUi.isValid(newNote)
-            if(!isNoteUiValid){
-                sendEffect(NoteEffect.ShowSnackBar(invalidException!!.message))
+            try {
+                NoteUi.isValid(newNote)
+            } catch (e: Exception) {
+                sendEffect(NoteEffect.ShowSnackBar(e.message ?: "Something went wrong"))
                 _state.update { state ->
                     state.copy(
-                        operationState = Response.Failure(invalidException)
+                        operationState = Response.Failure(e)
                     )
                 }
                 return@launch
@@ -145,12 +146,13 @@ class NoteViewModel @Inject constructor(
         viewModelScope.launch{
             val updatedNote = state.value.selectedNote
 
-            val (isNoteUiValid, invalidException) = NoteUi.isValid(updatedNote)
-            if (!isNoteUiValid) {
-                sendEffect(NoteEffect.ShowSnackBar(invalidException!!.message))
+            try {
+                NoteUi.isValid(updatedNote)
+            } catch (e: Exception) {
+                sendEffect(NoteEffect.ShowSnackBar(e.message ?: "Something went wrong"))
                 _state.update { state ->
                     state.copy(
-                        operationState = Response.Failure(invalidException)
+                        operationState = Response.Failure(e)
                     )
                 }
                 return@launch

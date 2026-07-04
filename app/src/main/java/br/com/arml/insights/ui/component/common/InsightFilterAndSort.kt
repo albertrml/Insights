@@ -35,7 +35,7 @@ fun InsightFilterAndSort(
     onRefreshTags: () -> Unit = {}
 ){
     var isAscending by rememberSaveable { mutableStateOf(true) }
-    var imageSort = if (isAscending)
+    val imageSort = if (isAscending)
         R.drawable.ic_ascending
     else
         R.drawable.ic_descending
@@ -53,12 +53,13 @@ fun InsightFilterAndSort(
             onChangeText = {
                 onSearchTextChange(it)
             },
-            maxSize = 20,
+            maxSize = 50,
         )
 
         InsightIconButton(
             modifier = Modifier,
             imageVector = ImageVector.vectorResource(id = imageSort),
+            contentDescription = stringResource(R.string.sort_button_description),
             onClick = {
                 isAscending = !isAscending
                 sortedBy(isAscending)
@@ -68,6 +69,7 @@ fun InsightFilterAndSort(
         InsightIconButton(
             modifier = Modifier,
             imageVector = Icons.Filled.Refresh,
+            contentDescription = stringResource(R.string.refresh_button_description),
             onClick = {
                 isAscending = true
                 onRefreshTags()
