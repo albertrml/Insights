@@ -1,8 +1,8 @@
 package br.com.arml.insights.ui.screen.note
 
+import br.com.arml.core.response.Response
 import br.com.arml.insights.model.entity.NoteUi
 import br.com.arml.insights.ui.screen.common.Reducer
-import br.com.arml.insights.utils.data.Response
 import javax.inject.Inject
 
 class NoteReducer @Inject constructor() : Reducer<NoteState, NoteEvent, NoteEffect> {

@@ -2,9 +2,9 @@ package br.com.arml.insights.ui.component.note
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import br.com.arml.core.response.Response
+import br.com.arml.core.response.ui.ShowResults
 import br.com.arml.insights.model.entity.NoteUi
-import br.com.arml.insights.utils.data.Response
-import br.com.arml.insights.utils.data.ShowResults
 
 @Composable
 fun NoteBodyContent(

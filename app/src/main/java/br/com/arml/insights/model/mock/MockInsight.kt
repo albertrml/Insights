@@ -39,7 +39,7 @@ val mockTags = arrayListOf(
 
 fun MutableList<Note>.addMockNotes(tag: Tag, quantity: Int) {
     val currentDate = Date().time
-    (1..quantity).map { i ->
+    (1..quantity).forEach { i ->
         val note = Note(
             title = "${tag.name} $i Title",
             body = "${tag.name} $i Body",

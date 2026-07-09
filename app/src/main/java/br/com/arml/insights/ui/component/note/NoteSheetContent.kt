@@ -25,6 +25,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
+import br.com.arml.core.response.Response
+import br.com.arml.core.response.ui.ShowResults
 import br.com.arml.insights.R
 import br.com.arml.insights.model.entity.NoteUi
 import br.com.arml.insights.model.entity.TagUi
@@ -34,8 +36,7 @@ import br.com.arml.insights.ui.screen.note.NoteOperation
 import br.com.arml.insights.ui.theme.confirmColor
 import br.com.arml.insights.ui.theme.cancelColor
 import br.com.arml.insights.ui.theme.dimens
-import br.com.arml.insights.utils.data.Response
-import br.com.arml.insights.utils.data.ShowResults
+
 
 
 @Composable
@@ -50,7 +51,7 @@ fun NoteSheetContent(
     onEditTagId: (Int) -> Unit,
     onClickClose: () -> Unit,
     onClickSave: (NoteUi) -> Unit
-){
+) {
 
     tags.ShowResults(
         successContent = {
@@ -83,7 +84,7 @@ fun OnSuccess(
     onEditTagId: (Int) -> Unit = {},
     onClickClose: () -> Unit = {},
     onClickSave: (NoteUi) -> Unit = {}
-){
+) {
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.mediumSpacing),
@@ -119,7 +120,7 @@ fun NoteSheetHeader(
     operation: NoteOperation,
     onClickClose: () -> Unit,
     onClickSave: () -> Unit
-){
+) {
     val title = getNoteHeaderTitle(operation)
 
     Row(
@@ -150,7 +151,7 @@ fun NoteSheetHeader(
                 modifier = Modifier.size(MaterialTheme.dimens.smallIcon),
                 imageVector = Icons.Default.Check,
                 contentDescription = stringResource(
-                    id = R.string.note_forms_save_button,title
+                    id = R.string.note_forms_save_button, title
                 ),
                 tint = confirmColor
             )
@@ -164,7 +165,7 @@ fun NoteSheetHeader(
                 modifier = Modifier.size(MaterialTheme.dimens.smallIcon),
                 imageVector = Icons.Default.Close,
                 contentDescription = stringResource(
-                    id = R.string.note_screen_close_menu,title
+                    id = R.string.note_screen_close_menu, title
                 ),
                 tint = cancelColor
             )
@@ -175,8 +176,8 @@ fun NoteSheetHeader(
 @Composable
 fun getNoteHeaderTitle(
     operation: NoteOperation
-): String{
-    return when(operation){
+): String {
+    return when (operation) {
         NoteOperation.OnInsert -> stringResource(R.string.note_operation_insert)
         NoteOperation.OnUpdate -> stringResource(R.string.note_operation_edit)
         NoteOperation.None -> ""
@@ -185,7 +186,7 @@ fun getNoteHeaderTitle(
 
 @Preview(showBackground = true)
 @Composable
-fun NoteSheetContentPreview(){
+fun NoteSheetContentPreview() {
     var tags by remember { mutableStateOf(mockTags.map { TagUi.fromTag(it) }.toList()) }
     var note by remember { mutableStateOf(createSampleNotes().toList().first()) }
     OnSuccess(

@@ -1,9 +1,9 @@
 package br.com.arml.insights.ui.screen.note
 
+import br.com.arml.core.response.Response
 import br.com.arml.insights.model.entity.NoteUi
 import br.com.arml.insights.model.entity.TagUi
 import br.com.arml.insights.ui.screen.common.Reducer
-import br.com.arml.insights.utils.data.Response
 
 data class NoteState (
     val notes: Response<List<NoteUi>> = Response.Loading,
