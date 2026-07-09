@@ -1,12 +1,12 @@
 package br.com.arml.insights.ui.screen.tag
 
 import androidx.lifecycle.viewModelScope
+import br.com.arml.core.response.Response
+import br.com.arml.core.response.update
 import br.com.arml.insights.domain.TagUiUseCase
 import br.com.arml.insights.model.entity.TagUi
 import br.com.arml.insights.ui.screen.common.BaseViewModel
-import br.com.arml.insights.utils.data.Response
 import br.com.arml.insights.utils.data.SortedTag
-import br.com.arml.insights.utils.data.update
 import br.com.arml.insights.utils.exception.InsightException.TagAlreadyExistsException
 import br.com.arml.insights.utils.exception.TagException.TagIsNullException
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -1,14 +1,14 @@
 package br.com.arml.insights.ui.screen.note
 
 import androidx.lifecycle.viewModelScope
+import br.com.arml.core.response.Response
+import br.com.arml.core.response.update
 import br.com.arml.insights.domain.NoteUiUseCase
 import br.com.arml.insights.model.entity.NoteUi
 import br.com.arml.insights.ui.screen.common.BaseViewModel
-import br.com.arml.insights.utils.data.Response
 import br.com.arml.insights.utils.data.SearchNoteCategory
 import br.com.arml.insights.utils.data.SortedNote
 import br.com.arml.insights.utils.data.SortedTag
-import br.com.arml.insights.utils.data.update
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
@@ -57,9 +57,8 @@ class NoteViewModel @Inject constructor(
                             response.exception.message?:"Something went wrong"
                         )
                     )
-                response.update(_state) { state, res ->
-                    state.copy(tags = res)
-                }
+                response.update(_state){ state, res -> state.copy(tags = res) }
+
             }
         }
     }
@@ -135,9 +134,7 @@ class NoteViewModel @Inject constructor(
     private fun searchNoteByTitle(query: String, searchNoteCategory: SearchNoteCategory) {
         viewModelScope.launch {
             noteUiUseCase.searchNotes(state.value.tagId, query, searchNoteCategory).collect {
-                it.update(_state) { state, res ->
-                    state.copy(notes = res)
-                }
+                it.update(_state) { state, res -> state.copy(notes = res) }
             }
         }
     }

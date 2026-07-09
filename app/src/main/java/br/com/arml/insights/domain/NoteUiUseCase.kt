@@ -1,5 +1,6 @@
 package br.com.arml.insights.domain
 
+import br.com.arml.core.response.mapSuccess
 import br.com.arml.insights.model.entity.NoteUi
 import br.com.arml.insights.model.entity.TagUi
 import br.com.arml.insights.model.repository.NoteRepository
@@ -8,10 +9,8 @@ import br.com.arml.insights.utils.data.SearchNoteCategory
 import br.com.arml.insights.utils.data.SortedNote
 import br.com.arml.insights.utils.data.SortedTag
 import br.com.arml.insights.utils.data.filterNotesBy
-import br.com.arml.insights.utils.data.mapTo
 import br.com.arml.insights.utils.data.sortNotesBy
 import br.com.arml.insights.utils.data.sortTagsBy
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class NoteUiUseCase @Inject constructor(
@@ -24,23 +23,25 @@ class NoteUiUseCase @Inject constructor(
 
     fun updateNote(noteUi: NoteUi) = noteRepository.update(noteUi.toNote())
 
-    fun fetchNotesByTag(tagId: Int, sortedNote: SortedNote) = noteRepository.getByTag(tagId)
-        .map { response ->
-            response.mapTo { notes ->
-                notes.sortNotesBy(sortedNote).map { NoteUi.fromNote(it) }
-            }
+    fun fetchNotesByTag(
+        tagId: Int,
+        sortedNote: SortedNote
+    ) = noteRepository.getByTag(tagId)
+        .mapSuccess { notes ->
+            notes.sortNotesBy(sortedNote).map { NoteUi.fromNote(it) }
         }
 
-    fun searchNotes(tagId: Int, query: String, searchNoteCategory: SearchNoteCategory) =
-        noteRepository.getByTag(tagId).map { response ->
-            response.mapTo { notes ->
-                notes.filterNotesBy(query, searchNoteCategory).map { NoteUi.fromNote(it) }
-            }
+    fun searchNotes(
+        tagId: Int,
+        query: String,
+        searchNoteCategory: SearchNoteCategory
+    ) = noteRepository.getByTag(tagId)
+        .mapSuccess { notes ->
+            notes.filterNotesBy(query, searchNoteCategory).map { NoteUi.fromNote(it) }
         }
 
-    fun fetchTagUi(sortBy: SortedTag) = tagRepository.getAll().map { response ->
-        response.mapTo { tags ->
+    fun fetchTagUi(sortBy: SortedTag) = tagRepository.getAll()
+        .mapSuccess { tags ->
             tags.sortTagsBy(sortBy).map { TagUi.fromTag(it) }
         }
-    }
 }

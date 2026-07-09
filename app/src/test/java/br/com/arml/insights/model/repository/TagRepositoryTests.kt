@@ -4,9 +4,9 @@ import android.database.sqlite.SQLiteConstraintException
 import br.com.arml.insights.model.entity.Tag
 import br.com.arml.insights.model.mock.mockTags
 import br.com.arml.insights.model.source.TagDao
-import br.com.arml.insights.utils.data.Response
+import br.com.arml.core.response.Response
+import br.com.arml.core.flow.until
 import br.com.arml.insights.utils.exception.InsightException
-import br.com.arml.insights.utils.tools.until
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -27,14 +27,14 @@ class TagRepositoryTests {
 
     @Test
     fun `should emit success when Insert Tag Is Successful`() = runTest {
-        mockTags.forEachIndexed { index, fakeTag ->
+        mockTags.forEach { fakeTag ->
             coEvery { tagDao.insert(fakeTag) } returns Unit
             tagRepository
                 .insert(fakeTag)
-                .until { response -> response is Response.Success }
+                .until { response -> response is Response.Success<*> }
                 .collect { response ->
                     when (response) {
-                        is Response.Success -> assertTrue(true)
+                        is Response.Success<*> -> assertTrue(true)
                         is Response.Loading -> assertTrue(true)
                         is Response.Failure -> assertTrue(false)
                     }
@@ -49,8 +49,8 @@ class TagRepositoryTests {
     @Test
     fun `should emit Failure when Insert Tag With Duplicated Id `() = runTest {
         val fakeTagWithDuplicatedId = mockTags[0].copy(id = 1)
-        val insertIds = mutableSetOf(1) // Simulando que o ID 1 já existe
-        val tagSlot = slot<Tag>()       // Slot para capturar a Tag inserida
+        val insertIds = mutableSetOf(1)
+        val tagSlot = slot<Tag>()
 
         coEvery { tagDao.insert(capture(tagSlot)) } coAnswers {
             val insertedTag = tagSlot.captured
@@ -58,7 +58,6 @@ class TagRepositoryTests {
                 throw SQLiteConstraintException()
             } else {
                 insertIds.add(insertedTag.id)
-                Unit
             }
         }
 
@@ -67,7 +66,7 @@ class TagRepositoryTests {
             .until { response -> response is Response.Failure }
             .collect { response ->
                 when (response) {
-                    is Response.Success -> assertTrue("Should be Failure", false)
+                    is Response.Success<*> -> assertTrue("Should be Failure", false)
                     is Response.Loading -> assertTrue(true)
                     is Response.Failure -> {
                         assertTrue(response.exception is SQLiteConstraintException)
@@ -78,7 +77,7 @@ class TagRepositoryTests {
 
     @Test
     fun `should emit Success when Insert Tags with Different Ids `() = runTest {
-        val insertedTags = mutableSetOf<Tag>(mockTags[0].copy(id = 1))
+        val insertedTags = mutableSetOf(mockTags[0].copy(id = 1))
         val tagSlot = slot<Tag>()
         coEvery { tagDao.insert(capture(tagSlot)) } coAnswers {
             val newTag = tagSlot.captured
@@ -86,13 +85,12 @@ class TagRepositoryTests {
                 throw SQLiteConstraintException()
             }else{
                 insertedTags.add(newTag.copy(id = insertedTags.size+1))
-                Unit
             }
         }
 
         tagRepository
             .insert(mockTags[0])
-            .until { response -> response is Response.Success }
+            .until { response -> response is Response.Success<*> }
             .collect { response ->
                 when (response) {
                     is Response.Success -> assertTrue(true)
@@ -116,15 +114,14 @@ class TagRepositoryTests {
             if (database.contains(deletedTag)) {
                 database.remove(deletedTag)
             }
-            Unit // <<< Fora do if
         }
 
         tagRepository
             .delete(fakeTag)
-            .until { response -> response is Response.Success }
+            .until { response -> response is Response.Success<*> }
             .collect { response ->
                 when (response) {
-                    is Response.Success -> {
+                    is Response.Success<*> -> {
                         assertEquals(0, database.size)
                     }
                     is Response.Loading -> assertTrue(true)
@@ -143,10 +140,10 @@ class TagRepositoryTests {
 
         tagRepository
             .delete(fakeTag)
-            .until { response -> response is Response.Success }
+            .until { response -> response is Response.Success<*> }
             .collect { response ->
                 when (response) {
-                    is Response.Success -> assertTrue(false)
+                    is Response.Success<*> -> assertTrue(false)
                     is Response.Loading -> assertTrue(true)
                     is Response.Failure -> {
                         assertTrue(response.exception is InsightException.TagNotFoundException)
@@ -164,10 +161,10 @@ class TagRepositoryTests {
 
         tagRepository
             .delete(tagForDelete)
-            .until { response -> response is Response.Success }
+            .until { response -> response is Response.Success<*> }
             .collect { response ->
                 when (response) {
-                    is Response.Success -> assertTrue(false)
+                    is Response.Success<*> -> assertTrue(false)
                     is Response.Loading -> assertTrue(true)
                     is Response.Failure -> {
                         assertTrue(response.exception is InsightException.TagNotFoundException)
@@ -186,14 +183,13 @@ class TagRepositoryTests {
         coEvery { tagDao.update(updatedTag) } answers {
             database.remove(fakeTag)
             database.add(updatedTag)
-            Unit
         }
 
         tagRepository.update(updatedTag)
-            .until { response -> response is Response.Success }
+            .until { response -> response is Response.Success<*> }
             .collect { response ->
                 when (response) {
-                    is Response.Success -> {
+                    is Response.Success<*> -> {
                         assertTrue(database.contains(updatedTag))
                         assertFalse(database.contains(fakeTag))
                     }
@@ -210,14 +206,14 @@ class TagRepositoryTests {
             database.add(fakeTag.copy(id = index+1))
         }
 
-        coEvery { tagDao.getAll() } returns flow<List<Tag>> { database.toList() }
+        coEvery { tagDao.getAll() } returns flow { database.toList() }
 
         tagRepository
             .getAll()
-            .until { response -> response is Response.Success }
+            .until { response -> response is Response.Success<*> }
             .collectLatest { response ->
                 when(response){
-                    is Response.Success -> {
+                    is Response.Success<*> -> {
                         assertEquals(database, response.result)
                     }
                     is Response.Loading -> assertTrue(true)

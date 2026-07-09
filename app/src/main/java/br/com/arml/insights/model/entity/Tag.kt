@@ -15,4 +15,12 @@ data class Tag(
         val other = other as Tag
         return id == other.id && name == other.name && description == other.description
     }
+
+    override fun hashCode(): Int {
+        var result = id
+        result = 31 * result + color.hashCode()
+        result = 31 * result + name.hashCode()
+        result = 31 * result + description.hashCode()
+        return result
+    }
 }

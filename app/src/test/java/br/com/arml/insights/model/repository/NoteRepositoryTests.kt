@@ -1,12 +1,12 @@
 package br.com.arml.insights.model.repository
 
 import android.database.sqlite.SQLiteConstraintException
+import br.com.arml.core.flow.until
 import br.com.arml.insights.model.entity.Note
 import br.com.arml.insights.model.mock.createSampleNotes
 import br.com.arml.insights.model.source.NoteDao
-import br.com.arml.insights.utils.data.Response
+import br.com.arml.core.response.Response
 import br.com.arml.insights.utils.exception.InsightException
-import br.com.arml.insights.utils.tools.until
 import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.just
@@ -38,11 +38,11 @@ class NoteRepositoryTests {
 
         noteRepository
             .insert(fakeNote)
-            .until { response -> response is Response.Success }
+            .until { response -> response is Response.Success<*> }
             .collect { response ->
                 when (response) {
                     is Response.Loading -> assertTrue(true)
-                    is Response.Success -> assertTrue(true)
+                    is Response.Success<*> -> assertTrue(true)
                     is Response.Failure -> assertTrue(false)
                 }
             }
@@ -59,7 +59,6 @@ class NoteRepositoryTests {
             tagId = 9999 // ID mock an invalid FK
         )
 
-        // Mock: It mock a FK failure
         coEvery { noteDao.insert(fakeNote) } throws SQLiteConstraintException()
 
         noteRepository
@@ -68,7 +67,7 @@ class NoteRepositoryTests {
             .collect { response ->
                 when (response) {
                     is Response.Loading -> assertTrue(true)
-                    is Response.Success -> assertTrue(false)
+                    is Response.Success<*> -> assertTrue(false)
                     is Response.Failure -> {
                         assertTrue(response.exception is SQLiteConstraintException)
                     }
@@ -86,7 +85,7 @@ class NoteRepositoryTests {
             creationDate = System.currentTimeMillis(),
             tagId = 1
         )
-        val database = mutableSetOf<Int>(1)
+        val database = mutableSetOf(1)
         val tagSlot = slot<Note>()
 
         coEvery { noteDao.insert(capture(tagSlot)) } answers {
@@ -103,7 +102,7 @@ class NoteRepositoryTests {
             .collect { response ->
                 when(response){
                     is Response.Loading -> assertTrue(true)
-                    is Response.Success -> assertTrue(false)
+                    is Response.Success<*> -> assertTrue(false)
                     is Response.Failure -> {
                         assertTrue(response.exception is SQLiteConstraintException)
                     }
@@ -131,16 +130,15 @@ class NoteRepositoryTests {
             if (database.contains(deletedNote)){
                 database.remove(deletedNote)
             }
-            Unit
         }
 
         noteRepository
             .delete(fakeNote)
-            .until { response -> response is Response.Success }
+            .until { response -> response is Response.Success<*> }
             .collect { response ->
                 when (response) {
                     is Response.Loading -> assertTrue(true)
-                    is Response.Success -> {
+                    is Response.Success<*> -> {
                         assertTrue(database.isEmpty())
                     }
                     is Response.Failure -> assertTrue(false)
@@ -168,7 +166,7 @@ class NoteRepositoryTests {
             .collect { response ->
                 when (response) {
                     is Response.Loading -> assertTrue(true)
-                    is Response.Success -> assertTrue(false)
+                    is Response.Success<*> -> assertTrue(false)
                     is Response.Failure -> assertTrue(
                         response.exception is InsightException.NoteNotFoundException
                     )
@@ -202,7 +200,7 @@ class NoteRepositoryTests {
             .collect { response ->
                 when (response) {
                     is Response.Loading -> assertTrue(true)
-                    is Response.Success -> assertTrue(false)
+                    is Response.Success<*> -> assertTrue(false)
                     is Response.Failure -> assertTrue(
                         response.exception is InsightException.NoteNotFoundException
                     )
@@ -233,15 +231,14 @@ class NoteRepositoryTests {
         coEvery { noteDao.update(updatedNote) } answers {
             database.remove(fakeNote)
             database.add(updatedNote)
-            Unit
         }
 
         noteRepository.update(updatedNote)
-            .until { response -> response is Response.Success }
+            .until { response -> response is Response.Success<*> }
             .collect { response ->
                 when (response) {
                     is Response.Loading -> assertTrue(true)
-                    is Response.Success -> {
+                    is Response.Success<*> -> {
                         assertTrue(database.contains(updatedNote))
                         assertTrue(!database.contains(fakeNote))
                     }
@@ -255,14 +252,14 @@ class NoteRepositoryTests {
         val fakeNotes = createSampleNotes().mapIndexed { index, noteUi ->
             noteUi.toNote().copy(id = index + 1)
         }
-        coEvery { noteDao.getAll() } returns flow<List<Note>> { fakeNotes }
+        coEvery { noteDao.getAll() } returns flow { }
 
         noteRepository.getAll()
-            .until { response -> response is Response.Success }
+            .until { response -> response is Response.Success<*> }
             .collect { response ->
                 when (response) {
                     is Response.Loading -> assertTrue(true)
-                    is Response.Success -> {
+                    is Response.Success<*> -> {
                         assertEquals(fakeNotes, response.result)
                     }
                     is Response.Failure -> assertTrue(false)
@@ -280,11 +277,11 @@ class NoteRepositoryTests {
         coEvery { noteDao.getByTag(tagId) } returns flow { fakeNotes.find { tagId == it.tagId } }
 
         noteRepository.getByTag(tagId)
-            .until { response -> response is Response.Success }
+            .until { response -> response is Response.Success<*> }
             .collect { response ->
                 when (response) {
                     is Response.Loading -> assertTrue(true)
-                    is Response.Success -> {
+                    is Response.Success<*> -> {
                         assertEquals(fakeNotes.find { tagId == it.tagId }, response.result)
                     }
                     is Response.Failure -> assertTrue(false)
