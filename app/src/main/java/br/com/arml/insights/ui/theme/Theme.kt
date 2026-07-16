@@ -15,8 +15,9 @@ import br.com.arml.insights.MainActivity
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @Composable
 fun InsightsTheme(
-    darkTheme:Boolean = isSystemInDarkTheme(),
     activity: Activity = LocalActivity.current as MainActivity,
+    dynamicColor: Boolean = true,
+    darkTheme:Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ){
     val appOrientation = LocalConfiguration.current.orientation
@@ -29,7 +30,11 @@ fun InsightsTheme(
         appDimens = appDimens,
     ) {
         MaterialTheme(
-            colorScheme = getColorScheme(darkTheme),
+            colorScheme = getColorScheme(
+                context = activity,
+                dynamicColor = dynamicColor,
+                darkTheme = darkTheme,
+            ),
             typography = typography,
             content = content
         )
@@ -37,6 +42,6 @@ fun InsightsTheme(
 
 }
 
-val MaterialTheme.dimens
+val dimens
     @Composable
     get() = LocalAppDimens.current

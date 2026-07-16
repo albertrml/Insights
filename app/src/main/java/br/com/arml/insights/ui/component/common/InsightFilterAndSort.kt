@@ -11,7 +11,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -43,7 +42,7 @@ fun InsightFilterAndSort(
     Row(
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.Top,
-        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.smallSpacing)
+        horizontalArrangement = Arrangement.spacedBy(dimens.smallSpacing)
     ){
 
         InsightOutlinedTextField(
@@ -91,14 +90,14 @@ fun InsightIconButton(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     )  {
-        Spacer(modifier = Modifier.padding(vertical = MaterialTheme.dimens.outlinedTextFieldTopPadding))
+        Spacer(modifier = Modifier.padding(vertical = dimens.outlinedTextFieldTopPadding))
         IconButton(
             modifier = Modifier
-                .size(MaterialTheme.dimens.mediumIcon),
+                .size(dimens.mediumIcon),
             onClick = onClick,
         ) {
             Icon(
-                modifier = Modifier.size(MaterialTheme.dimens.mediumIcon),
+                modifier = Modifier.size(dimens.mediumIcon),
                 imageVector = imageVector,
                 contentDescription = contentDescription
             )

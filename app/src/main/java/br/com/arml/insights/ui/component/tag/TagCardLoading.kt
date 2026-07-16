@@ -26,27 +26,27 @@ fun TagCardLoading(
     modifier: Modifier = Modifier,
 ){
     OutlinedCard(
-        elevation = CardDefaults.cardElevation(MaterialTheme.dimens.mediumElevation)
+        elevation = CardDefaults.cardElevation(dimens.mediumElevation)
     ) {
         Column(
-            modifier = modifier.padding(MaterialTheme.dimens.smallPadding),
+            modifier = modifier.padding(dimens.smallPadding),
         ){
             LoadingTagCardHeader(modifier = modifier)
 
             HorizontalDivider(
-                modifier = modifier.padding(vertical = MaterialTheme.dimens.smallPadding),
+                modifier = modifier.padding(vertical = dimens.smallPadding),
                 color = onSurfaceLight
             )
             LoadingTagCardContent(modifier = modifier)
 
-            Spacer(modifier = Modifier.padding(vertical = MaterialTheme.dimens.smallSpacing))
+            Spacer(modifier = Modifier.padding(vertical = dimens.smallSpacing))
             AnimatedHorizontalDivider(
-                modifier = Modifier.padding(horizontal = MaterialTheme.dimens.smallPadding),
-                thickness = MaterialTheme.dimens.mediumThickness,
+                modifier = Modifier.padding(horizontal = dimens.smallPadding),
+                thickness = dimens.mediumThickness,
                 endColor = MaterialTheme.colorScheme.outline
             )
 
-            Spacer(modifier = Modifier.padding(vertical = MaterialTheme.dimens.smallSpacing))
+            Spacer(modifier = Modifier.padding(vertical = dimens.smallSpacing))
             LoadingTagCardFoot(modifier = modifier)
         }
     }
@@ -63,15 +63,15 @@ fun LoadingTagCardHeader(
     ) {
         AnimatedHorizontalDivider(
             modifier = Modifier.weight(1f),
-            thickness = MaterialTheme.dimens.smallIcon,
+            thickness = dimens.smallIcon,
             endColor = MaterialTheme.colorScheme.outline
         )
 
-        Spacer(modifier = Modifier.padding(horizontal = MaterialTheme.dimens.smallSpacing))
+        Spacer(modifier = Modifier.padding(horizontal = dimens.smallSpacing))
 
         AnimatedHorizontalDivider(
-            modifier = Modifier.size(MaterialTheme.dimens.smallIcon),
-            thickness = MaterialTheme.dimens.smallIcon,
+            modifier = Modifier.size(dimens.smallIcon),
+            thickness = dimens.smallIcon,
             endColor = MaterialTheme.colorScheme.outline
         )
 
@@ -84,7 +84,7 @@ fun LoadingTagCardContent(
 ){
     AnimatedHorizontalDivider(
         modifier = modifier,
-        thickness = MaterialTheme.dimens.smallIcon,
+        thickness = dimens.smallIcon,
         endColor = MaterialTheme.colorScheme.outline
     )
 }
@@ -98,14 +98,14 @@ fun LoadingTagCardFoot(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         AnimatedHorizontalDivider(
-            modifier = Modifier.size(MaterialTheme.dimens.smallIcon),
-            thickness = MaterialTheme.dimens.smallIcon,
+            modifier = Modifier.size(dimens.smallIcon),
+            thickness = dimens.smallIcon,
             endColor = MaterialTheme.colorScheme.outline
         )
         Spacer(Modifier.weight(1f))
         AnimatedHorizontalDivider(
-            modifier = Modifier.width(MaterialTheme.dimens.largeIcon),
-            thickness = MaterialTheme.dimens.smallIcon,
+            modifier = Modifier.width(dimens.largeIcon),
+            thickness = dimens.smallIcon,
             endColor = MaterialTheme.colorScheme.outline
         )
     }
@@ -118,10 +118,10 @@ fun TagCardLoadingList(
     val list = listOf(1,2,3,4,5,6,7,8,9,10)
     LazyColumn(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.mediumPadding)
+        verticalArrangement = Arrangement.spacedBy(dimens.mediumPadding)
     ) {
         items(list){ _ ->
-            TagCardLoading(modifier = Modifier.padding(MaterialTheme.dimens.smallSpacing))
+            TagCardLoading(modifier = Modifier.padding(dimens.smallSpacing))
         }
     }
 }
@@ -129,6 +129,6 @@ fun TagCardLoadingList(
 @Preview
 @Composable
 fun LoadingTagCardsPreview() {
-    TagCardLoadingList(modifier = Modifier.padding(MaterialTheme.dimens.smallSpacing))
+    TagCardLoadingList(modifier = Modifier.padding(dimens.smallSpacing))
 }
 

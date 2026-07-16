@@ -20,8 +20,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.arml.insights.R
-import br.com.arml.insights.model.entity.TagUi
-import br.com.arml.insights.model.entity.TagUiSaver
+import br.com.arml.insights.model.domain.TagUi
+import br.com.arml.insights.model.domain.TagUiSaver
 import br.com.arml.insights.ui.component.common.InsightColorPicker
 import br.com.arml.insights.ui.component.common.InsightOutlinedTextField
 import br.com.arml.insights.ui.theme.dimens
@@ -37,14 +37,14 @@ fun TagForms(
 
     Column(
         modifier = modifier.verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.smallSpacing),
+        verticalArrangement = Arrangement.spacedBy(dimens.smallSpacing),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
         TagFields(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(MaterialTheme.dimens.smallPadding),
+                .padding(dimens.smallPadding),
             name = tagUi.name,
             description = tagUi.description,
             onNameChange = onEditName,
@@ -53,7 +53,7 @@ fun TagForms(
         TagColorPicker(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(MaterialTheme.dimens.smallPadding),
+                .padding(dimens.smallPadding),
             selectedColor = tagUi.color,
             onColorChange = onEditColor
         )
@@ -71,7 +71,7 @@ fun TagFields(
 
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.smallSpacing),
+        verticalArrangement = Arrangement.spacedBy(dimens.smallSpacing),
         horizontalAlignment = Alignment.Start
     ) {
         InsightOutlinedTextField(
@@ -105,11 +105,11 @@ fun TagColorPicker(
         InsightColorPicker(
             modifier = Modifier
                 .border(
-                    width = MaterialTheme.dimens.smallThickness,
+                    width = dimens.smallThickness,
                     color = MaterialTheme.colorScheme.outline,
                     shape = MaterialTheme.shapes.small
                 )
-                .padding(MaterialTheme.dimens.mediumPadding),
+                .padding(dimens.mediumPadding),
             color = selectedColor,
             onChangeColor = onColorChange
         )
@@ -120,11 +120,11 @@ fun TagColorPicker(
 @Composable
 fun TagFormPreview(){
     var tagUi by rememberSaveable(stateSaver = TagUiSaver) {
-        mutableStateOf(TagUi.fromTag(null))
+        mutableStateOf(TagUi.fromTagEntity(null))
     }
 
     TagForms(
-        modifier = Modifier.padding(MaterialTheme.dimens.mediumPadding),
+        modifier = Modifier.padding(dimens.mediumPadding),
         tagUi = tagUi,
         onEditName = { tagUi = tagUi.copy(name = it) },
         onEditDescription = { tagUi = tagUi.copy(description = it) },

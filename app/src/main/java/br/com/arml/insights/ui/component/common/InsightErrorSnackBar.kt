@@ -31,7 +31,7 @@ fun InsightErrorSnackBar(
             ) {
                 Snackbar(
                     snackbarData = snackBarData,
-                    shape = RoundedCornerShape(MaterialTheme.dimens.mediumCornerRadius),
+                    shape = RoundedCornerShape(dimens.mediumCornerRadius),
                     containerColor = MaterialTheme.colorScheme.error,
                     contentColor = MaterialTheme.colorScheme.onError,
                 )

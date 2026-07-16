@@ -47,7 +47,7 @@ fun InsightScreen(
                         modifier = Modifier
                             .fillMaxSize()
                             .setMargin(
-                                padding = PaddingValues(horizontal = MaterialTheme.dimens.smallMargin)
+                                padding = PaddingValues(horizontal = dimens.smallMargin)
                             ),
                         onNavigateTo = { tagId, tagName ->
                             isShownDetailPane = true
@@ -69,7 +69,7 @@ fun InsightScreen(
                                 modifier = Modifier
                                     .fillMaxSize()
                                     .setMargin(
-                                        padding = PaddingValues(horizontal = MaterialTheme.dimens.smallMargin)
+                                        padding = PaddingValues(horizontal = dimens.smallMargin)
                                     ),
                                 tagId = (it as Pair<*, *>).first as Int,
                                 tagName = it.second as String,

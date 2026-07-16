@@ -24,7 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.arml.insights.R
-import br.com.arml.insights.model.entity.TagUi
+import br.com.arml.insights.model.domain.TagUi
 import br.com.arml.insights.ui.screen.tag.TagOperation
 import br.com.arml.insights.ui.theme.confirmColor
 import br.com.arml.insights.ui.theme.dimens
@@ -43,7 +43,7 @@ fun TagSheetContent(
 
     Column (
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.mediumSpacing),
+        verticalArrangement = Arrangement.spacedBy(dimens.mediumSpacing),
     ) {
         TagSheetHeader(
             modifier = Modifier.fillMaxWidth(),
@@ -54,7 +54,7 @@ fun TagSheetContent(
 
         HorizontalDivider(
             modifier = Modifier,
-            thickness = MaterialTheme.dimens.smallThickness
+            thickness = dimens.smallThickness
         )
 
         TagForms(
@@ -79,13 +79,13 @@ fun TagSheetHeader(
 
     Row(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.smallSpacing),
+        horizontalArrangement = Arrangement.spacedBy(dimens.smallSpacing),
         verticalAlignment = Alignment.CenterVertically
     )
     {
 
         Icon(
-            modifier = Modifier.size(MaterialTheme.dimens.smallIcon),
+            modifier = Modifier.size(dimens.smallIcon),
             imageVector = ImageVector.vectorResource(R.drawable.ic_tag),
             contentDescription = stringResource(R.string.tag_screen_title),
             tint = MaterialTheme.colorScheme.onSurface
@@ -102,7 +102,7 @@ fun TagSheetHeader(
         ) {
 
             Icon(
-                modifier = Modifier.size(MaterialTheme.dimens.smallIcon),
+                modifier = Modifier.size(dimens.smallIcon),
                 imageVector = Icons.Default.Check,
                 contentDescription = stringResource(
                     id = R.string.tag_forms_save_button,title
@@ -116,7 +116,7 @@ fun TagSheetHeader(
         ) {
 
             Icon(
-                modifier = Modifier.size(MaterialTheme.dimens.smallIcon),
+                modifier = Modifier.size(dimens.smallIcon),
                 imageVector = Icons.Default.Close,
                 contentDescription = stringResource(
                     id = R.string.tag_screen_close_menu,title
@@ -153,7 +153,7 @@ fun getTagHeaderTitle(
 @Composable
 fun TagSheetContentPreview(){
     TagSheetContent(
-        modifier = Modifier.padding(MaterialTheme.dimens.smallPadding),
-        selectedTagUi = TagUi.fromTag(null)
+        modifier = Modifier.padding(dimens.smallPadding),
+        selectedTagUi = TagUi.fromTagEntity(null)
     )
 }

@@ -1,6 +1,6 @@
 package br.com.arml.insights.ui.screen.note
 
-import br.com.arml.insights.model.entity.NoteUi
+import br.com.arml.insights.model.domain.NoteUi
 import br.com.arml.insights.ui.screen.common.Reducer
 import br.com.arml.insights.utils.data.SearchNoteCategory
 
@@ -16,7 +16,7 @@ sealed class NoteEvent: Reducer.ViewEvent{
         val searchNoteCategory: SearchNoteCategory
     ): NoteEvent()
     data object OnFetchTags: NoteEvent()
-    data class OnSelectNewTag(val tagId: Int): NoteEvent()
+    data class OnSelectNewTag(val tagId: Long): NoteEvent()
 
     /* Actions to handle frontend events */
     data class OnClickToOpenSheet(

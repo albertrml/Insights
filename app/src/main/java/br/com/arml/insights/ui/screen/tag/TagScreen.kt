@@ -19,7 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.arml.insights.R
-import br.com.arml.insights.model.entity.TagUi
+import br.com.arml.insights.model.domain.TagUi
 import br.com.arml.insights.ui.component.common.InsightErrorSnackBar
 import br.com.arml.insights.ui.component.common.InsightFilterAndSort
 import br.com.arml.insights.ui.component.common.InsightHeaderScreen
@@ -33,7 +33,7 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun TagScreen(
     modifier: Modifier = Modifier,
-    onNavigateTo: (Int, String) -> Unit,
+    onNavigateTo: (Long, String) -> Unit,
 ){
     val viewModel = hiltViewModel<TagViewModel>()
     val tagState by viewModel.state.collectAsStateWithLifecycle()
@@ -51,8 +51,8 @@ fun TagScreen(
         sheetSwipeEnabled = false,
         sheetPeekHeight = tagScreenState.rememberSheetContent(),
         sheetShape = RoundedCornerShape(
-            topStart = MaterialTheme.dimens.largeCornerRadius,
-            topEnd = MaterialTheme.dimens.largeCornerRadius
+            topStart = dimens.largeCornerRadius,
+            topEnd = dimens.largeCornerRadius
         ),
         snackbarHost = {
             InsightErrorSnackBar(
@@ -64,7 +64,7 @@ fun TagScreen(
             tagState.selectedTagUi?.let { selectedTagUi ->
                 TagSheetContent(
                     modifier = Modifier
-                        .padding(horizontal = MaterialTheme.dimens.smallMargin),
+                        .padding(horizontal = dimens.smallMargin),
                     selectedTagUi = selectedTagUi,
                     selectedOperation = tagState.selectedOperation,
                     onEditName = { viewModel.onEvent(TagEvent.OnEditName(it)) },
@@ -84,7 +84,7 @@ fun TagScreen(
             modifier = Modifier
                 .padding(padding)
                 .background(MaterialTheme.colorScheme.background),
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.mediumSpacing)
+            verticalArrangement = Arrangement.spacedBy(dimens.mediumSpacing)
         ) {
             InsightHeaderScreen(
                 modifier = Modifier,
@@ -134,7 +134,7 @@ fun TagScreen(
 
             TagDeleteAlert(
                 modifier = Modifier,
-                tagName = (tagState.selectedTagUi?:TagUi.fromTag(null)).name,
+                tagName = (tagState.selectedTagUi?:TagUi.fromTagEntity(null)).name,
                 showDialog = tagScreenState.isAlertDialogVisible,
                 onDismissRequest = {
                     viewModel.onEvent(TagEvent.OnClickToCloseDeleteDialog)

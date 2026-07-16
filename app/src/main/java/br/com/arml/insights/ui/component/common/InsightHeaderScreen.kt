@@ -37,10 +37,10 @@ fun InsightHeaderScreen(
         Row(
             modifier = Modifier,
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.smallSpacing)
+            horizontalArrangement = Arrangement.spacedBy(dimens.smallSpacing)
         ) {
             Icon(
-                modifier = Modifier.size(MaterialTheme.dimens.smallIcon),
+                modifier = Modifier.size(dimens.smallIcon),
                 imageVector = ImageVector.vectorResource(iconResId),
                 contentDescription = title,
                 tint = MaterialTheme.colorScheme.onSurface
@@ -55,17 +55,17 @@ fun InsightHeaderScreen(
                 onClick = onAddItem
             ) {
                 Icon(
-                    modifier = Modifier.size(MaterialTheme.dimens.smallIcon),
+                    modifier = Modifier.size(dimens.smallIcon),
                     imageVector = Icons.Default.AddCircle,
                     contentDescription = stringResource(R.string.header_screen_button,title),
                     tint = MaterialTheme.colorScheme.primary
                 )
             }
         }
-        Spacer(Modifier.height(MaterialTheme.dimens.smallSpacing))
+        Spacer(Modifier.height(dimens.smallSpacing))
         HorizontalDivider(
             modifier = Modifier,
-            thickness = MaterialTheme.dimens.smallThickness,
+            thickness = dimens.smallThickness,
             color = MaterialTheme.colorScheme.onSurface
         )
     }

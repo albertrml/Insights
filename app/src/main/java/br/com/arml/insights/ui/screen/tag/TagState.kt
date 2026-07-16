@@ -2,7 +2,7 @@ package br.com.arml.insights.ui.screen.tag
 
 import androidx.compose.runtime.Immutable
 import br.com.arml.core.response.Response
-import br.com.arml.insights.model.entity.TagUi
+import br.com.arml.insights.model.domain.TagUi
 import br.com.arml.insights.ui.screen.common.Reducer
 import br.com.arml.insights.ui.screen.tag.TagOperation.None
 

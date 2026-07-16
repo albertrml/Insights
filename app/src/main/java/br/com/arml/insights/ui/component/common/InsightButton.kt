@@ -32,18 +32,18 @@ fun InsightButton(
 ) {
     Button(
         modifier = modifier,
-        shape = RoundedCornerShape(MaterialTheme.dimens.largeCornerRadius),
+        shape = RoundedCornerShape(dimens.largeCornerRadius),
         contentPadding = contentPaddingButton(text, iconRes),
         colors = ButtonDefaults.buttonColors(containerColor = color),
         onClick = onClick
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.mediumSpacing)
+            horizontalArrangement = Arrangement.spacedBy(dimens.mediumSpacing)
         ) {
             iconRes?.let {
                 Icon(
-                    modifier = Modifier.size(MaterialTheme.dimens.smallIcon),
+                    modifier = Modifier.size(dimens.smallIcon),
                     painter = painterResource(id = iconRes),
                     contentDescription = stringResource(R.string.button_description, text?:"")
                 )

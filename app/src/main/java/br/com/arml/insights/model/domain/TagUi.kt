@@ -1,22 +1,23 @@
-package br.com.arml.insights.model.entity
+package br.com.arml.insights.model.domain
 
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import br.com.arml.insights.model.entity.TagEntity
 import br.com.arml.insights.utils.exception.TagException
 
 const val MIN_TAG_NAME_LENGTH = 3
 const val MAX_TAG_NAME_LENGTH = 20
 
 data class TagUi(
-    val id: Int,
+    val id: Long,
     val name: String,
     val color: Color,
     val description: String,
 ){
     @OptIn(ExperimentalStdlibApi::class)
-    fun toTag() = Tag(
+    fun toTagEntity() = TagEntity(
         id = id,
         name = name,
         color = color.toArgb().toLong(),
@@ -24,12 +25,12 @@ data class TagUi(
     )
 
     companion object{
-        fun fromTag(tag: Tag?) = tag?.let {
+        fun fromTagEntity(tagEntity: TagEntity?) = tagEntity?.let {
             TagUi(
-                id = tag.id,
-                name = tag.name,
-                color = Color(tag.color),
-                description = tag.description,
+                id = tagEntity.id,
+                name = tagEntity.name,
+                color = Color(tagEntity.color),
+                description = tagEntity.description,
             )
         } ?: TagUi(
             id = 0,
@@ -62,7 +63,7 @@ val TagUiSaver: Saver<TagUi, *> = listSaver(
     },
     restore = { list ->
         TagUi(
-            id = list[0] as Int,
+            id = list[0] as Long,
             name = list[1] as String,
             color = Color(list[2] as Long),
             description = list[3] as String

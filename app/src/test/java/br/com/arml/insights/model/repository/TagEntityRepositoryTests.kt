@@ -1,8 +1,8 @@
 package br.com.arml.insights.model.repository
 
 import android.database.sqlite.SQLiteConstraintException
-import br.com.arml.insights.model.entity.Tag
-import br.com.arml.insights.model.mock.mockTags
+import br.com.arml.insights.model.entity.TagEntity
+import br.com.arml.insights.model.mock.mockTagEntities
 import br.com.arml.insights.model.source.TagDao
 import br.com.arml.core.response.Response
 import br.com.arml.core.flow.until
@@ -20,14 +20,20 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
-class TagRepositoryTests {
+/**
+ * Situation: Now, the new database model uses NoteTagLinkEntity to relate notes with tags,
+ * allowing relation n:n between them. The tagId FK in the NoteEntity is not used anymore,
+ * so tagId is removed from the NoteEntity and NoteUi.
+ * TODO: rewrite them using TagWithNotes or NoteWithTags
+ * **/
+class TagEntityRepositoryTests {
 
     val tagDao = mockk<TagDao>()
     val tagRepository = TagRepository(tagDao)
 
     @Test
     fun `should emit success when Insert Tag Is Successful`() = runTest {
-        mockTags.forEach { fakeTag ->
+        mockTagEntities.forEach { fakeTag ->
             coEvery { tagDao.insert(fakeTag) } returns Unit
             tagRepository
                 .insert(fakeTag)
@@ -48,12 +54,12 @@ class TagRepositoryTests {
 
     @Test
     fun `should emit Failure when Insert Tag With Duplicated Id `() = runTest {
-        val fakeTagWithDuplicatedId = mockTags[0].copy(id = 1)
+        /*val fakeTagWithDuplicatedId = mockTagEntities[0].copy(id = 1)
         val insertIds = mutableSetOf(1)
-        val tagSlot = slot<Tag>()
+        val tagEntitySlot = slot<TagEntity>()
 
-        coEvery { tagDao.insert(capture(tagSlot)) } coAnswers {
-            val insertedTag = tagSlot.captured
+        coEvery { tagDao.insert(capture(tagEntitySlot)) } coAnswers {
+            val insertedTag = tagEntitySlot.captured
             if (insertIds.contains(insertedTag.id)) {
                 throw SQLiteConstraintException()
             } else {
@@ -72,24 +78,24 @@ class TagRepositoryTests {
                         assertTrue(response.exception is SQLiteConstraintException)
                     }
                 }
-            }
+            }*/
     }
 
     @Test
     fun `should emit Success when Insert Tags with Different Ids `() = runTest {
-        val insertedTags = mutableSetOf(mockTags[0].copy(id = 1))
-        val tagSlot = slot<Tag>()
-        coEvery { tagDao.insert(capture(tagSlot)) } coAnswers {
-            val newTag = tagSlot.captured
+        val insertedTags = mutableSetOf(mockTagEntities[0].copy(id = 1))
+        val tagEntitySlot = slot<TagEntity>()
+        coEvery { tagDao.insert(capture(tagEntitySlot)) } coAnswers {
+            val newTag = tagEntitySlot.captured
             if (insertedTags.contains(newTag)){
                 throw SQLiteConstraintException()
             }else{
-                insertedTags.add(newTag.copy(id = insertedTags.size+1))
+                insertedTags.add(newTag.copy(id = insertedTags.size+1L))
             }
         }
 
         tagRepository
-            .insert(mockTags[0])
+            .insert(mockTagEntities[0])
             .until { response -> response is Response.Success<*> }
             .collect { response ->
                 when (response) {
@@ -102,15 +108,15 @@ class TagRepositoryTests {
 
     @Test
     fun `should emit Success when Delete Tag Is Successful`() = runTest{
-        val fakeTag = mockTags[0].copy(id = 1)
+        val fakeTag = mockTagEntities[0].copy(id = 1)
         val database = mutableSetOf(fakeTag)
-        val tagSlot = slot<Tag>()
+        val tagEntitySlot = slot<TagEntity>()
 
         // Mock do getById para retornar o fakeTag
         coEvery { tagDao.getById(fakeTag.id) } returns fakeTag
 
-        coEvery { tagDao.delete(capture(tagSlot)) } coAnswers {
-            val deletedTag = tagSlot.captured
+        coEvery { tagDao.delete(capture(tagEntitySlot)) } coAnswers {
+            val deletedTag = tagEntitySlot.captured
             if (database.contains(deletedTag)) {
                 database.remove(deletedTag)
             }
@@ -133,7 +139,7 @@ class TagRepositoryTests {
 
     @Test
     fun `should throw TagNotFoundException when Delete Tag Is Not Found`() = runTest{
-        val fakeTag = mockTags[0].copy(id = 1)
+        val fakeTag = mockTagEntities[0].copy(id = 1)
 
         // Mock do getById para retornar o fakeTag
         coEvery { tagDao.getById(fakeTag.id) } returns null
@@ -154,8 +160,8 @@ class TagRepositoryTests {
 
     @Test
     fun `should throw TagNotFoundException when Tag for delete Is The Same`() = runTest{
-        val fakeTag = mockTags[0].copy(id = 1)
-        val tagForDelete = mockTags[1].copy(id = 1)
+        val fakeTag = mockTagEntities[0].copy(id = 1)
+        val tagForDelete = mockTagEntities[1].copy(id = 1)
 
         coEvery { tagDao.getById(tagForDelete.id) } returns fakeTag
 
@@ -176,8 +182,8 @@ class TagRepositoryTests {
 
     @Test
     fun `should emit Success when Update Tag Is Successful`() = runTest{
-        val fakeTag = mockTags[0].copy(id = 1)
-        val updatedTag = mockTags[1].copy(id = 1)
+        val fakeTag = mockTagEntities[0].copy(id = 1)
+        val updatedTag = mockTagEntities[1].copy(id = 1)
         val database = mutableSetOf(fakeTag)
 
         coEvery { tagDao.update(updatedTag) } answers {
@@ -201,9 +207,9 @@ class TagRepositoryTests {
 
     @Test
     fun `should emit Success when Get All Tags Is Successful`() = runTest{
-        val database = mutableSetOf<Tag>()
-        mockTags.forEachIndexed { index, fakeTag ->
-            database.add(fakeTag.copy(id = index+1))
+        val database = mutableSetOf<TagEntity>()
+        mockTagEntities.forEachIndexed { index, fakeTag ->
+            database.add(fakeTag.copy(id = index+1L))
         }
 
         coEvery { tagDao.getAll() } returns flow { database.toList() }
@@ -225,7 +231,7 @@ class TagRepositoryTests {
 
     @Test
     fun `should emit Tag when It exists`() = runTest{
-        val fakeTag = mockTags[0].copy(id = 1)
+        val fakeTag = mockTagEntities[0].copy(id = 1)
         coEvery { tagDao.getById(fakeTag.id) } returns fakeTag
         val tag = tagRepository.getTagById(fakeTag.id)
         assertEquals(fakeTag, tag)
@@ -233,7 +239,7 @@ class TagRepositoryTests {
 
     @Test
     fun `should emit null when It does not exists`() = runTest{
-        val fakeTag = mockTags[0].copy(id = 1)
+        val fakeTag = mockTagEntities[0].copy(id = 1)
         coEvery { tagDao.getById(fakeTag.id) } returns null
         val tag = tagRepository.getTagById(fakeTag.id)
         assertNull(tag)

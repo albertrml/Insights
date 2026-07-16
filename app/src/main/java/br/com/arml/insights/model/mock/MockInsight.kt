@@ -1,35 +1,35 @@
 package br.com.arml.insights.model.mock
 
-import br.com.arml.insights.model.entity.Note
-import br.com.arml.insights.model.entity.Tag
+import br.com.arml.insights.model.entity.NoteEntity
+import br.com.arml.insights.model.entity.TagEntity
 import java.util.Date
 
-val mockTags = arrayListOf(
-    Tag(
+val mockTagEntities = arrayListOf(
+    TagEntity(
         id = 0,
         name = "Dinner",
         color = -15108398L, //0xFF1976D2,
         description = "Ideas for dinner recipes"
     ),
-    Tag(
+    TagEntity(
         id = 1,
         name = "App",
         color = -442044L, //0xFFF94144,
         description = "Ideas for project app"
     ),
-    Tag(
+    TagEntity(
         id = 2,
         name = "Beer",
         color = -15825407L, //0xFF0E8601,
         description = "Ideas for beer recipes"
     ),
-    Tag(
+    TagEntity(
         id = 3,
         name = "Business",
         color = -28928L, //0xFFFF8F00,
         description = "Business Ideas"
     ),
-    Tag(
+    TagEntity(
         id = 4,
         name = "Dinheiro",
         color = -442044L, //0xFFF94144,
@@ -37,16 +37,15 @@ val mockTags = arrayListOf(
     ),
 )
 
-fun MutableList<Note>.addMockNotes(tag: Tag, quantity: Int) {
+fun MutableList<NoteEntity>.addMockNotes(tagEntity: TagEntity, quantity: Int) {
     val currentDate = Date().time
     (1..quantity).forEach { i ->
-        val note = Note(
-            title = "${tag.name} $i Title",
-            body = "${tag.name} $i Body",
-            situation = "${tag.name} $i Situation",
+        val noteEntity = NoteEntity(
+            title = "${tagEntity.name} $i Title",
+            body = "${tagEntity.name} $i Body",
+            situation = "${tagEntity.name} $i Situation",
             creationDate = currentDate + i,
-            tagId = tag.id
         )
-        this.add(note)
+        this.add(noteEntity)
     }
 }

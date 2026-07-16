@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import br.com.arml.core.response.Response
 import br.com.arml.core.response.update
 import br.com.arml.insights.domain.NoteUiUseCase
-import br.com.arml.insights.model.entity.NoteUi
+import br.com.arml.insights.model.domain.NoteUi
 import br.com.arml.insights.ui.screen.common.BaseViewModel
 import br.com.arml.insights.utils.data.SearchNoteCategory
 import br.com.arml.insights.utils.data.SortedNote
@@ -43,7 +43,11 @@ class NoteViewModel @Inject constructor(
     }
 
     private fun initViewModel(tagId: Int){
-        _state.update { state -> state.copy(tagId = tagId) }
+        /** TODO: Note não possui mais tagId
+         * old
+         * _state.update { state -> state.copy(tagId = tagId) }
+         **/
+        _state.update { state -> state/*.copy(tagId = tagId)*/ }
         fetchAllNotes(SortedNote.ByTitleAscending)
         fetchTags()
     }
@@ -198,5 +202,9 @@ class NoteViewModel @Inject constructor(
         }
     }
 
-    private fun resetNoteUi() = NoteUi.fromNote(null).copy(tagId = state.value.tagId)
+    /** TODO: Note não possui mais tagId
+     * old
+     * private fun resetNoteUi() = NoteUi.fromNoteEntity(null).copy(tagId = state.value.tagId)
+     **/
+    private fun resetNoteUi() = NoteUi.fromNoteEntity(null)/*.copy(tagId = state.value.tagId)*/
 }

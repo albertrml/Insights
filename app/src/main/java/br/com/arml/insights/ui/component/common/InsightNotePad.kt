@@ -41,18 +41,18 @@ fun InsightNotePad(
 
     Card(
         modifier = modifier.border(
-            width = MaterialTheme.dimens.smallThickness,
+            width = dimens.smallThickness,
             color = MaterialTheme.colorScheme.onSurface,
-            RoundedCornerShape(MaterialTheme.dimens.mediumCornerRadius)
+            RoundedCornerShape(dimens.mediumCornerRadius)
         ),
-        elevation = CardDefaults.cardElevation(MaterialTheme.dimens.mediumElevation),
+        elevation = CardDefaults.cardElevation(dimens.mediumElevation),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.background
         ),
     ) {
         Column(
             modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.smallSpacing)
+            verticalArrangement = Arrangement.spacedBy(dimens.smallSpacing)
         ) {
 
             header()
@@ -88,8 +88,8 @@ fun InsightNotePad(
                 modifier = Modifier
                     .align(Alignment.End)
                     .padding(
-                        end = MaterialTheme.dimens.smallPadding,
-                        bottom = MaterialTheme.dimens.smallPadding
+                        end = dimens.smallPadding,
+                        bottom = dimens.smallPadding
                     ),
                 text = "${text.length}/${maxSize}",
                 style = MaterialTheme.typography.bodyMedium
@@ -104,7 +104,7 @@ fun InsightNotePadPreview(){
     var text by rememberSaveable { mutableStateOf("Texto Inicial") }
 
     InsightNotePad(
-        modifier = Modifier.padding(MaterialTheme.dimens.smallPadding),
+        modifier = Modifier.padding(dimens.smallPadding),
         text = text,
         onChangeText = { newText -> text = newText },
         maxSize = 100,

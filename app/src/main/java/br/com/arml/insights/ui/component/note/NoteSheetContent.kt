@@ -28,15 +28,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import br.com.arml.core.response.Response
 import br.com.arml.core.response.ui.ShowResults
 import br.com.arml.insights.R
-import br.com.arml.insights.model.entity.NoteUi
-import br.com.arml.insights.model.entity.TagUi
+import br.com.arml.insights.model.domain.NoteUi
+import br.com.arml.insights.model.domain.TagUi
 import br.com.arml.insights.model.mock.createSampleNotes
-import br.com.arml.insights.model.mock.mockTags
+import br.com.arml.insights.model.mock.mockTagEntities
 import br.com.arml.insights.ui.screen.note.NoteOperation
 import br.com.arml.insights.ui.theme.confirmColor
 import br.com.arml.insights.ui.theme.cancelColor
 import br.com.arml.insights.ui.theme.dimens
-
 
 
 @Composable
@@ -48,7 +47,7 @@ fun NoteSheetContent(
     onEditTitle: (String) -> Unit,
     onEditSituation: (String) -> Unit,
     onEditBody: (String) -> Unit,
-    onEditTagId: (Int) -> Unit,
+    onEditTagId: (Long) -> Unit,
     onClickClose: () -> Unit,
     onClickSave: (NoteUi) -> Unit
 ) {
@@ -81,13 +80,13 @@ fun OnSuccess(
     onEditTitle: (String) -> Unit = {},
     onEditSituation: (String) -> Unit = {},
     onEditBody: (String) -> Unit = {},
-    onEditTagId: (Int) -> Unit = {},
+    onEditTagId: (Long) -> Unit = {},
     onClickClose: () -> Unit = {},
     onClickSave: (NoteUi) -> Unit = {}
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.mediumSpacing),
+        verticalArrangement = Arrangement.spacedBy(dimens.mediumSpacing),
     ) {
         NoteSheetHeader(
             modifier = Modifier.fillMaxWidth(),
@@ -98,7 +97,7 @@ fun OnSuccess(
 
         HorizontalDivider(
             modifier = Modifier,
-            thickness = MaterialTheme.dimens.smallThickness
+            thickness = dimens.smallThickness
         )
 
         NoteForms(
@@ -125,13 +124,13 @@ fun NoteSheetHeader(
 
     Row(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.smallSpacing),
+        horizontalArrangement = Arrangement.spacedBy(dimens.smallSpacing),
         verticalAlignment = Alignment.CenterVertically
     )
     {
 
         Icon(
-            modifier = Modifier.size(MaterialTheme.dimens.smallIcon),
+            modifier = Modifier.size(dimens.smallIcon),
             imageVector = ImageVector.vectorResource(R.drawable.ic_note),
             contentDescription = stringResource(R.string.note_screen_title),
             tint = MaterialTheme.colorScheme.onSurface
@@ -148,7 +147,7 @@ fun NoteSheetHeader(
         ) {
 
             Icon(
-                modifier = Modifier.size(MaterialTheme.dimens.smallIcon),
+                modifier = Modifier.size(dimens.smallIcon),
                 imageVector = Icons.Default.Check,
                 contentDescription = stringResource(
                     id = R.string.note_forms_save_button, title
@@ -162,7 +161,7 @@ fun NoteSheetHeader(
         ) {
 
             Icon(
-                modifier = Modifier.size(MaterialTheme.dimens.smallIcon),
+                modifier = Modifier.size(dimens.smallIcon),
                 imageVector = Icons.Default.Close,
                 contentDescription = stringResource(
                     id = R.string.note_screen_close_menu, title
@@ -187,8 +186,8 @@ fun getNoteHeaderTitle(
 @Preview(showBackground = true)
 @Composable
 fun NoteSheetContentPreview() {
-    var tags by remember { mutableStateOf(mockTags.map { TagUi.fromTag(it) }.toList()) }
-    var note by remember { mutableStateOf(createSampleNotes().toList().first()) }
+    var tags by remember { mutableStateOf(mockTagEntities.map { TagUi.fromTagEntity(it) }.toList()) }
+    var note by remember { mutableStateOf(createSampleNotes(5).toList().first()) }
     OnSuccess(
         modifier = Modifier,
         selectedNote = note,
@@ -197,7 +196,7 @@ fun NoteSheetContentPreview() {
         onEditTitle = { note = note.copy(title = it) },
         onEditSituation = { note = note.copy(situation = it) },
         onEditBody = { note = note.copy(body = it) },
-        onEditTagId = { tagId -> note = note.copy(tagId = tagId) },
+        onEditTagId = { tagId -> /*note = note.copy(tagId = tagId)*/ },
         onClickClose = {},
         onClickSave = {}
     )

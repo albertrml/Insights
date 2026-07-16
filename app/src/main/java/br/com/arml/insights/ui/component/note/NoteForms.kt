@@ -32,10 +32,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.arml.insights.R
-import br.com.arml.insights.model.entity.NoteUi
-import br.com.arml.insights.model.entity.TagUi
+import br.com.arml.insights.model.domain.NoteUi
+import br.com.arml.insights.model.domain.TagUi
 import br.com.arml.insights.model.mock.createSampleNotes
-import br.com.arml.insights.model.mock.mockTags
+import br.com.arml.insights.model.mock.mockTagEntities
 import br.com.arml.insights.ui.component.common.InsightNotePad
 import br.com.arml.insights.ui.component.common.InsightTextField
 import br.com.arml.insights.ui.theme.dimens
@@ -48,20 +48,20 @@ fun NoteForms(
     onEditTitle: (String) -> Unit = {},
     onEditSituation: (String) -> Unit = {},
     onEditBody: (String) -> Unit = {},
-    onEditTagId: (Int) -> Unit = {}
+    onEditTagId: (Long) -> Unit = {}
 ) {
 
     Column(
         modifier = modifier.verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.mediumSpacing)
+        verticalArrangement = Arrangement.spacedBy(dimens.mediumSpacing)
     ) {
         InsightNotePad(
             header = {
                 InsightTextField(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(MaterialTheme.dimens.smallPadding),
+                        .padding(dimens.smallPadding),
                     nameField = stringResource(R.string.note_forms_title),
                     text = selectedNote.title,
                     onChangeText = onEditTitle,
@@ -72,7 +72,7 @@ fun NoteForms(
                 InsightTextField(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(MaterialTheme.dimens.smallPadding),
+                        .padding(dimens.smallPadding),
                     nameField = stringResource(R.string.note_forms_situation),
                     text = selectedNote.situation,
                     onChangeText = onEditSituation,
@@ -84,13 +84,13 @@ fun NoteForms(
                 InsightDropdownMenu(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(MaterialTheme.dimens.smallPadding),
+                        .padding(dimens.smallPadding),
                     selectedNote = selectedNote,
                     tags = tags,
                     onEditTagId = onEditTagId
                 )
             },
-            modifier = Modifier.padding(MaterialTheme.dimens.smallPadding),
+            modifier = Modifier.padding(dimens.smallPadding),
             noteName = stringResource(R.string.note_forms_insight),
             text = selectedNote.body,
             textStyle = MaterialTheme.typography.bodyLarge,
@@ -100,7 +100,7 @@ fun NoteForms(
             maxLines = 20
         )
 
-        Spacer(modifier = Modifier.size(MaterialTheme.dimens.smallSpacing))
+        Spacer(modifier = Modifier.size(dimens.smallSpacing))
     }
 }
 
@@ -110,23 +110,27 @@ fun InsightDropdownMenu(
     textStyle: TextStyle = MaterialTheme.typography.bodyLarge,
     selectedNote: NoteUi,
     tags: List<TagUi>,
-    onEditTagId: (Int) -> Unit = {}
+    onEditTagId: (Long) -> Unit = {}
 ) {
     var expanded by remember { mutableStateOf(false) }
     Box(
         modifier = modifier,
-    ){
+    ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.smallSpacing)
+            horizontalArrangement = Arrangement.spacedBy(dimens.smallSpacing)
         ) {
 
             TextField(
                 modifier = Modifier
                     .weight(1f)
                     .background(color = MaterialTheme.colorScheme.background),
-                value = tags.firstOrNull { it.id == selectedNote.tagId }?.name ?: "",
+                value = tags.firstOrNull {
+                    //** TODO: Note não possui mais tagId. Precisa de ajuste
+                    true
+                    /*it.id == selectedNote.tagId*/
+                }?.name ?: "",
                 onValueChange = { },
                 label = {
                     Text(
@@ -172,12 +176,14 @@ fun InsightDropdownMenu(
 @Composable
 fun InsightDropdownMenuPreview() {
 
-    var tags by remember { mutableStateOf(mockTags.map { TagUi.fromTag(it) }.toList()) }
-    var note by remember { mutableStateOf(createSampleNotes().toList().first()) }
+    var tags by remember {
+        mutableStateOf(mockTagEntities.map { TagUi.fromTagEntity(it) }.toList())
+    }
+    var note by remember { mutableStateOf(createSampleNotes(5).toList().first()) }
     InsightDropdownMenu(
         modifier = Modifier,
         selectedNote = note,
         tags = tags,
-        onEditTagId = { tagId -> note = note.copy(tagId = tagId) }
+        onEditTagId = { tagId -> /*note = note.copy(tagId = tagId)*/ }
     )
 }

@@ -31,7 +31,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.arml.insights.R
-import br.com.arml.insights.model.entity.TagUi
+import br.com.arml.insights.model.domain.TagUi
 import br.com.arml.insights.ui.theme.dimens
 import com.github.skydoves.colorpicker.compose.AlphaSlider
 import com.github.skydoves.colorpicker.compose.BrightnessSlider
@@ -49,7 +49,7 @@ fun InsightColorPicker(
     val controller = rememberColorPickerController()
 
     Column(
-        modifier = modifier.padding(MaterialTheme.dimens.mediumPadding),
+        modifier = modifier.padding(dimens.mediumPadding),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     )
@@ -61,12 +61,12 @@ fun InsightColorPicker(
         )
 
         HorizontalDivider(
-            modifier = Modifier.padding(vertical = MaterialTheme.dimens.largePadding),
-            thickness = MaterialTheme.dimens.smallThickness
+            modifier = Modifier.padding(vertical = dimens.largePadding),
+            thickness = dimens.smallThickness
         )
 
         Row(
-            modifier = Modifier.height(MaterialTheme.dimens.colorPickerHeight),
+            modifier = Modifier.height(dimens.colorPickerHeight),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -80,7 +80,7 @@ fun InsightColorPicker(
                 initialColor = color,
             )
 
-            Spacer(modifier = Modifier.padding(MaterialTheme.dimens.smallSpacing))
+            Spacer(modifier = Modifier.padding(dimens.smallSpacing))
 
             Column(
                 modifier = Modifier,
@@ -92,23 +92,23 @@ fun InsightColorPicker(
                     text = stringResource(id = R.string.colorpicker_selected_color_label),
                     style = MaterialTheme.typography.labelLarge
                 )
-                Spacer(modifier = Modifier.padding(MaterialTheme.dimens.smallSpacing))
+                Spacer(modifier = Modifier.padding(dimens.smallSpacing))
                 Box(
                     modifier = Modifier
-                        .size(MaterialTheme.dimens.smallIcon)
+                        .size(dimens.smallIcon)
                         .border(
-                            width = MaterialTheme.dimens.smallThickness,
+                            width = dimens.smallThickness,
                             color = MaterialTheme.colorScheme.onBackground,
                             shape = MaterialTheme.shapes.small
                         )
-                        .clip(shape = RoundedCornerShape(MaterialTheme.dimens.mediumCornerRadius))
+                        .clip(shape = RoundedCornerShape(dimens.mediumCornerRadius))
                         .background(color = color),
                 )
             }
 
         }
 
-        Spacer(modifier = Modifier.padding(MaterialTheme.dimens.mediumSpacing))
+        Spacer(modifier = Modifier.padding(dimens.mediumSpacing))
 
         Text(
             modifier = Modifier
@@ -118,20 +118,20 @@ fun InsightColorPicker(
             style = titleStyle
         )
 
-        Spacer(modifier = Modifier.padding(MaterialTheme.dimens.smallSpacing))
+        Spacer(modifier = Modifier.padding(dimens.smallSpacing))
 
         AlphaSlider(
             modifier = Modifier
-                .height(MaterialTheme.dimens.sliderHeight),
-            borderRadius = MaterialTheme.dimens.mediumThickness,
-            borderSize = MaterialTheme.dimens.mediumThickness,
-            wheelRadius = MaterialTheme.dimens.sliderWheelRadius,
+                .height(dimens.sliderHeight),
+            borderRadius = dimens.mediumThickness,
+            borderSize = dimens.mediumThickness,
+            wheelRadius = dimens.sliderWheelRadius,
             wheelColor = MaterialTheme.colorScheme.onSurface,
             borderColor = MaterialTheme.colorScheme.onSurface,
             controller = controller,
         )
 
-        Spacer(modifier = Modifier.padding(MaterialTheme.dimens.mediumSpacing))
+        Spacer(modifier = Modifier.padding(dimens.mediumSpacing))
 
         Text(
             modifier = Modifier
@@ -141,19 +141,19 @@ fun InsightColorPicker(
             style = titleStyle
         )
 
-        Spacer(modifier = Modifier.padding(MaterialTheme.dimens.smallSpacing))
+        Spacer(modifier = Modifier.padding(dimens.smallSpacing))
 
         BrightnessSlider(
-            modifier = Modifier.height(MaterialTheme.dimens.sliderHeight),
-            borderRadius = MaterialTheme.dimens.mediumThickness,
-            borderSize = MaterialTheme.dimens.mediumThickness,
-            wheelRadius = MaterialTheme.dimens.sliderWheelRadius,
+            modifier = Modifier.height(dimens.sliderHeight),
+            borderRadius = dimens.mediumThickness,
+            borderSize = dimens.mediumThickness,
+            wheelRadius = dimens.sliderWheelRadius,
             wheelColor = MaterialTheme.colorScheme.onSurface,
             borderColor = MaterialTheme.colorScheme.onSurface,
             controller = controller,
         )
 
-        Spacer(modifier = Modifier.padding(MaterialTheme.dimens.smallSpacing))
+        Spacer(modifier = Modifier.padding(dimens.smallSpacing))
     }
 }
 
@@ -168,7 +168,7 @@ fun ColorPickerPreview(){
         restore = { value -> Color(value) }
     )
 
-    var tagUi by rememberSaveable(stateSaver = colorSaver) { mutableStateOf(TagUi.fromTag(null).color) }
+    var tagUi by rememberSaveable(stateSaver = colorSaver) { mutableStateOf(TagUi.fromTagEntity(null).color) }
 
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -177,11 +177,11 @@ fun ColorPickerPreview(){
         InsightColorPicker(
             modifier = Modifier
                 .border(
-                    width = MaterialTheme.dimens.smallThickness,
+                    width = dimens.smallThickness,
                     color = MaterialTheme.colorScheme.outline,
                     shape = MaterialTheme.shapes.small
                 )
-                .padding(MaterialTheme.dimens.mediumSpacing),
+                .padding(dimens.mediumSpacing),
             color = tagUi,
             onChangeColor = { color -> tagUi = color}
         )

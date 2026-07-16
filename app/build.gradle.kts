@@ -19,6 +19,10 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    sourceSets {
+        getByName("androidTest").assets.directories.add("$projectDir/schemas")
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = true
@@ -35,11 +39,17 @@ android {
     }
 }
 
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
+}
+
 kotlin {
     jvmToolchain(17)
 }
 
 dependencies {
+    implementation(libs.androidx.room.testing)
+    implementation(libs.androidx.sqlite.ktx)
     // arml
     implementation(libs.response.core)
 
@@ -89,6 +99,7 @@ dependencies {
 
     val sharedTestLibs = listOf(
         libs.kotlinx.coroutines.test,
+        libs.google.truth,
     )
     sharedTestLibs.forEach {
         testImplementation(it)

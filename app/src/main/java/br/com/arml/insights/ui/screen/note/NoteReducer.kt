@@ -1,7 +1,7 @@
 package br.com.arml.insights.ui.screen.note
 
 import br.com.arml.core.response.Response
-import br.com.arml.insights.model.entity.NoteUi
+import br.com.arml.insights.model.domain.NoteUi
 import br.com.arml.insights.ui.screen.common.Reducer
 import javax.inject.Inject
 
@@ -18,7 +18,11 @@ class NoteReducer @Inject constructor() : Reducer<NoteState, NoteEvent, NoteEffe
             is NoteEvent.OnSearch -> previousState to null
             is NoteEvent.OnFetchTags -> previousState to null
             is NoteEvent.OnSelectNewTag -> {
-                val newNote = previousState.selectedNote.copy(tagId = event.tagId)
+                /** TODO: Note não possui mais tagId. Agora as notas são associadas a n tags
+                 # old
+                 val newNote = previousState.selectedNote.copy(tagId = event.tagId)
+                */
+                val newNote = previousState.selectedNote//.copy(tagId = event.tagId)
                 val updatedState = previousState.copy(selectedNote = newNote)
                 updatedState to null
             }
@@ -67,7 +71,7 @@ class NoteReducer @Inject constructor() : Reducer<NoteState, NoteEvent, NoteEffe
             }
             is NoteEvent.OnClickToCloseSheet -> {
                 previousState.copy(
-                    selectedNote = NoteUi.fromNote(null),
+                    selectedNote = NoteUi.fromNoteEntity(null),
                     noteOperation = NoteOperation.None
                 ) to NoteEffect.OnHideContentSheet
             }
@@ -78,7 +82,7 @@ class NoteReducer @Inject constructor() : Reducer<NoteState, NoteEvent, NoteEffe
             }
             is NoteEvent.OnClickToCloseDeleteDialog -> {
                 previousState.copy(
-                    selectedNote = NoteUi.fromNote(null)
+                    selectedNote = NoteUi.fromNoteEntity(null)
                 ) to NoteEffect.OnHideDeleteDialog
             }
 

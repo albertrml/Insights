@@ -1,12 +1,23 @@
 package br.com.arml.insights.model.entity
 
+import br.com.arml.insights.model.domain.MAX_BODY_LENGTH
+import br.com.arml.insights.model.domain.MAX_SITUATION_LENGTH
+import br.com.arml.insights.model.domain.MAX_TITLE_LENGTH
+import br.com.arml.insights.model.domain.MIN_TITLE_LENGTH
+import br.com.arml.insights.model.domain.NoteUi
 import br.com.arml.insights.utils.exception.NoteException
 import junit.framework.TestCase.assertEquals
 import org.junit.Assert.assertThrows
 import org.junit.Test
 import java.util.Date
 
-class NoteUiTests {
+/**
+ * Situation: Now, the new database model uses NoteTagLinkEntity to relate notes with tags,
+ * allowing relation n:n between them. The tagId FK in the NoteEntity is not used anymore,
+ * so tagId is removed from the NoteEntity and NoteUi.
+ * TODO: rewrite them using TagWithNotes or NoteWithTags
+ * **/
+class NoteEntityUiTests {
 
     val cleanNoteUi = NoteUi(
         id = 0,
@@ -14,7 +25,7 @@ class NoteUiTests {
         body = "",
         situation = "",
         creationDate = Date(),
-        tagId = 0
+        //tagId = 0
     )
 
     val validNoteUi = NoteUi(
@@ -23,37 +34,37 @@ class NoteUiTests {
         body = "valid body",
         situation = "valid situation",
         creationDate = Date(),
-        tagId = 1
+        //tagId = 1
     )
 
-    val validNote = Note(
+    val validNoteEntity = NoteEntity(
         id = 1,
         title = "Valid Title",
         body = "valid body",
         situation = "valid situation",
         creationDate = validNoteUi.creationDate.time,
-        tagId = 1
+        //tagId = 1
     )
 
     @Test
     fun `should return NoteUi from Note`() {
         assertEquals(
             validNoteUi,
-            NoteUi.fromNote(validNote)
+            NoteUi.fromNoteEntity(validNoteEntity)
         )
     }
 
     @Test
     fun `should return Note from NoteUi`() {
         assertEquals(
-            validNote,
-            validNoteUi.toNote()
+            validNoteEntity,
+            validNoteUi.toNoteEntity()
         )
     }
 
     @Test
     fun `should return cleanNoteUi when NoteUi is null`() {
-        val newNoteUi = NoteUi.fromNote(null)
+        val newNoteUi = NoteUi.fromNoteEntity(null)
         assertEquals(
             cleanNoteUi.copy(creationDate = newNoteUi.creationDate),
             newNoteUi
@@ -72,7 +83,7 @@ class NoteUiTests {
         assertThrows(NoteException.NoteTagIdException::class.java){
             NoteUi.isValid(
                 validNoteUi.copy(
-                    tagId = -1
+                    //tagId = -1
                 )
             )
         }

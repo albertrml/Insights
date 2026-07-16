@@ -1,7 +1,7 @@
 package br.com.arml.insights.ui.screen.tag
 
 import br.com.arml.core.response.Response
-import br.com.arml.insights.model.entity.TagUi
+import br.com.arml.insights.model.domain.TagUi
 import br.com.arml.insights.ui.screen.common.Reducer
 import javax.inject.Inject
 
@@ -36,7 +36,7 @@ class TagReducer @Inject constructor() : Reducer<TagState, TagEvent, TagEffect> 
             }
 
             is TagEvent.OnClickToOpenSheet -> {
-                val selectedTagUi = event.selectedTagUi?: TagUi.fromTag(null)
+                val selectedTagUi = event.selectedTagUi?: TagUi.fromTagEntity(null)
                 previousState.copy(
                     selectedTagUi = selectedTagUi,
                     selectedOperation = event.tagOperation,

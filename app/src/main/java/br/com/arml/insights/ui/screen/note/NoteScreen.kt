@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.arml.insights.R
-import br.com.arml.insights.model.entity.NoteUi
+import br.com.arml.insights.model.domain.NoteUi
 import br.com.arml.insights.ui.component.common.InsightErrorSnackBar
 import br.com.arml.insights.ui.component.common.InsightFilterAndSort
 import br.com.arml.insights.ui.component.common.InsightHeaderScreen
@@ -56,8 +56,8 @@ fun NoteScreen(
         sheetSwipeEnabled = false,
         sheetPeekHeight = noteScreenState.rememberNoteSheetContent(),
         sheetShape = RoundedCornerShape(
-            topStart = MaterialTheme.dimens.largeCornerRadius,
-            topEnd = MaterialTheme.dimens.largeCornerRadius
+            topStart = dimens.largeCornerRadius,
+            topEnd = dimens.largeCornerRadius
         ),
         snackbarHost = {
             InsightErrorSnackBar(
@@ -68,7 +68,7 @@ fun NoteScreen(
         sheetContent = {
             NoteSheetContent(
                 modifier = Modifier
-                    .padding(horizontal = MaterialTheme.dimens.smallMargin),
+                    .padding(horizontal = dimens.smallMargin),
                 selectedNote = noteState.selectedNote,
                 selectedOperation = noteState.noteOperation,
                 tags = noteState.tags,
@@ -89,7 +89,7 @@ fun NoteScreen(
             modifier = Modifier
                 .padding(padding)
                 .background(MaterialTheme.colorScheme.background),
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.mediumSpacing)
+            verticalArrangement = Arrangement.spacedBy(dimens.mediumSpacing)
         ) {
             InsightHeaderScreen(
                 modifier = Modifier,
@@ -98,7 +98,11 @@ fun NoteScreen(
                 onAddItem = {
                     viewModel.onEvent(
                         NoteEvent.OnClickToOpenSheet(
-                            selectedNote = NoteUi.fromNote(null).copy(tagId = tagId),
+                            /** TODO: Note não possui mais tagId.
+                             * old
+                             * selectedNote = NoteUi.fromNoteEntity(null).copy(tagId = tagId),
+                             */
+                            selectedNote = NoteUi.fromNoteEntity(null),
                             noteOperation = NoteOperation.OnInsert
                         )
                     )

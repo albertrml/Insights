@@ -24,7 +24,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import br.com.arml.insights.R
 import br.com.arml.insights.ui.theme.dimens
 
-
 @Composable
 fun InsightOutlinedTextField(
     modifier: Modifier = Modifier,
@@ -41,7 +40,7 @@ fun InsightOutlinedTextField(
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = MaterialTheme.dimens.smallPadding),
+                .padding(bottom = dimens.smallPadding),
             value = text,
             onValueChange = { newText ->
                 if (newText.length <= maxSize) {

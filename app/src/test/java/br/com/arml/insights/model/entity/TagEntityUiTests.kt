@@ -2,12 +2,15 @@ package br.com.arml.insights.model.entity
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import br.com.arml.insights.model.domain.MAX_TAG_NAME_LENGTH
+import br.com.arml.insights.model.domain.MIN_TAG_NAME_LENGTH
+import br.com.arml.insights.model.domain.TagUi
 import br.com.arml.insights.utils.exception.TagException
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThrows
 import org.junit.Test
 
-class TagUiTests {
+class TagEntityUiTests {
 
     val cleanTagUi = TagUi(
         id = 0,
@@ -23,7 +26,7 @@ class TagUiTests {
         description = "valid description"
     )
 
-    val validTag = Tag(
+    val validTagEntity = TagEntity(
         id = 1,
         name = "Valid Name",
         color = Color.White.toArgb().toLong(),
@@ -55,19 +58,19 @@ class TagUiTests {
 
     @Test
     fun `should return Tag from TagUi`(){
-        val newTag = validTagUi.toTag()
-        assertEquals(validTag, newTag)
+        val newTag = validTagUi.toTagEntity()
+        assertEquals(validTagEntity, newTag)
     }
 
     @Test
     fun `should return TagUi from Tag`(){
-        val newTagUi = TagUi.fromTag(validTag)
+        val newTagUi = TagUi.fromTagEntity(validTagEntity)
         assertEquals(validTagUi, newTagUi)
     }
 
     @Test
     fun `should return cleanTagUi when TagUi is null`(){
-        val newTagUi = TagUi.fromTag(null)
+        val newTagUi = TagUi.fromTagEntity(null)
         assertEquals(cleanTagUi, newTagUi)
     }
 

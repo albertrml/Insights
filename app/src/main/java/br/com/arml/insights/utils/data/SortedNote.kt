@@ -1,6 +1,6 @@
 package br.com.arml.insights.utils.data
 
-import br.com.arml.insights.model.entity.Note
+import br.com.arml.insights.model.entity.NoteEntity
 
 sealed class SortedNote {
     data object ByTitleAscending : SortedNote()
@@ -11,7 +11,7 @@ sealed class SortedNote {
     data object BySituationDescending : SortedNote()
 }
 
-fun List<Note>.sortNotesBy(sortMethod: SortedNote): List<Note>{
+fun List<NoteEntity>.sortNotesBy(sortMethod: SortedNote): List<NoteEntity>{
     return when(sortMethod){
         is SortedNote.ByTitleAscending -> this.sortedBy { it.title }
         is SortedNote.ByTitleDescending -> this.sortedByDescending { it.title }

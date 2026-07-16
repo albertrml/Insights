@@ -59,7 +59,7 @@ fun InsightTextField(
             ),
             maxLines = maxLines
         )
-        Spacer(modifier = Modifier.padding(MaterialTheme.dimens.smallSpacing))
+        Spacer(modifier = Modifier.padding(dimens.smallSpacing))
         Text(
             modifier = Modifier
                 .align(Alignment.End),
@@ -75,7 +75,7 @@ fun InsightTextFieldPreview(){
     var text by rememberSaveable { mutableStateOf("") }
 
     InsightTextField(
-        modifier = Modifier.padding(MaterialTheme.dimens.smallSpacing),
+        modifier = Modifier.padding(dimens.smallSpacing),
         nameField = "Name",
         text = text,
         onChangeText = { newText -> text = newText },

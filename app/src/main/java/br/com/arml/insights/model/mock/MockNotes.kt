@@ -1,45 +1,26 @@
 package br.com.arml.insights.model.mock
 
-import br.com.arml.insights.model.entity.NoteUi
+import br.com.arml.insights.model.domain.NoteUi
+import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.Locale
 
-fun createSampleNotes(): List<NoteUi> {
-    val now = Date()
-    return listOf(
-        NoteUi(
-            title = "Reunião com o Cliente",
-            situation = "Discussão de Requisitos",
-            body = "Reunião para discutir os requisitos do projeto X. Focar em funcionalidades principais e prazos.",
-            tagId = 1,
-            creationDate = now
-        ),
-        NoteUi(
-            title = "Ideias para Novo App",
-            situation = "Brainstorming",
-            body = "Pensar em ideias criativas para um novo app mobile. Considerar integração com redes sociais.",
-            tagId = 1,
-            creationDate = Date(now.time - 86400000) // 1 dia atrás
-        ),
-        NoteUi(
-            title = "Estudar Kotlin",
-            situation = "Desenvolvimento",
-            body = "Avançar nos estudos de Kotlin para Android. Praticar com Jetpack Compose e Room.",
-            tagId = 1,
-            creationDate = Date(now.time - 172800000) // 2 dias atrás
-        ),
-        NoteUi(
-            title = "Planejar Viagem",
-            situation = "Lazer",
-            body = "Começar a planejar a próxima viagem. Escolher o destino, pesquisar hotéis e atrações.",
-            tagId = 1,
-            creationDate = Date(now.time - 259200000) // 3 dias atrás
-        ),
-        NoteUi(
-            title = "Revisar Código",
-            situation = "Melhorias",
-            body = "Revisar o código da última sprint. Buscar por melhorias de performance e refatorar.",
-            tagId = 1,
-            creationDate = Date(now.time - 345600000) // 4 dias atrás
-        )
+const val mockTitle = "Note title"
+const val mockBody = "Note body"
+const val mockSituation = "Note situation"
+val mockCreationDateInMilli = SimpleDateFormat("dd/MM/yyyy", Locale.ROOT)
+    .parse("10/07/2026")
+    ?.time ?: 0L
+const val mockTimestep = 86400000L // 1 dia em milissegundos
+
+fun createSampleNotes(quantity: Int) = List(quantity) { index ->
+    NoteUi(
+        title = "$mockTitle $index",
+        situation = "$mockSituation $index",
+        body = "$mockBody $index",
+        creationDate = Date(mockCreationDateInMilli + (index * mockTimestep))
     )
 }
+
+val mockNoteUIs = createSampleNotes(5)
+val mockNoteEntities = mockNoteUIs.map { noteUi -> noteUi.toNoteEntity() }

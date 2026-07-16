@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import br.com.arml.core.response.Response
 import br.com.arml.core.response.update
 import br.com.arml.insights.domain.TagUiUseCase
-import br.com.arml.insights.model.entity.TagUi
+import br.com.arml.insights.model.domain.TagUi
 import br.com.arml.insights.ui.screen.common.BaseViewModel
 import br.com.arml.insights.utils.data.SortedTag
 import br.com.arml.insights.utils.exception.InsightException.TagAlreadyExistsException
@@ -46,6 +46,11 @@ class TagViewModel @Inject constructor(
         viewModelScope.launch {
             val newTagUi = state.value.selectedTagUi
 
+            /*
+                Isto deve ser um flow de validação que alimentará o state do botão de salvar.
+                Sua inicialização ocorrerá no init do viewmodel.
+             */
+
             try {
                 TagUi.isValid(newTagUi)
             } catch (e: Exception) {
@@ -56,25 +61,8 @@ class TagViewModel @Inject constructor(
                 return@launch
             }
 
-            /*if (newTagUi == null){
-                sendEffect(TagEffect.ShowSnackBar(TagIsNullException().message))
-                _state.update { state ->
-                    state.copy(operationState = Response.Failure(TagIsNullException()))
-                }
-                return@launch
-            }
-
-            val (isTagUiValid, invalidException) = TagUi.isValid(newTagUi)
-            if (!isTagUiValid){
-                sendEffect(TagEffect.ShowSnackBar(invalidException?.message!!))
-                _state.update { state ->
-                    state.copy(operationState = Response.Failure(invalidException))
-                }
-                return@launch
-            }*/
-
             newTagUi?.let { tag ->
-                if (tagUiUseCase.isTagNameExists(tag.id, tag.name)) {
+                if (tagUiUseCase.isTagNameExists( tag.name)) {
                     sendEffect(TagEffect.ShowSnackBar(TagAlreadyExistsException().message))
                     _state.update { state ->
                         state.copy(operationState = Response.Failure(TagAlreadyExistsException()))
@@ -109,31 +97,6 @@ class TagViewModel @Inject constructor(
     private fun updateTagUi(){
         viewModelScope.launch {
             val updatedTagUi = state.value.selectedTagUi
-
-            /*if (updatedTagUi == null){
-                sendEffect(TagEffect.ShowSnackBar(TagIsNullException().message))
-                _state.update { state ->
-                    state.copy(operationState = Response.Failure(TagIsNullException()))
-                }
-                return@launch
-            }
-
-            val (isTagUiValid, invalidException) = TagUi.isValid(updatedTagUi)
-            if (!isTagUiValid){
-                sendEffect(TagEffect.ShowSnackBar(invalidException?.message!!))
-                _state.update { state ->
-                    state.copy(operationState = Response.Failure(invalidException))
-                }
-                return@launch
-            }
-
-            if (tagUiUseCase.isTagNameExists(updatedTagUi.id, updatedTagUi.name)) {
-                sendEffect(TagEffect.ShowSnackBar(TagAlreadyExistsException().message))
-                _state.update { state ->
-                    state.copy(operationState = Response.Failure(TagAlreadyExistsException()))
-                }
-                return@launch
-            }*/
 
             updatedTagUi?.let { tag ->
                 try {

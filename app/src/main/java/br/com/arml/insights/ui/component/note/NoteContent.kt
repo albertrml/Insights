@@ -22,7 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
-import br.com.arml.insights.model.entity.NoteUi
+import br.com.arml.insights.model.domain.NoteUi
 import br.com.arml.insights.model.mock.createSampleNotes
 import br.com.arml.insights.ui.theme.dimens
 
@@ -30,15 +30,15 @@ import br.com.arml.insights.ui.theme.dimens
 fun NoteList(
     modifier: Modifier = Modifier,
     notes: List<NoteUi>,
-    minSize: Dp = MaterialTheme.dimens.xLargeIcon,
+    minSize: Dp = dimens.xLargeIcon,
     onClick: (NoteUi) -> Unit = {},
     onLongClick: (NoteUi) -> Unit = {}
 ){
     LazyVerticalStaggeredGrid(
         modifier = modifier,
         columns = StaggeredGridCells.Adaptive(minSize = minSize),
-        verticalItemSpacing = MaterialTheme.dimens.mediumSpacing,
-        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.mediumSpacing)
+        verticalItemSpacing = dimens.mediumSpacing,
+        horizontalArrangement = Arrangement.spacedBy(dimens.mediumSpacing)
     ){
         items(notes){ note ->
             NoteElement(
@@ -63,15 +63,15 @@ fun NoteElement(
     Card(
         modifier = modifier
             .border(
-                width = MaterialTheme.dimens.smallThickness,
+                width = dimens.smallThickness,
                 color = MaterialTheme.colorScheme.onSurface,
-                shape = RoundedCornerShape(MaterialTheme.dimens.smallCornerRadius)
+                shape = RoundedCornerShape(dimens.smallCornerRadius)
             )
             .combinedClickable(
                 onClick = { onClick(note) },
                 onLongClick = { onLongClick(note) }
             ),
-        elevation = CardDefaults.cardElevation(MaterialTheme.dimens.mediumElevation),
+        elevation = CardDefaults.cardElevation(dimens.mediumElevation),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
         )
@@ -79,22 +79,22 @@ fun NoteElement(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(MaterialTheme.dimens.smallPadding),
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.smallSpacing),
+                .padding(dimens.smallPadding),
+            verticalArrangement = Arrangement.spacedBy(dimens.smallSpacing),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
                 text = note.title,
                 style = MaterialTheme.typography.titleLarge
             )
-            Spacer(modifier = Modifier.padding(MaterialTheme.dimens.smallSpacing))
+            Spacer(modifier = Modifier.padding(dimens.smallSpacing))
             Text(
                 text = note.body,
                 style = MaterialTheme.typography.bodyLarge,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 5
             )
-            Spacer(modifier = Modifier.padding(MaterialTheme.dimens.smallSpacing))
+            Spacer(modifier = Modifier.padding(dimens.smallSpacing))
             Text(
                 text = note.getCreationDate(),
                 style = MaterialTheme.typography.bodyMedium
@@ -106,12 +106,12 @@ fun NoteElement(
 @Preview(showBackground = true)
 @Composable
 fun NoteListPreview(){
-    val notes = createSampleNotes()
+    val notes = createSampleNotes(5)
 
     NoteList(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(MaterialTheme.dimens.smallPadding),
+            .padding(dimens.smallPadding),
         notes = notes
     )
 }
